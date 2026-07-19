@@ -1,0 +1,76 @@
+name: Deploy to GitHub Pages
+
+# ── What this workflow does ──
+# On every push to main, builds the editorial rebuild as a static export
+# (output: "export" + next.config.ts trailingSlash + images.unoptimized)
+# and publishes ./out to GitHub Pages via actions/deploy-pages@v4.
+#
+# Repo URL when this workflow is enabled:
+#   https://DeclanD2025.github.io/faroe-islands/
+#
+# To enable:
+#   1. Push this workflow to main (happens automatically with this commit).
+#   2. In the GitHub repo UI: Settings → Pages → Source = "GitHub Actions".
+#   3. The first push after that triggers the workflow and publishes the site.
+# ───────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Required permissions for actions/deploy-pages + actions/upload-pages-artifact.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Don't deploy two competing builds to the same environment at once.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build static export
+        # BASE_PATH auto-derived from the repo name so the deploy URL stays
+        # in sync if the repo is renamed. The trip-day links, the editorial
+        # hero image, and every <Link> pick this up automatically.
+        run: pnpm exec next build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_MAP_STYLE_URL: https://tiles.openfreemap.org/styles/positron
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
