@@ -245,6 +245,8 @@ const DAY2_SOURCES = [
 
 export function DayTwoDetail() {
   const mapRef = useRef<maplibregl.Map | null>(null);
+  const desktopRunMapRef = useRef<maplibregl.Map | null>(null);
+  const mobileRunMapRef = useRef<maplibregl.Map | null>(null);
   const [activePlan, setActivePlan] = useState<string>("d2-plan-a");
 
   return (
@@ -270,19 +272,37 @@ export function DayTwoDetail() {
             {/* LAYER A — Day at a glance */}
             <section className="mb-6"><SummaryStrip items={DAY_TWO_SUMMARY} /></section>
 
-            {/* Morning run card */}
+            {/* Morning run — map + route data */}
             <section className="mb-6">
-              <div className="border border-basalt/15 rounded-[7px] p-4">
-                <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík loop</p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[12px]">
+              <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík loop</p>
+              <div className="border border-basalt/15 rounded-[7px] overflow-hidden">
+                <div style={{ height: 300 }}>
+                  <FaroesMap onSelect={() => {}} selected={null} filter="run-oravik" mapRef={desktopRunMapRef} height={300} />
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 border-t border-basalt/10">
                   <RunDetail label="Duration" value={RUN_PLAN.duration} />
                   <RunDetail label="Distance" value={RUN_PLAN.distance} />
-                  <RunDetail label="Elevation" value={RUN_PLAN.elevation} />
-                  <RunDetail label="Wind" value={RUN_PLAN.wind} />
+                  <RunDetail label="Start" value={RUN_PLAN.start} />
+                  <RunDetail label="Leave by" value="07:30–08:00" />
                 </div>
-                <p className="text-[12px] text-basalt/55 mt-3">{RUN_PLAN.route}</p>
-                <p className="text-[11px] text-rust/70 mt-2">{RUN_PLAN.caution}</p>
-                <p className="text-[11px] text-basalt/50 mt-1">{RUN_PLAN.extensions}</p>
+                <div className="px-4 pb-4">
+                  <p className="text-[12px] text-basalt/55">{RUN_PLAN.route}</p>
+                  <p className="text-[11px] text-rust/70 mt-2">{RUN_PLAN.caution}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3 mt-3">
+                <div className="border border-basalt/10 rounded-[7px] p-3">
+                  <p className="text-[10px] uppercase tracking-[0.08em] text-basalt/50">Elevation</p>
+                  <p className="text-[13px] text-basalt/70">{RUN_PLAN.elevation}</p>
+                </div>
+                <div className="border border-basalt/10 rounded-[7px] p-3">
+                  <p className="text-[10px] uppercase tracking-[0.08em] text-basalt/50">Wind exposure</p>
+                  <p className="text-[13px] text-basalt/70">{RUN_PLAN.wind}</p>
+                </div>
+              </div>
+              <div className="mt-3 border border-amber/20 bg-amber/[0.03] rounded-[7px] p-3">
+                <p className="text-[10px] uppercase tracking-[0.1em] text-amber font-medium mb-1">Extension</p>
+                <p className="text-[12px] text-basalt/65">{RUN_PLAN.extensions}</p>
               </div>
             </section>
 
@@ -363,6 +383,21 @@ export function DayTwoDetail() {
         <section className="mb-6"><TripReadiness /></section>
         <section className="mb-6"><MobileDecisionPanel /></section>
         <section className="mb-6"><MobileTripStatus dateLine1="Tuesday 28 July 2026" dateLine2="Suðuroy exploration day" weatherLat={61.536} weatherLon={-6.81} weatherLabel="Øravík" /></section>
+        <section className="mb-6">
+          <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík loop</p>
+          <div className="border border-basalt/15 rounded-[8px] overflow-hidden">
+            <div style={{ height: 280 }}>
+              <FaroesMap onSelect={() => {}} selected={null} filter="run-oravik" mapRef={mobileRunMapRef} height={280} />
+            </div>
+            <div className="p-3 border-t border-basalt/10">
+              <div className="flex gap-4 text-[11px]">
+                <div><span className="text-basalt/50">Duration </span><span className="font-medium text-basalt">{RUN_PLAN.duration}</span></div>
+                <div><span className="text-basalt/50">Distance </span><span className="font-medium text-basalt">{RUN_PLAN.distance}</span></div>
+              </div>
+              <p className="text-[11px] text-basalt/55 mt-2">{RUN_PLAN.caution}</p>
+            </div>
+          </div>
+        </section>
         <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Day plan</p><MobileTimeline steps={DAY_TWO_TIMELINE} /></section>
         <section className="mb-6"><DecisionTreeView tree={DAY2_DECISION} /></section>
         <section className="mb-6"><WhyThisRoute /></section>

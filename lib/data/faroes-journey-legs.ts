@@ -112,6 +112,36 @@ const ORAVIK_TO_TVOROYRI: LineString = {
   ],
 };
 
+// Day 2 · Morning run — Øravík harbour loop
+// Við á 7 → harbour road → Ferjuleðan → Við á 7 (~3–5 km loop)
+const ORAVIK_RUN_LOOP: LineString = {
+  type: "LineString",
+  coordinates: [
+    [-6.8100, 61.5360],  // Við á 7 (start)
+    [-6.8105, 61.5355],  // Down to the harbour road
+    [-6.8115, 61.5348],  // Harbour approach
+    [-6.8130, 61.5345],  // Øravík harbour
+    [-6.8145, 61.5348],  // Harbour road along the shore
+    [-6.8160, 61.5355],  // Ferjuleðan junction
+    [-6.8155, 61.5362],  // Ferjuleðan climbing
+    [-6.8140, 61.5370],  // Upper Ferjuleðan
+    [-6.8120, 61.5372],  // Return along Route 14
+    [-6.8105, 61.5368],  // Approaching Við á 7
+    [-6.8100, 61.5360],  // Við á 7 (finish)
+  ],
+};
+
+// Day 2 · Run extension — fjordside out-and-back to Trongisvágsfjørður
+const ORAVIK_RUN_EXTENSION: LineString = {
+  type: "LineString",
+  coordinates: [
+    [-6.8145, 61.5348],  // Harbour (turnaround point)
+    [-6.8160, 61.5338],
+    [-6.8175, 61.5325],
+    [-6.8185, 61.5312],  // Fjordside viewpoint (~1 km out)
+  ],
+};
+
 // =============================================================================
 // JOURNEY_LEGS — the definitive ordered sequence
 // =============================================================================
@@ -207,6 +237,30 @@ export const JOURNEY_LEGS: JourneyLeg[] = [
     practicalNote:
       "Two stops north to Tvøroyri. Hotel Tvøroyri is near the bus stop. Last Bus 700 back ~22:00.",
     geometry: ORAVIK_TO_TVOROYRI,
+  },
+  {
+    id: "leg-oravik-run-loop",
+    fromPlaceId: "oravik",
+    toPlaceId: "oravik",
+    mode: "walk",
+    duration: "20–35 min",
+    service: "Morning run · ~3–5 km",
+    status: "confirmed",
+    practicalNote:
+      "Við á 7 → harbour road → Ferjuleðan → return along Route 14. Harbour road is the flattest section. Exposed to south-westerly wind. Run facing traffic on narrow sections — no pavement on some stretches.",
+    geometry: ORAVIK_RUN_LOOP,
+  },
+  {
+    id: "leg-oravik-run-ext",
+    fromPlaceId: "oravik",
+    toPlaceId: "oravik",
+    mode: "walk",
+    duration: "+10–15 min",
+    service: "Run extension · ~1 km out-and-back",
+    status: "confirmed",
+    practicalNote:
+      "Out-and-back along the fjordside path towards Trongisvágsfjørður. Flat, good surface, spectacular morning light on the fjord. Adds ~2 km to the run.",
+    geometry: ORAVIK_RUN_EXTENSION,
   },
 ];
 

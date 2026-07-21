@@ -26,13 +26,14 @@ export type SelectedFeature =
   | { kind: "leg"; leg: JourneyLeg }
   | null;
 
-export type MapFilter = "journey" | "places" | "match" | "stay" | "suðuroy";
+export type MapFilter = "journey" | "places" | "match" | "stay" | "suðuroy" | "run-oravik";
 
 interface FaroesMapProps {
   onSelect: (feature: SelectedFeature) => void;
   selected: SelectedFeature;
   filter: MapFilter;
   mapRef: RefObject<maplibregl.Map | null>;
+  height?: string | number;
 }
 
 // ---------------------------------------------------------------------------
@@ -168,6 +169,7 @@ export default function FaroesMap({
   selected,
   filter,
   mapRef,
+  height,
 }: FaroesMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
@@ -217,6 +219,12 @@ export default function FaroesMap({
             p.id === "tvoroyri" ||
             p.id === "akraberg"
         );
+      case "run-oravik":
+        return ALL_PLACES.filter(
+          (p) =>
+            p.id === "oravik" ||
+            p.id === "krambatangi"
+        );
       default:
         return JOURNEY_STOPS;
     }
@@ -263,6 +271,8 @@ export default function FaroesMap({
       fitBoundsAnimated(map, [[-6.84, 61.52], [-6.78, 61.56]], 40);
     } else if (filter === "suðuroy") {
       fitBoundsAnimated(map, [[-6.84, 61.38], [-6.76, 61.57]], 60);
+    } else if (filter === "run-oravik") {
+      fitBoundsAnimated(map, [[-6.821, 61.528], [-6.806, 61.540]], 40);
     } else {
       fitBoundsAnimated(map, itineraryBounds(), 70);
     }
@@ -529,7 +539,7 @@ export default function FaroesMap({
   return (
     <div
       className="relative w-full"
-      style={{ height: "clamp(420px, 65vh, 820px)" }}
+      style={{ height: height ?? "clamp(420px, 65vh, 820px)" }}
     >
       <div
         ref={containerRef}
