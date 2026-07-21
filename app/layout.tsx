@@ -45,7 +45,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${geistMono.variable} ${cinzel.variable} h-full`}
     >
-      <body className="min-h-full text-basalt bg-wool antialiased" data-base-path={process.env.BASE_PATH ?? ""}>
+      <body className="min-h-full text-basalt bg-wool antialiased">
         <RailNav />
         <MobileNav />
         {/* Mobile top header */}
