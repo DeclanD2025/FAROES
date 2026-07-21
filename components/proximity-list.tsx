@@ -13,14 +13,15 @@ import { ORAVIK_BASE_GUIDE, type ProximityItem } from "@/lib/data/day-intel";
 // Filter tabs
 // ---------------------------------------------------------------------------
 
-type FilterTab = "all" | "supplies" | "food-drink" | "practical" | "places";
+type FilterTab = "all" | "supplies" | "food-drink" | "practical" | "nearby" | "trips";
 
 const FILTER_TABS: { id: FilterTab; label: string }[] = [
   { id: "all", label: "All" },
   { id: "supplies", label: "Supplies" },
   { id: "food-drink", label: "Food & Drink" },
   { id: "practical", label: "Practical" },
-  { id: "places", label: "Places" },
+  { id: "nearby", label: "Nearby" },
+  { id: "trips", label: "Trips" },
 ];
 
 const FILTER_CATEGORIES: Record<FilterTab, string[]> = {
@@ -28,7 +29,8 @@ const FILTER_CATEGORIES: Record<FilterTab, string[]> = {
   supplies: ["supermarket", "pharmacy"],
   "food-drink": ["food", "cafe", "restaurant", "bar"],
   practical: ["transport", "atm", "pharmacy"],
-  places: ["village", "harbour", "walk", "town", "visit", "viewpoint"],
+  nearby: ["village", "harbour", "walk", "town"],
+  trips: ["visit", "viewpoint"],
 };
 
 function itemMatchesFilter(item: ProximityItem, tab: FilterTab): boolean {
