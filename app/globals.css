@@ -1,0 +1,200 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   Faroe Islands trip · North Atlantic expedition log
+   Two typefaces only: clean sans (Inter) for body and headings · Geist Mono
+   for tabular ferry times, dates, ferry numbers, weather coordinates.
+   8 exact colour tokens · no teal · no glassmorphism · no full-screen heroes.
+
+   Palette (verbatim from the brief):
+     Atlantic navy   #0D2433  nav rail · structural headers · deep body
+     Deep fjord blue #173747  secondary structure · pressed surfaces
+     Fog grey        #D9DFDE  mid surfaces · subdued rail-edges
+     Wool off-white  #F2EFE7  main content surfaces
+     Basalt charcoal #283035  primary body text on wool
+     Moss green      #637260  confirmed / completed
+     Rust red        #A64B36  urgent actions · risks
+     Signal yellow   #D4A43B  warnings · pending
+   ========================================================================= */
+
+:root {
+  color-scheme: light;
+
+  --navy:    #0D2433;
+  --fjord:   #173747;
+  --fog:     #D9DFDE;
+  --wool:    #F2EFE7;
+  --basalt:  #283035;
+  --moss:    #637260;
+  --rust:    #A64B36;
+  --yellow:  #D4A43B;
+}
+
+@theme inline {
+  --color-navy:   var(--navy);
+  --color-fjord:  var(--fjord);
+  --color-fog:    var(--fog);
+  --color-wool:   var(--wool);
+  --color-basalt: var(--basalt);
+  --color-moss:   var(--moss);
+  --color-rust:   var(--rust);
+  --color-yellow: var(--yellow);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-norse: var(--font-cinzel), "Times New Roman", serif;
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  html {
+    background: var(--wool);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--wool);
+    color: var(--basalt);
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "cv11", "kern";
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--moss) 22%, transparent);
+    color: var(--basalt);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--navy);
+    outline-offset: 2px;
+  }
+
+  /* Hairline rule — wider nav-lines than the editorial rebuild used. */
+  .rule {
+    border: 0;
+    border-top: 1px solid color-mix(in oklab, var(--basalt) 14%, transparent);
+    margin: 0;
+  }
+  .rule-strong {
+    border-top-color: color-mix(in oklab, var(--basalt) 28%, transparent);
+  }
+
+  /* Tabular numerals — ferry times, gate codes, coordinate reading. */
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  /* Mono utility — ferry numbers, dates, coordinates, gate codes. */
+  .code {
+    font-family: var(--font-mono);
+    color: var(--fjord);
+    letter-spacing: 0.02em;
+  }
+
+  /* Caption / marginal info on body — body sans, small, muted basalt. */
+  .caption {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: color-mix(in oklab, var(--basalt) 64%, transparent);
+  }
+
+  /* Spaced uppercase label — sparingly, for categories on the page. */
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--basalt);
+    font-weight: 500;
+  }
+
+  /* Body running text. */
+  .prose-trip {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--basalt);
+    max-width: 36rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Expedition-log surface utilities
+   --------------------------------------------------------------------------- */
+@layer utilities {
+
+  .nav-link {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--wool);
+    display: block;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s ease-out, color 0.15s ease-out;
+  }
+  .nav-link:hover { color: var(--fog); }
+  .nav-link[aria-current="page"] {
+    color: var(--wool);
+    border-bottom-color: var(--rust);
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .photo-faroes {
+    filter: saturate(0.85) contrast(1.0) brightness(1.0);
+  }
+
+  /* Topographic line — the narrow weathered-red trace beneath the Home
+     heading. Solid dashed rule, not a gradient; small dot accents add the
+     weathered feel without breaking the "no gradients" rule. */
+  /* Norse display accent — used sparingly for chapter labels, codenames,
+     and field-guide mastheads. Not for body text, times, or navigation. */
+  .norse {
+    font-family: var(--font-norse);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .topo-line {
+    height: 8px;
+    position: relative;
+    border-top: 1px dashed var(--rust);
+  }
+  .topo-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 50%, var(--rust) 1px, transparent 1.4px),
+      radial-gradient(circle at 40% 50%, var(--rust) 1px, transparent 1.4px),
+      radial-gradient(circle at 60% 50%, var(--rust) 1px, transparent 1.4px),
+      radial-gradient(circle at 80% 50%, var(--rust) 1px, transparent 1.4px);
+    pointer-events: none;
+  }
+
+  /* Ferro-rojo (Spanish "iron-rust") — used sparingly for the FEW
+     immediate-action surfaces (Harbour Notice). */
+  .harbour-notice {
+    border-left: 2px solid var(--rust);
+    padding-left: 1rem;
+  }
+}
