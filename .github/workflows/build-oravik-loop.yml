@@ -1,0 +1,56 @@
+name: Build Øravík loop route
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/oravik-loop-route
+    paths:
+      - scripts/build_oravik_loop.py
+      - scripts/requirements-route.txt
+      - .github/workflows/build-oravik-loop.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build-route:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/oravik-loop-route
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/requirements-route.txt
+
+      - name: Install route tooling
+        run: python -m pip install -r scripts/requirements-route.txt
+
+      - name: Generate and audit route
+        run: python scripts/build_oravik_loop.py
+
+      - name: Upload audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: oravik-loop-route
+          path: route-output/
+          if-no-files-found: error
+
+      - name: Commit generated route files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add route-output/
+          if git diff --cached --quiet; then
+            echo "No generated route changes"
+          else
+            git commit -m "Generate audited Øravík loop route [skip ci]"
+            git push origin HEAD:codex/oravik-loop-route
+          fi
