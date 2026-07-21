@@ -270,7 +270,7 @@ export function DayOneDetail() {
 
           {/* Sidebar */}
           <aside className="min-w-0">
-            <div className="space-y-6 pt-[220px]">
+            <div className="space-y-6" style={{ paddingTop: 220 }}>
               <TripStatusPanel
                 dateLine1="Monday 27 July 2026"
                 dateLine2="Flight RC 415 · EDI 17:10 → FAE 18:35"
