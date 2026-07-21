@@ -1,0 +1,48 @@
+[
+  {
+    "trail_index": 98,
+    "trail_distance_m": 1531.6,
+    "crossing": {
+      "lon": -6.831779228523374,
+      "lat": 61.525677144527435
+    },
+    "osm_way_id": 44366818,
+    "road_name": null,
+    "road_ref": "99",
+    "highway": "unclassified",
+    "proximity_m": 4.8,
+    "usable": true,
+    "road_return_distance_m": 2599.8,
+    "total_distance_m": 4131.4,
+    "delta_from_4km_m": 131.4,
+    "road_sequence": [
+      "99",
+      "track",
+      "Fámjinsvegur",
+      "Bóndatún"
+    ]
+  },
+  {
+    "trail_index": 136,
+    "trail_distance_m": 1871.6,
+    "crossing": {
+      "lon": -6.837489819154143,
+      "lat": 61.52502419427037
+    },
+    "osm_way_id": 44366818,
+    "road_name": null,
+    "road_ref": "99",
+    "highway": "unclassified",
+    "proximity_m": 5.5,
+    "usable": true,
+    "road_return_distance_m": 3926.2,
+    "total_distance_m": 5797.9,
+    "delta_from_4km_m": 1797.9,
+    "road_sequence": [
+      "99",
+      "track",
+      "Fámjinsvegur",
+      "Bóndatún"
+    ]
+  }
+]
