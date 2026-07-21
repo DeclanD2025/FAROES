@@ -272,7 +272,7 @@ export default function FaroesMap({
     } else if (filter === "suðuroy") {
       fitBoundsAnimated(map, [[-6.84, 61.38], [-6.76, 61.57]], 60);
     } else if (filter === "run-oravik") {
-      fitBoundsAnimated(map, [[-6.821, 61.528], [-6.806, 61.540]], 40);
+      fitBoundsAnimated(map, [[-6.824, 61.525], [-6.804, 61.543]], 40);
     } else {
       fitBoundsAnimated(map, itineraryBounds(), 70);
     }
@@ -324,15 +324,21 @@ export default function FaroesMap({
           layout: { "line-cap": "round", "line-join": "round" },
           paint: {
             "line-color": AMBER,
-            "line-width": 2.5,
-            "line-opacity": 0.85,
+            "line-width": [
+              "match",
+              ["get", "mode"],
+              "walk",
+              3.5,
+              2.5,
+            ],
+            "line-opacity": 0.9,
             "line-dasharray": [
               "match",
               ["get", "mode"],
               "ferry",
               ["literal", [6, 3]],
               "walk",
-              ["literal", [2, 2]],
+              ["literal", [4, 2]],
               ["literal", [1, 0]],
             ],
           },
