@@ -30,6 +30,7 @@ const NAV_SECTIONS: NavSection[] = [
   {
     group: "PLAN",
     items: [
+      { href: "/forecast", label: "Forecast", subtitle: "Live weather" },
       { href: "/itinerary", label: "Full itinerary" },
       { href: "/transport", label: "Transport" },
       { href: "/bookings", label: "Bookings" },
