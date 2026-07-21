@@ -9,6 +9,13 @@ on:
       - scripts/build_oravik_loop.py
       - scripts/requirements-route.txt
       - .github/workflows/build-oravik-loop.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - scripts/build_oravik_loop.py
+      - scripts/requirements-route.txt
+      - .github/workflows/build-oravik-loop.yml
 
 permissions:
   contents: write
@@ -22,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: codex/oravik-loop-route
+          ref: ${{ github.head_ref || 'codex/oravik-loop-route' }}
 
       - uses: actions/setup-python@v5
         with:
@@ -44,6 +51,7 @@ jobs:
           if-no-files-found: error
 
       - name: Commit generated route files
+        if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -52,5 +60,5 @@ jobs:
             echo "No generated route changes"
           else
             git commit -m "Generate audited Øravík loop route [skip ci]"
-            git push origin HEAD:codex/oravik-loop-route
+            git push origin HEAD:${{ github.head_ref || 'codex/oravik-loop-route' }}
           fi
