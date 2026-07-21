@@ -38,6 +38,39 @@ function itemMatchesFilter(item: ProximityItem, tab: FilterTab): boolean {
   return FILTER_CATEGORIES[tab].includes(item.category);
 }
 
+const TAB_HEADERS: Record<FilterTab, { title: string; description: string }> = {
+  all: {
+    title: "Shops, food & services",
+    description:
+      "What's near Við á 7, Øravík 827 — and how far away everything is. No shop in the village. All supplies from Tvøroyri, 3.5 km north.",
+  },
+  supplies: {
+    title: "Supplies",
+    description:
+      "Supermarket and pharmacy near Øravík. Bónus Tvøroyri is the nearest shop — 3.5 km north, closed Sundays. Stock up ahead.",
+  },
+  "food-drink": {
+    title: "Food & drink",
+    description:
+      "Pubs, cafés, and restaurants near Øravík. Hotel Tvøroyri is the nearest — pizzeria and bar, daily 12:00–22:00. Café MorMor open Wed–Fri only.",
+  },
+  practical: {
+    title: "Practical",
+    description:
+      "Transport, taxi, ATM, pharmacy, and hospital near Øravík. Bus 700 is 300 m from the door. Save the taxi number before you lose signal.",
+  },
+  nearby: {
+    title: "Nearby",
+    description:
+      "Village, harbour, shoreline walks, and Tvøroyri town — all within 3.5 km of Við á 7. Everything on foot or a short bus ride.",
+  },
+  trips: {
+    title: "Trips",
+    description:
+      "Half-day and full-day destinations from Øravík. Hov, Fámjin, Froðba, and Beinisvørð — all accessible by bus 700 or taxi.",
+  },
+};
+
 // ---------------------------------------------------------------------------
 // Category colour map
 // ---------------------------------------------------------------------------
@@ -289,11 +322,10 @@ export default function ProximityList({ defaultFilter = "all" }: ProximityListPr
           className="text-[clamp(1.8rem,3vw,2.4rem)] leading-[1.06] mt-1.5 text-basalt tracking-[-0.01em]"
           style={{ fontFamily: "var(--font-cinzel)" }}
         >
-          Shops, food &amp; services
+          {TAB_HEADERS[activeTab].title}
         </h1>
         <p className="text-[14px] text-basalt/60 mt-2 max-w-[34rem]">
-          What&rsquo;s near Við á 7, Øravík 827 — and how far away everything is.
-          No shop in the village. All supplies from Tvøroyri, 3.5 km north.
+          {TAB_HEADERS[activeTab].description}
         </p>
       </div>
 
