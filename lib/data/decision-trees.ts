@@ -65,35 +65,29 @@ export const DAY2_DECISION: DecisionTree = {
 };
 
 // =============================================================================
-// Day 3 — Wednesday: Activity Selection
+// Day 3 — Wednesday: Ólavsøka Decision
 // =============================================================================
 
 export const DAY3_DECISION: DecisionTree = {
-  id: "day3-weather",
+  id: "day3-olavsoka",
   day: 3,
-  title: "Day plan selection · Wednesday 29 July",
-  decisionBy: "09:00 — morning weather check",
+  title: "Ólavsøka plan · Wednesday 29 July",
+  decisionBy: "09:00 — check ferry status + Tórshavn weather",
   nodes: [
     {
-      id: "d3-weather",
-      question: "What are conditions looking like across Suðuroy?",
+      id: "d3-olavsoka",
+      question: "Ferry to Tórshavn for the national celebrations, or stay on Suðuroy?",
       options: [
         {
-          label: "Western weather clear",
-          description: "Fámjin and west coast visible, no heavy rain",
-          planId: "d3-plan-a",
+          label: "Ferry to Tórshavn",
+          description: "11:30 ferry north → boat races at the harbour, harbour festival, pubs, last ferry back 21:15. ~13 hour day. Same ferry as matchday tomorrow.",
+          planId: "d3-torshavn",
           likelihood: "preferred",
         },
         {
-          label: "Eastern weather better",
-          description: "West coast foggy/rainy but east clearer",
+          label: "Stay on Suðuroy",
+          description: "Ferry cancelled, bad weather in Tórshavn, or want a rest day before matchday. Pick from Fámjin, Froðba, or local Øravík plans.",
           planId: "d3-plan-b",
-          likelihood: "likely",
-        },
-        {
-          label: "Persistent rain",
-          description: "Heavy rain all day, poor visibility island-wide",
-          planId: "d3-plan-c",
           likelihood: "fallback",
         },
       ],

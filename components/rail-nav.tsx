@@ -21,7 +21,7 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { href: "/day/1", label: "Day 1", subtitle: "The journey north" },
       { href: "/day/2", label: "Day 2", subtitle: "The cliffs of Suðuroy" },
-      { href: "/day/3", label: "Day 3", subtitle: "A free day on Suðuroy" },
+      { href: "/day/3", label: "Day 3", subtitle: "Ólavsøka · the national day" },
       { href: "/day/4", label: "Day 4", subtitle: "Matchday" },
       { href: "/day/5", label: "Day 5", subtitle: "Repositioning north" },
       { href: "/day/6", label: "Day 6", subtitle: "Homeward" },
