@@ -28,13 +28,7 @@ import type { LngLat } from "@/lib/route-utils";
 
 function getGpxUrl(): string {
   if (typeof window === "undefined") return "/routes/oravik-4km-scenic-run.gpx";
-  const pathname = window.location.pathname;
-  // Detect base path from URL: /FAROES/day/2/ → basePath = /FAROES, /day/2/ → empty
-  const firstSegment = pathname.split("/")[1];
-  const basePath = firstSegment && firstSegment !== "day" && firstSegment !== "forecast" && firstSegment !== "itinerary" && firstSegment !== "match-day" && firstSegment !== "packing" && firstSegment !== "places" && firstSegment !== "info" && firstSegment !== "supporters" && firstSegment !== "stadium" && firstSegment !== "tickets" && firstSegment !== "transport" && firstSegment !== "bookings" && firstSegment !== "hikes" && firstSegment !== "shops" && firstSegment !== "food-drink" && firstSegment !== "explore"
-    ? `/${firstSegment}`
-    : "";
-  return `${basePath}/routes/oravik-4km-scenic-run.gpx`;
+  return new URL("../../routes/oravik-4km-scenic-run.gpx", window.location.href).href;
 }
 const FIORD_STYLE = "https://tiles.openfreemap.org/styles/fiord";
 const TERRAIN_TILES =
@@ -545,6 +539,11 @@ export default function OravikRunMap({
 
       map.on("error", (e) => {
         console.error("MapLibre error:", e.error);
+        // If the style failed to load, the load event never fires — show the error
+        if (!map.loaded()) {
+          setError("Map failed to load. Check your connection and try again.");
+          setLoading(false);
+        }
       });
 
       return () => {

@@ -57,11 +57,7 @@ export function RunInfoPanel({ totalKm, mobile }: RunInfoPanelProps) {
   const [gpxUrl, setGpxUrl] = useState("/routes/oravik-4km-scenic-run.gpx");
 
   useEffect(() => {
-    const pathname = window.location.pathname;
-    const firstSegment = pathname.split("/")[1];
-    const knownSegments = new Set(["day", "forecast", "itinerary", "match-day", "packing", "places", "info", "supporters", "stadium", "tickets", "transport", "bookings", "hikes", "shops", "food-drink", "explore"]);
-    const basePath = firstSegment && !knownSegments.has(firstSegment) ? `/${firstSegment}` : "";
-    setGpxUrl(`${basePath}/routes/oravik-4km-scenic-run.gpx`);
+    setGpxUrl(new URL("../../routes/oravik-4km-scenic-run.gpx", window.location.href).href);
   }, []);
 
   const displayKm = totalKm !== null ? totalKm.toFixed(1) : "4.0";
