@@ -7,6 +7,7 @@ on:
       - codex/oravik-loop-route
     paths:
       - scripts/build_oravik_loop.py
+      - scripts/build_oravik_loop_v2.py
       - scripts/requirements-route.txt
       - .github/workflows/build-oravik-loop.yml
   pull_request:
@@ -14,6 +15,7 @@ on:
       - main
     paths:
       - scripts/build_oravik_loop.py
+      - scripts/build_oravik_loop_v2.py
       - scripts/requirements-route.txt
       - .github/workflows/build-oravik-loop.yml
 
@@ -45,7 +47,7 @@ jobs:
         run: |
           mkdir -p route-output
           set -o pipefail
-          python scripts/build_oravik_loop.py 2>&1 | tee route-output/build.log
+          python scripts/build_oravik_loop_v2.py 2>&1 | tee route-output/build.log
 
       - name: Upload audit artifact
         if: always()
