@@ -231,19 +231,20 @@ export function DayOneDetail() {
     <>
       {/* DESKTOP */}
       <article className="hidden lg:block px-8 pt-8 pb-20 max-w-[1280px]">
+        {/* Header — full width */}
+        <div className="mb-6">
+          <p className="text-[12px] tracking-[0.14em] uppercase text-rust font-medium">Day 1 · Monday · 27 July 2026</p>
+          <h1 className="text-[clamp(2.5rem,3.5vw,3.2rem)] leading-[1.04] mt-1.5 text-basalt tracking-[-0.01em]" style={{ fontFamily: "var(--font-cinzel)" }}>The journey north</h1>
+          <p className="text-[20px] font-medium text-basalt/80 mt-2">Bellshill → Edinburgh → Vágar → Tórshavn → Øravík</p>
+          <p className="text-[14px] text-basalt/60 mt-2 max-w-[38rem]">
+            One train, one tram, one flight, one bus, one ferry, one final short hop.
+            ~15 hours door to door across Scotland and the North Atlantic.
+          </p>
+        </div>
+
+        {/* Two columns — aligned below header */}
         <div className="grid grid-cols-[1fr_340px] gap-8">
           <div className="min-w-0">
-            {/* Header */}
-            <div className="mb-6">
-              <p className="text-[12px] tracking-[0.14em] uppercase text-rust font-medium">Day 1 · Monday · 27 July 2026</p>
-              <h1 className="text-[clamp(2.5rem,3.5vw,3.2rem)] leading-[1.04] mt-1.5 text-basalt tracking-[-0.01em]" style={{ fontFamily: "var(--font-cinzel)" }}>The journey north</h1>
-              <p className="text-[20px] font-medium text-basalt/80 mt-2">Bellshill → Edinburgh → Vágar → Tórshavn → Øravík</p>
-              <p className="text-[14px] text-basalt/60 mt-2 max-w-[38rem]">
-                One train, one tram, one flight, one bus, one ferry, one final short hop.
-                ~15 hours door to door across Scotland and the North Atlantic.
-              </p>
-            </div>
-
             {/* Trip Readiness */}
             <section className="mb-6"><TripReadiness /></section>
 
@@ -270,7 +271,7 @@ export function DayOneDetail() {
 
           {/* Sidebar */}
           <aside className="min-w-0">
-            <div className="space-y-6" style={{ paddingTop: 220 }}>
+            <div className="space-y-6">
               <TripStatusPanel
                 dateLine1="Monday 27 July 2026"
                 dateLine2="Flight RC 415 · EDI 17:10 → FAE 18:35"
