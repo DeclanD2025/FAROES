@@ -28,7 +28,7 @@ const FILTER_CATEGORIES: Record<FilterTab, string[]> = {
   all: [],
   supplies: ["supermarket", "pharmacy"],
   "food-drink": ["food", "cafe", "restaurant", "bar"],
-  practical: ["transport", "atm", "pharmacy"],
+  practical: ["transport", "taxi", "atm", "pharmacy"],
   nearby: ["village", "harbour", "walk", "town"],
   trips: ["visit", "viewpoint"],
 };
@@ -50,6 +50,7 @@ const CATEGORY_STYLES: Record<string, string> = {
   bar: "bg-rust/10 text-rust border-rust/25",
   pharmacy: "bg-fjord/10 text-fjord border-fjord/25",
   atm: "bg-basalt/10 text-basalt border-basalt/25",
+  taxi: "bg-rust/10 text-rust border-rust/25",
   transport: "bg-fjord/10 text-fjord border-fjord/25",
   village: "bg-basalt/10 text-basalt border-basalt/25",
   harbour: "bg-fjord/10 text-fjord border-fjord/25",
