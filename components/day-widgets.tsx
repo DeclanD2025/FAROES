@@ -210,12 +210,12 @@ export function DepartureCountdown() {
   return (
     <>
       <p
-        className="text-[64px] font-bold text-rust leading-none"
+        className="text-[36px] font-bold text-rust leading-none"
         style={{ fontFamily: "var(--font-cinzel)" }}
       >
         {days === null ? "—" : days <= 0 ? "0" : days}
       </p>
-      <p className="text-[13px] text-basalt/70 mt-1">
+      <p className="text-[11px] text-basalt/70 mt-0.5">
         {days === null ? "" : days <= 0 ? "We're here" : days === 1 ? "day until departure" : "days until departure"}
       </p>
     </>
@@ -240,7 +240,7 @@ export function TripStatusPanel({
   weatherLabel: string;
 }) {
   return (
-    <div className="border border-basalt/15 p-5">
+    <div className="border border-basalt/15 p-4">
       <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-3">
         Trip Status
       </p>

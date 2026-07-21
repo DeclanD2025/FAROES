@@ -44,17 +44,14 @@ export function TripReadiness() {
     return () => clearInterval(id);
   }, []);
 
-  const { dayNum, label } = tripDay;
+  const { dayNum } = tripDay;
 
   return (
     <div className="border border-basalt/15 rounded-[8px] p-4 bg-basalt/[0.01]">
-      <div className="flex items-baseline justify-between mb-3">
+      <div className="mb-3">
         <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60">
           Trip readiness
         </p>
-        <span className={`text-[11px] font-medium ${dayNum ? "text-moss" : "text-yellow"}`}>
-          {label}
-        </span>
       </div>
 
       {dayNum ? (
