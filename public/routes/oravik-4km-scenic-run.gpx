@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="FAROES" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>Øravík 4 km Scenic Run</name>
+    <desc>Out and back from Við á 7 along the old surface road towards Tjaldavík. Stay on the surface road — do not enter Hovstunnilin. Turnaround at 2 km.</desc>
+  </metadata>
+  <trk>
+    <name>Øravík 4 km Scenic Run</name>
+    <type>running</type>
+    <trkseg>
+      <!-- OUTBOUND: Við á 7 → Tjaldavík (2.0 km) -->
+      <trkpt lat="61.533261" lon="-6.812114">
+        <ele>22</ele>
+        <name>Við á 7 — Start</name>
+      </trkpt>
+      <trkpt lat="61.533180" lon="-6.811200">
+        <ele>23</ele>
+      </trkpt>
+      <trkpt lat="61.533050" lon="-6.810100">
+        <ele>24</ele>
+      </trkpt>
+      <trkpt lat="61.532800" lon="-6.808900">
+        <ele>24</ele>
+      </trkpt>
+      <trkpt lat="61.532500" lon="-6.807700">
+        <ele>25</ele>
+      </trkpt>
+      <trkpt lat="61.532100" lon="-6.806400">
+        <ele>26</ele>
+      </trkpt>
+      <trkpt lat="61.531700" lon="-6.805200">
+        <ele>27</ele>
+      </trkpt>
+      <trkpt lat="61.531200" lon="-6.803800">
+        <ele>29</ele>
+      </trkpt>
+      <trkpt lat="61.530700" lon="-6.802500">
+        <ele>31</ele>
+      </trkpt>
+      <trkpt lat="61.530200" lon="-6.801100">
+        <ele>34</ele>
+      </trkpt>
+      <trkpt lat="61.529700" lon="-6.799700">
+        <ele>38</ele>
+      </trkpt>
+      <trkpt lat="61.529200" lon="-6.798300">
+        <ele>42</ele>
+      </trkpt>
+      <trkpt lat="61.528700" lon="-6.796800">
+        <ele>45</ele>
+      </trkpt>
+      <trkpt lat="61.528400" lon="-6.795400">
+        <ele>47</ele>
+      </trkpt>
+      <trkpt lat="61.528200" lon="-6.793900">
+        <ele>48</ele>
+      </trkpt>
+      <trkpt lat="61.528100" lon="-6.792300">
+        <ele>49</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.790600">
+        <ele>50</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.788800">
+        <ele>51</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.786900">
+        <ele>52</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.785100">
+        <ele>52</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.783200">
+        <ele>53</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.781300">
+        <ele>54</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.779500">
+        <ele>55</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.778489">
+        <ele>56</ele>
+        <name>Tjaldavík — Turnaround (2.0 km)</name>
+      </trkpt>
+      <!-- RETURN: Tjaldavík → Við á 7 (2.0 km) — retrace the same route -->
+      <trkpt lat="61.528044" lon="-6.779500">
+        <ele>55</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.781300">
+        <ele>54</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.783200">
+        <ele>53</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.785100">
+        <ele>52</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.786900">
+        <ele>52</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.788800">
+        <ele>51</ele>
+      </trkpt>
+      <trkpt lat="61.528044" lon="-6.790600">
+        <ele>50</ele>
+      </trkpt>
+      <trkpt lat="61.528100" lon="-6.792300">
+        <ele>49</ele>
+      </trkpt>
+      <trkpt lat="61.528200" lon="-6.793900">
+        <ele>48</ele>
+      </trkpt>
+      <trkpt lat="61.528400" lon="-6.795400">
+        <ele>47</ele>
+      </trkpt>
+      <trkpt lat="61.528700" lon="-6.796800">
+        <ele>45</ele>
+      </trkpt>
+      <trkpt lat="61.529200" lon="-6.798300">
+        <ele>42</ele>
+      </trkpt>
+      <trkpt lat="61.529700" lon="-6.799700">
+        <ele>38</ele>
+      </trkpt>
+      <trkpt lat="61.530200" lon="-6.801100">
+        <ele>34</ele>
+      </trkpt>
+      <trkpt lat="61.530700" lon="-6.802500">
+        <ele>31</ele>
+      </trkpt>
+      <trkpt lat="61.531200" lon="-6.803800">
+        <ele>29</ele>
+      </trkpt>
+      <trkpt lat="61.531700" lon="-6.805200">
+        <ele>27</ele>
+      </trkpt>
+      <trkpt lat="61.532100" lon="-6.806400">
+        <ele>26</ele>
+      </trkpt>
+      <trkpt lat="61.532500" lon="-6.807700">
+        <ele>25</ele>
+      </trkpt>
+      <trkpt lat="61.532800" lon="-6.808900">
+        <ele>24</ele>
+      </trkpt>
+      <trkpt lat="61.533050" lon="-6.810100">
+        <ele>24</ele>
+      </trkpt>
+      <trkpt lat="61.533180" lon="-6.811200">
+        <ele>23</ele>
+      </trkpt>
+      <trkpt lat="61.533261" lon="-6.812114">
+        <ele>22</ele>
+        <name>Við á 7 — Finish</name>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>

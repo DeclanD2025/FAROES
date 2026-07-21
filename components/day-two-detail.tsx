@@ -6,7 +6,7 @@
 
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import type maplibregl from "maplibre-gl";
 import { TripReadiness } from "@/components/trip-readiness";
@@ -24,6 +24,14 @@ import {
   JourneyTimeline,
   MobileTimeline,
 } from "@/components/day-widgets";
+import { ElevationProfile } from "@/components/run/elevation-profile";
+import { RunInfoPanel } from "@/components/run/run-info-panel";
+import {
+  type ElevationSample,
+  type SplitResult,
+  type LngLat,
+  sampleElevation,
+} from "@/lib/route-utils";
 
 const FaroesMap = dynamic(() => import("@/components/map/faroes-map"), {
   ssr: false,
@@ -34,21 +42,21 @@ const FaroesMap = dynamic(() => import("@/components/map/faroes-map"), {
   ),
 });
 
-// =============================================================================
-// MORNING RUN — Við á 7 loop
-// =============================================================================
+const OravikRunMap = dynamic(() => import("@/components/run/oravik-run-map"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full border border-basalt/15 bg-fog/20 flex items-center justify-center" style={{ minHeight: 380 }}>
+      <div className="flex flex-col items-center gap-2">
+        <div className="w-8 h-8 border-2 border-basalt/20 border-t-claret rounded-full animate-spin" />
+        <p className="caption">Loading route map…</p>
+      </div>
+    </div>
+  ),
+});
 
-const RUN_PLAN = {
-  title: "Morning run · Øravík loop",
-  start: "Við á 7, Øravík 827",
-  duration: "20–35 min",
-  distance: "~3–5 km",
-  route: "Við á 7 → Øravík harbour road → loop back via Ferjuleðan → Við á 7",
-  elevation: "Gentle inclines — harbour road is mostly flat. Some short climbs on return.",
-  wind: "Exposed along the harbour. South-westerly wind pushes against you on return.",
-  caution: "Narrow roads, no pavement in sections. Blind bends near the harbour. Run facing traffic. High-vis recommended in low light.",
-  extensions: "Add an out-and-back along the fjord-side path towards Trongisvágsfjørður (~1 km each way, flat).",
-};
+// =============================================================================
+// MORNING RUN — Øravík 4 km scenic run (GPX-powered)
+// =============================================================================
 
 // =============================================================================
 // PRIMARY HIKE — Bus-accessible option
@@ -245,9 +253,25 @@ const DAY2_SOURCES = [
 
 export function DayTwoDetail() {
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const desktopRunMapRef = useRef<maplibregl.Map | null>(null);
+  const runMapRef = useRef<maplibregl.Map | null>(null);
   const mobileRunMapRef = useRef<maplibregl.Map | null>(null);
   const [activePlan, setActivePlan] = useState<string>("d2-plan-a");
+
+  // Run route state
+  const [routeCoords, setRouteCoords] = useState<LngLat[] | null>(null);
+  const [routeTotalKm, setRouteTotalKm] = useState<number | null>(null);
+  const [elevationSamples, setElevationSamples] = useState<ElevationSample[] | null>(null);
+  const [crosshairPoint, setCrosshairPoint] = useState<{ km: number; coordinates: LngLat } | null>(null);
+
+  const handleRouteLoaded = useCallback((coords: LngLat[], _split: SplitResult, totalKm: number) => {
+    setRouteCoords(coords);
+    setRouteTotalKm(totalKm);
+    setElevationSamples(sampleElevation(coords, 25));
+  }, []);
+
+  const handleElevationHover = useCallback((point: { km: number; coordinates: LngLat } | null) => {
+    setCrosshairPoint(point);
+  }, []);
 
   return (
     <>
@@ -272,37 +296,35 @@ export function DayTwoDetail() {
             {/* LAYER A — Day at a glance */}
             <section className="mb-6"><SummaryStrip items={DAY_TWO_SUMMARY} /></section>
 
-            {/* Morning run — map + route data */}
+            {/* Morning run — GPX-powered interactive route map */}
             <section className="mb-6">
-              <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík loop</p>
+              <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík 4 km scenic run</p>
+              {/* Map + info panel composed feature */}
               <div className="border border-basalt/15 rounded-[7px] overflow-hidden">
-                <div style={{ height: 300 }}>
-                  <FaroesMap onSelect={() => {}} selected={null} filter="run-oravik" mapRef={desktopRunMapRef} height={300} />
+                <div className="flex flex-col xl:flex-row">
+                  {/* Map — ~68% width on xl screens */}
+                  <div className="xl:w-[68%] min-w-0">
+                    <OravikRunMap
+                      mapRef={runMapRef}
+                      onRouteLoaded={handleRouteLoaded}
+                      crosshairPoint={crosshairPoint}
+                    />
+                  </div>
+                  {/* Info panel — ~32% width on xl screens */}
+                  <div className="xl:w-[32%] border-t xl:border-t-0 xl:border-l border-basalt/15 p-4 bg-fog/[0.03]">
+                    <RunInfoPanel totalKm={routeTotalKm} />
+                  </div>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 border-t border-basalt/10">
-                  <RunDetail label="Duration" value={RUN_PLAN.duration} />
-                  <RunDetail label="Distance" value={RUN_PLAN.distance} />
-                  <RunDetail label="Start" value={RUN_PLAN.start} />
-                  <RunDetail label="Leave by" value="07:30–08:00" />
-                </div>
-                <div className="px-4 pb-4">
-                  <p className="text-[12px] text-basalt/55">{RUN_PLAN.route}</p>
-                  <p className="text-[11px] text-rust/70 mt-2">{RUN_PLAN.caution}</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3 mt-3">
-                <div className="border border-basalt/10 rounded-[7px] p-3">
-                  <p className="text-[10px] uppercase tracking-[0.08em] text-basalt/50">Elevation</p>
-                  <p className="text-[13px] text-basalt/70">{RUN_PLAN.elevation}</p>
-                </div>
-                <div className="border border-basalt/10 rounded-[7px] p-3">
-                  <p className="text-[10px] uppercase tracking-[0.08em] text-basalt/50">Wind exposure</p>
-                  <p className="text-[13px] text-basalt/70">{RUN_PLAN.wind}</p>
-                </div>
-              </div>
-              <div className="mt-3 border border-amber/20 bg-amber/[0.03] rounded-[7px] p-3">
-                <p className="text-[10px] uppercase tracking-[0.1em] text-amber font-medium mb-1">Extension</p>
-                <p className="text-[12px] text-basalt/65">{RUN_PLAN.extensions}</p>
+                {/* Elevation profile — full width below */}
+                {routeCoords && elevationSamples && (
+                  <div className="border-t border-basalt/10 p-4">
+                    <ElevationProfile
+                      samples={elevationSamples}
+                      coords={routeCoords}
+                      onHover={handleElevationHover}
+                    />
+                  </div>
+                )}
               </div>
             </section>
 
@@ -384,17 +406,17 @@ export function DayTwoDetail() {
         <section className="mb-6"><MobileDecisionPanel /></section>
         <section className="mb-6"><MobileTripStatus dateLine1="Tuesday 28 July 2026" dateLine2="Suðuroy exploration day" weatherLat={61.536} weatherLon={-6.81} weatherLabel="Øravík" /></section>
         <section className="mb-6">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík loop</p>
+          <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík 4 km scenic run</p>
           <div className="border border-basalt/15 rounded-[8px] overflow-hidden">
-            <div style={{ height: 280 }}>
-              <FaroesMap onSelect={() => {}} selected={null} filter="run-oravik" mapRef={mobileRunMapRef} height={280} />
+            <div style={{ height: "clamp(340px, 58vh, 520px)" }}>
+              <OravikRunMap
+                mapRef={mobileRunMapRef}
+                onRouteLoaded={handleRouteLoaded}
+                crosshairPoint={crosshairPoint}
+              />
             </div>
-            <div className="p-3 border-t border-basalt/10">
-              <div className="flex gap-4 text-[11px]">
-                <div><span className="text-basalt/50">Duration </span><span className="font-medium text-basalt">{RUN_PLAN.duration}</span></div>
-                <div><span className="text-basalt/50">Distance </span><span className="font-medium text-basalt">{RUN_PLAN.distance}</span></div>
-              </div>
-              <p className="text-[11px] text-basalt/55 mt-2">{RUN_PLAN.caution}</p>
+            <div className="border-t border-basalt/10 p-3">
+              <RunInfoPanel totalKm={routeTotalKm} mobile />
             </div>
           </div>
         </section>
@@ -407,11 +429,3 @@ export function DayTwoDetail() {
   );
 }
 
-function RunDetail({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <p className="text-[10px] uppercase tracking-[0.08em] text-basalt/50">{label}</p>
-      <p className="text-[13px] font-medium text-basalt">{value}</p>
-    </div>
-  );
-}
