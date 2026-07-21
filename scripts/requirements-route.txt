@@ -1,0 +1,6 @@
+gpxpy==1.6.2
+networkx==3.4.2
+osmium==4.0.2
+pyproj==3.7.1
+requests==2.32.4
+shapely==2.1.1
