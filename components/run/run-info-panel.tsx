@@ -5,6 +5,8 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -48,16 +50,17 @@ const CONDITIONS = {
 };
 
 // ---------------------------------------------------------------------------
-// GPX download path
-// ---------------------------------------------------------------------------
-
-const GPX_DOWNLOAD_PATH = `${process.env.BASE_PATH ?? ""}/routes/oravik-4km-scenic-run.gpx`;
-
-// ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
 export function RunInfoPanel({ totalKm, mobile }: RunInfoPanelProps) {
+  const [gpxUrl, setGpxUrl] = useState("/routes/oravik-4km-scenic-run.gpx");
+
+  useEffect(() => {
+    const base = document.body?.dataset?.basePath ?? "";
+    setGpxUrl(`${base}/routes/oravik-4km-scenic-run.gpx`);
+  }, []);
+
   const displayKm = totalKm !== null ? totalKm.toFixed(1) : "4.0";
 
   const content = (
@@ -115,7 +118,7 @@ export function RunInfoPanel({ totalKm, mobile }: RunInfoPanelProps) {
       {/* Download GPX */}
       <div className="mt-4 pt-4 border-t border-basalt/10">
         <a
-          href={GPX_DOWNLOAD_PATH}
+          href={gpxUrl}
           download="oravik-4km-scenic-run.gpx"
           className="inline-flex items-center gap-2 border border-basalt/25 rounded-[6px] px-4 py-2 text-[12px] font-medium text-basalt hover:border-claret/30 hover:text-claret transition-colors focus-visible:outline-2 focus-visible:outline-navy"
         >

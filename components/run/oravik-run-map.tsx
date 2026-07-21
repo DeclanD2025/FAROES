@@ -26,7 +26,11 @@ import type { LngLat } from "@/lib/route-utils";
 // Constants
 // ---------------------------------------------------------------------------
 
-const GPX_PATH = `${process.env.BASE_PATH ?? ""}/routes/oravik-4km-scenic-run.gpx`;
+function getGpxUrl(): string {
+  if (typeof document === "undefined") return "/routes/oravik-4km-scenic-run.gpx";
+  const base = document.body?.dataset?.basePath ?? "";
+  return `${base}/routes/oravik-4km-scenic-run.gpx`;
+}
 const FIORD_STYLE = "https://tiles.openfreemap.org/styles/fiord";
 const TERRAIN_TILES =
   "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png";
@@ -489,7 +493,8 @@ export default function OravikRunMap({
 
         // Fetch and parse GPX
         try {
-          const resp = await fetch(GPX_PATH, { cache: "no-cache" });
+          const gpxUrl = getGpxUrl();
+          const resp = await fetch(gpxUrl, { cache: "no-cache" });
           if (!resp.ok) {
             throw new Error(`GPX fetch failed: ${resp.status} ${resp.statusText}`);
           }
