@@ -4,7 +4,37 @@
 // guesthouse: on foot, nearby, short bus/taxi, half-day trip.
 // =============================================================================
 
+"use client";
+
+import { useState, useMemo } from "react";
 import { ORAVIK_BASE_GUIDE, type ProximityItem } from "@/lib/data/day-intel";
+
+// ---------------------------------------------------------------------------
+// Filter tabs
+// ---------------------------------------------------------------------------
+
+type FilterTab = "all" | "supplies" | "food-drink" | "practical" | "places";
+
+const FILTER_TABS: { id: FilterTab; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "supplies", label: "Supplies" },
+  { id: "food-drink", label: "Food & Drink" },
+  { id: "practical", label: "Practical" },
+  { id: "places", label: "Places" },
+];
+
+const FILTER_CATEGORIES: Record<FilterTab, string[]> = {
+  all: [],
+  supplies: ["supermarket", "pharmacy"],
+  "food-drink": ["food", "cafe", "restaurant", "bar"],
+  practical: ["transport", "atm", "pharmacy"],
+  places: ["village", "harbour", "walk", "town", "visit", "viewpoint"],
+};
+
+function itemMatchesFilter(item: ProximityItem, tab: FilterTab): boolean {
+  if (tab === "all") return true;
+  return FILTER_CATEGORIES[tab].includes(item.category);
+}
 
 // ---------------------------------------------------------------------------
 // Category colour map
@@ -46,6 +76,50 @@ function formatTime(min: number | null): string | null {
   const h = Math.floor(min / 60);
   const m = min % 60;
   return m > 0 ? `${h}h ${m}m walk` : `${h}h walk`;
+}
+
+// ---------------------------------------------------------------------------
+// Derived summary from data
+// ---------------------------------------------------------------------------
+
+function deriveSummary(bands: typeof ORAVIK_BASE_GUIDE) {
+  const allItems = bands.flatMap((b) => b.items);
+
+  const find = (category: string) =>
+    allItems.find((i) => i.category === category);
+
+  const nearestShop = find("supermarket");
+  const nearestFood = find("food");
+  const nearestCafe = find("cafe");
+
+  return [
+    {
+      label: "Nearest shop",
+      name: nearestShop?.name ?? "—",
+      detail: nearestShop
+        ? `${formatDistance(nearestShop.distanceKm)} · Bus ${nearestShop.busRoute}`
+        : "No shop in Øravík",
+    },
+    {
+      label: "Nearest pub",
+      name: nearestFood?.name ?? "—",
+      detail: nearestFood
+        ? `${formatDistance(nearestFood.distanceKm)} · ${formatTime(nearestFood.walkingTimeMin)}`
+        : "No pub in Øravík",
+    },
+    {
+      label: "Nearest café",
+      name: nearestCafe?.name ?? "—",
+      detail: nearestCafe
+        ? `${formatDistance(nearestCafe.distanceKm)} · ${nearestCafe.openingHours.split("(")[0].trim()}`
+        : "No café in Øravík",
+    },
+    {
+      label: "Øravík village",
+      name: "No services",
+      detail: "Plan supplies ahead",
+    },
+  ];
 }
 
 // ---------------------------------------------------------------------------
@@ -124,6 +198,8 @@ function DistanceBandSection({
   description: string;
   items: ProximityItem[];
 }) {
+  if (items.length === 0) return null;
+
   return (
     <section className="mb-6">
       <div className="mb-3">
@@ -142,10 +218,62 @@ function DistanceBandSection({
 }
 
 // ---------------------------------------------------------------------------
+// Filter tab bar
+// ---------------------------------------------------------------------------
+
+function FilterBar({
+  active,
+  onChange,
+}: {
+  active: FilterTab;
+  onChange: (tab: FilterTab) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5 mb-6" role="tablist" aria-label="Filter by category">
+      {FILTER_TABS.map((tab) => (
+        <button
+          key={tab.id}
+          type="button"
+          role="tab"
+          aria-selected={active === tab.id}
+          onClick={() => onChange(tab.id)}
+          className={`text-[11px] font-medium uppercase tracking-[0.08em] px-3 py-1.5 rounded-[6px] border transition-colors focus-visible:outline-2 focus-visible:outline-navy ${
+            active === tab.id
+              ? "bg-fjord text-wool border-fjord"
+              : "border-basalt/20 text-basalt/60 hover:border-basalt/40 hover:text-basalt"
+          }`}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Main component
 // ---------------------------------------------------------------------------
 
-export default function ProximityList() {
+interface ProximityListProps {
+  defaultFilter?: FilterTab;
+}
+
+export default function ProximityList({ defaultFilter = "all" }: ProximityListProps) {
+  const [activeTab, setActiveTab] = useState<FilterTab>(defaultFilter);
+
+  // Memoize filtered bands
+  const filteredBands = useMemo(
+    () =>
+      ORAVIK_BASE_GUIDE.map((band) => ({
+        ...band,
+        items: band.items.filter((item) => itemMatchesFilter(item, activeTab)),
+      })).filter((band) => band.items.length > 0),
+    [activeTab],
+  );
+
+  // Derive summary from data (always shows all-category summary for orientation)
+  const summary = useMemo(() => deriveSummary(ORAVIK_BASE_GUIDE), []);
+
   return (
     <article className="px-6 sm:px-8 lg:px-10 pt-8 pb-20 max-w-[56rem]">
       {/* Header */}
@@ -166,36 +294,26 @@ export default function ProximityList() {
       </div>
 
       {/* Quick summary */}
-      <div className="border border-basalt/15 rounded-[7px] p-4 mb-8 bg-fog/[0.03]">
+      <div className="border border-basalt/15 rounded-[7px] p-4 mb-6 bg-fog/[0.03]">
         <p className="text-[10px] uppercase tracking-[0.12em] text-fjord/60 mb-2">
           At a glance
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[12px]">
-          <div>
-            <p className="text-basalt/50">Nearest shop</p>
-            <p className="font-medium text-basalt">Bónus Tvøroyri</p>
-            <p className="text-[11px] text-basalt/50">3.5 km · Bus 700</p>
-          </div>
-          <div>
-            <p className="text-basalt/50">Nearest pub</p>
-            <p className="font-medium text-basalt">Hotel Tvøroyri</p>
-            <p className="text-[11px] text-basalt/50">3.5 km · 45 min walk</p>
-          </div>
-          <div>
-            <p className="text-basalt/50">Nearest café</p>
-            <p className="font-medium text-basalt">Café MorMor</p>
-            <p className="text-[11px] text-basalt/50">3.5 km · Wed–Fri only</p>
-          </div>
-          <div>
-            <p className="text-basalt/50">Øravík village</p>
-            <p className="font-medium text-basalt">No services</p>
-            <p className="text-[11px] text-basalt/50">Plan supplies ahead</p>
-          </div>
+          {summary.map((s) => (
+            <div key={s.label}>
+              <p className="text-basalt/50">{s.label}</p>
+              <p className="font-medium text-basalt">{s.name}</p>
+              <p className="text-[11px] text-basalt/50">{s.detail}</p>
+            </div>
+          ))}
         </div>
       </div>
 
+      {/* Filter bar */}
+      <FilterBar active={activeTab} onChange={setActiveTab} />
+
       {/* Distance bands */}
-      {ORAVIK_BASE_GUIDE.map((band) => (
+      {filteredBands.map((band) => (
         <DistanceBandSection
           key={band.label}
           label={band.label}
