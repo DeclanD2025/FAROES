@@ -1,6 +1,7 @@
 // =============================================================================
 // ElevationProfile — SVG chart of elevation along the run route.
 // Hover/drag interaction highlights the corresponding point on the map.
+// Shows trail/road transition instead of old out-and-back turnaround.
 // =============================================================================
 
 "use client";
@@ -12,6 +13,9 @@ import {
   elevationStats,
   cumulativeDistances,
   pointAtDistance,
+  FELL_LOOP_TRANSITION_KM,
+  FELL_LOOP_ASCENT_M,
+  FELL_LOOP_HIGHEST_M,
 } from "@/lib/route-utils";
 
 // ---------------------------------------------------------------------------
@@ -30,9 +34,11 @@ interface ElevationProfileProps {
 
 const CHART_PADDING = { top: 16, right: 16, bottom: 28, left: 0 };
 const CHART_HEIGHT = 160;
+const TRANSITION_KM = FELL_LOOP_TRANSITION_KM; // ~1.532 km
 
 // ---------------------------------------------------------------------------
 // Component
+// ALL hooks declared before any conditional returns.
 // ---------------------------------------------------------------------------
 
 export function ElevationProfile({ samples, coords, onHover }: ElevationProfileProps) {
@@ -44,27 +50,14 @@ export function ElevationProfile({ samples, coords, onHover }: ElevationProfileP
   const dists = useMemo(() => cumulativeDistances(coords), [coords]);
   const totalKm = dists[dists.length - 1];
 
-  // If no valid elevation data, show fallback
   const hasElevation = stats.min !== null && stats.max !== null;
-  if (!hasElevation || samples.length < 2) {
-    return (
-      <div className="border border-basalt/15 rounded-[7px] p-4">
-        <p className="text-[10px] uppercase tracking-[0.1em] text-basalt/60 mb-2">Elevation</p>
-        <p className="text-[13px] text-basalt/50">
-          Elevation data unavailable for this route.
-        </p>
-      </div>
-    );
-  }
-
-  const minEle = stats.min!;
-  const maxEle = stats.max!;
-  const eleRange = maxEle - minEle || 1;
+  const minEle = hasElevation ? stats.min! : 0;
+  const maxEle = hasElevation ? stats.max! : 200;
+  const eleRange = (hasElevation ? maxEle - minEle : 200) || 1;
 
   // Chart dimensions
-  const chartW = 100; // percentage width via viewBox
+  const chartW = 100;
   const chartH = CHART_HEIGHT;
-
   const innerW = chartW - CHART_PADDING.left - CHART_PADDING.right;
   const innerH = chartH - CHART_PADDING.top - CHART_PADDING.bottom;
 
@@ -74,26 +67,10 @@ export function ElevationProfile({ samples, coords, onHover }: ElevationProfileP
   const yScale = (ele: number) =>
     CHART_PADDING.top + innerH - ((ele - minEle) / eleRange) * innerH;
 
-  // Path data
-  const pathD = samples
-    .filter((s) => s.elevation !== null)
-    .map((s, i, arr) => {
-      const x = xScale(s.km);
-      const y = yScale(s.elevation!);
-      return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
-    })
-    .join(" ");
+  // Transition position
+  const transitionX = xScale(Math.min(TRANSITION_KM, totalKm));
 
-  // Area under curve (for fill)
-  const areaD = `${pathD} L${xScale(totalKm).toFixed(1)},${CHART_PADDING.top + innerH} L${xScale(0).toFixed(1)},${CHART_PADDING.top + innerH} Z`;
-
-  // Y-axis labels
-  const yTicks = [minEle, Math.round((minEle + maxEle) / 2), maxEle];
-
-  // X-axis labels
-  const xTicks = [0, 1, 2, 3, 4].filter((t) => t <= totalKm);
-
-  // Hover handler
+  // Hover/touch handlers (hooks — must be called before any conditional return)
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<SVGSVGElement>) => {
       const svg = svgRef.current;
@@ -116,17 +93,6 @@ export function ElevationProfile({ samples, coords, onHover }: ElevationProfileP
     onHover(null);
   }, [onHover]);
 
-  // Get hover elevation
-  const hoverElevation =
-    hoverKm !== null
-      ? samples.reduce((prev, curr) =>
-          Math.abs(curr.km - hoverKm) < Math.abs(prev.km - hoverKm) ? curr : prev,
-        ).elevation
-      : null;
-
-  const turnaroundX = xScale(2.0);
-
-  // Touch handler for mobile
   const handleTouchMove = useCallback(
     (e: React.TouchEvent<SVGSVGElement>) => {
       const svg = svgRef.current;
@@ -144,6 +110,45 @@ export function ElevationProfile({ samples, coords, onHover }: ElevationProfileP
     },
     [totalKm, coords, dists, innerW, onHover],
   );
+
+  // Compute hover elevation (safe — after all hooks)
+  const hoverElevation =
+    hoverKm !== null && hasElevation
+      ? samples.reduce((prev, curr) =>
+          Math.abs(curr.km - hoverKm) < Math.abs(prev.km - hoverKm) ? curr : prev,
+        ).elevation
+      : null;
+
+  // ---- Early return: no elevation data ----
+  if (!hasElevation || samples.length < 2) {
+    return (
+      <div className="border border-basalt/15 rounded-[7px] p-4">
+        <p className="text-[10px] uppercase tracking-[0.1em] text-basalt/60 mb-2">Elevation</p>
+        <p className="text-[13px] text-basalt/50">
+          Elevation data unavailable for this route.
+        </p>
+        <p className="text-[12px] text-basalt/40 mt-1">
+          Approximate ascent: {FELL_LOOP_ASCENT_M} m · highest point: ~{FELL_LOOP_HIGHEST_M} m
+        </p>
+      </div>
+    );
+  }
+
+  // ---- Path and label data (after early return, so minEle/maxEle are safe) ----
+
+  const pathD = samples
+    .filter((s) => s.elevation !== null)
+    .map((s, i) => {
+      const x = xScale(s.km);
+      const y = yScale(s.elevation!);
+      return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+
+  const areaD = `${pathD} L${xScale(totalKm).toFixed(1)},${CHART_PADDING.top + innerH} L${xScale(0).toFixed(1)},${CHART_PADDING.top + innerH} Z`;
+
+  const yTicks = [minEle, Math.round((minEle + maxEle) / 2), maxEle];
+  const xTicks = [0, 1, 2, 3, 4].filter((t) => t <= Math.ceil(totalKm));
 
   return (
     <div className="border border-basalt/15 rounded-[7px] p-4">
@@ -163,7 +168,8 @@ export function ElevationProfile({ samples, coords, onHover }: ElevationProfileP
             </span>
           )}
           <span>
-            <span className="text-basalt font-medium">{minEle}</span>–<span className="text-basalt font-medium">{maxEle}</span> m
+            <span className="text-basalt font-medium">{minEle}</span>–
+            <span className="text-basalt font-medium">{maxEle}</span> m
           </span>
         </div>
       </div>
@@ -178,7 +184,7 @@ export function ElevationProfile({ samples, coords, onHover }: ElevationProfileP
         onTouchMove={handleTouchMove}
         onTouchEnd={handleMouseLeave}
         role="img"
-        aria-label={`Elevation profile: ${minEle} to ${maxEle} metres`}
+        aria-label={`Elevation profile: ${minEle} to ${maxEle} metres. Trail/road transition at ${TRANSITION_KM.toFixed(2)} km.`}
       >
         {/* Grid lines */}
         {yTicks.map((tick) => (
@@ -208,27 +214,49 @@ export function ElevationProfile({ samples, coords, onHover }: ElevationProfileP
           strokeLinecap="round"
         />
 
-        {/* Turnaround marker */}
+        {/* Trail/road transition marker */}
         <line
-          x1={turnaroundX}
+          x1={transitionX}
           y1={CHART_PADDING.top}
-          x2={turnaroundX}
+          x2={transitionX}
           y2={CHART_PADDING.top + innerH}
-          stroke="currentColor"
-          className="text-amber/40"
+          stroke="#d78b25"
+          strokeOpacity={0.5}
           strokeWidth={1}
           strokeDasharray="3,3"
         />
 
-        {/* Turnaround label */}
+        {/* Transition label */}
         <text
-          x={turnaroundX}
+          x={transitionX}
           y={CHART_PADDING.top - 4}
           textAnchor="middle"
-          className="fill-amber/80"
+          className="fill-basalt/50"
           style={{ fontSize: 8, fontFamily: "var(--font-sans)" }}
         >
-          2 km
+          {TRANSITION_KM.toFixed(2)} km
+        </text>
+
+        {/* Trail/road section labels */}
+        <text
+          x={CHART_PADDING.left + 2}
+          y={CHART_PADDING.top + innerH - 4}
+          textAnchor="start"
+          fill="#7c1834"
+          fillOpacity={0.4}
+          style={{ fontSize: 7.5, fontFamily: "var(--font-sans)" }}
+        >
+          Trail
+        </text>
+        <text
+          x={CHART_PADDING.left + innerW - 2}
+          y={CHART_PADDING.top + innerH - 4}
+          textAnchor="end"
+          fill="#d78b25"
+          fillOpacity={0.4}
+          style={{ fontSize: 7.5, fontFamily: "var(--font-sans)" }}
+        >
+          Road return
         </text>
 
         {/* Y-axis labels */}
@@ -239,7 +267,11 @@ export function ElevationProfile({ samples, coords, onHover }: ElevationProfileP
             y={yScale(tick) + 3}
             textAnchor="end"
             className="fill-basalt/40"
-            style={{ fontSize: 8, fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}
+            style={{
+              fontSize: 8,
+              fontFamily: "var(--font-mono)",
+              fontVariantNumeric: "tabular-nums",
+            }}
           >
             {tick}
           </text>
@@ -253,7 +285,11 @@ export function ElevationProfile({ samples, coords, onHover }: ElevationProfileP
             y={CHART_PADDING.top + innerH + 14}
             textAnchor="middle"
             className="fill-basalt/40"
-            style={{ fontSize: 8, fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}
+            style={{
+              fontSize: 8,
+              fontFamily: "var(--font-mono)",
+              fontVariantNumeric: "tabular-nums",
+            }}
           >
             {tick} km
           </text>
@@ -273,9 +309,11 @@ export function ElevationProfile({ samples, coords, onHover }: ElevationProfileP
             />
             <circle
               cx={xScale(hoverKm)}
-              cy={yScale(samples.reduce((p, c) =>
-                Math.abs(c.km - hoverKm) < Math.abs(p.km - hoverKm) ? c : p
-              ).elevation ?? minEle)}
+              cy={yScale(
+                samples.reduce((p, c) =>
+                  Math.abs(c.km - hoverKm) < Math.abs(p.km - hoverKm) ? c : p,
+                ).elevation ?? minEle,
+              )}
               r={4}
               fill="currentColor"
               className="text-claret"
@@ -287,32 +325,36 @@ export function ElevationProfile({ samples, coords, onHover }: ElevationProfileP
         {hoverKm !== null && hoverElevation !== null && (
           <g>
             <rect
-              x={Math.max(0, Math.min(chartW - 80, xScale(hoverKm) - 40))}
+              x={Math.max(0, Math.min(chartW - 100, xScale(hoverKm) - 50))}
               y={CHART_PADDING.top - 2}
-              width={80}
-              height={28}
+              width={100}
+              height={32}
               rx={4}
               className="fill-wool"
               stroke="currentColor"
               strokeWidth={0.5}
             />
             <text
-              x={Math.max(0, Math.min(chartW - 80, xScale(hoverKm) - 40)) + 40}
+              x={Math.max(0, Math.min(chartW - 100, xScale(hoverKm) - 50)) + 50}
               y={CHART_PADDING.top + 10}
               textAnchor="middle"
               className="fill-basalt"
-              style={{ fontSize: 10, fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}
+              style={{
+                fontSize: 10,
+                fontFamily: "var(--font-mono)",
+                fontVariantNumeric: "tabular-nums",
+              }}
             >
-              {hoverKm.toFixed(2)} km · {Math.round(hoverElevation)} m
+              {hoverKm.toFixed(2)} km · ~{Math.round(hoverElevation)} m
             </text>
             <text
-              x={Math.max(0, Math.min(chartW - 80, xScale(hoverKm) - 40)) + 40}
-              y={CHART_PADDING.top + 22}
+              x={Math.max(0, Math.min(chartW - 100, xScale(hoverKm) - 50)) + 50}
+              y={CHART_PADDING.top + 24}
               textAnchor="middle"
               className="fill-basalt/50"
               style={{ fontSize: 9, fontFamily: "var(--font-sans)" }}
             >
-              {hoverKm <= 2.0 ? "Outbound" : "Return"}
+              {hoverKm <= TRANSITION_KM ? "Trail" : "Road return"} · approx. elevation
             </text>
           </g>
         )}

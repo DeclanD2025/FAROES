@@ -28,7 +28,6 @@ import { ElevationProfile } from "@/components/run/elevation-profile";
 import { RunInfoPanel } from "@/components/run/run-info-panel";
 import {
   type ElevationSample,
-  type SplitResult,
   type LngLat,
   sampleElevation,
 } from "@/lib/route-utils";
@@ -55,7 +54,7 @@ const OravikRunMap = dynamic(() => import("@/components/run/oravik-run-map"), {
 });
 
 // =============================================================================
-// MORNING RUN — Øravík 4 km scenic run (GPX-powered)
+// MORNING RUN — Øravík Fell Loop (GPX-powered)
 // =============================================================================
 
 // =============================================================================
@@ -115,11 +114,11 @@ const BEINISVORD_NOTE = {
 
 const DAY_TWO_TIMELINE: TimelineStep[] = [
   {
-    num: 1, title: "Morning run · Øravík loop",
-    subtitle: "Við á 7 → harbour → Ferjuleðan → return",
-    middleLabel: "Duration", middleValue: "20–35 min",
-    rightLabel: "Leave by", rightValue: "07:30–08:00",
-    footer: "Run facing traffic on narrow roads. No pavement in sections — high-vis recommended. Harbour road is the flattest section. Exposed to south-westerly wind.",
+    num: 1, title: "Morning run · Øravík Fell Loop",
+    subtitle: "Bønhúsið → village path → old-road return",
+    middleLabel: "Duration", middleValue: "55–75 min",
+    rightLabel: "Leave by", rightValue: "06:30–07:00",
+    footer: "Challenging mixed-surface fell run. Walk 112 m from Við á 7 to Bønhúsið. Climb the official village path west, then return via route 99, old track, Fámjinsvegur and Bóndatún. Do not use in fog, darkness, heavy rain or strong wind. Do not enter Fámjinstunnilin or Hovstunnilin.",
   },
   {
     num: 2, title: "Breakfast & weather check",
@@ -160,7 +159,7 @@ const DAY_TWO_TIMELINE: TimelineStep[] = [
 ];
 
 const DAY_TWO_SUMMARY: SummaryItem[] = [
-  { icon: "R", label: "Run", time: "20–35 min", note: "Øravík loop" },
+  { icon: "R", label: "Run", time: "55–75 min", note: "Øravík Fell Loop" },
   { icon: "Bs", label: "Bus route", time: "700", note: "Coastal spine" },
   { icon: "Hk", label: "Primary hike", time: "2–3 hrs", note: "Hvannhagi" },
   { icon: "Wk", label: "Walking total", time: "~3–4 hrs", note: "~8–10 km" },
@@ -198,8 +197,8 @@ function MobileDecisionPanel() {
       <p className="text-[10px] uppercase tracking-[0.12em] text-fjord/60">First move</p>
       <p className="code tnum text-[36px] font-medium text-basalt leading-none mt-1">Run 07:30</p>
       <p className="text-[13px] text-basalt/65 mt-2">
-        Morning run from Við á 7. Then <strong>Bus 700 to Hov</strong> for the Hvannhagi ridge walk (2–3 hrs).
-        Check fog before committing — if the hills are white, swap to the chieftain's mound loop.
+        Morning run from Við á 7 — the Øravík Fell Loop (challenging mixed-surface, ~4.13 km, ~55–75 min). Then <strong>Bus 700 to Hov</strong> for the Hvannhagi ridge walk (2–3 hrs).
+        Check weather before committing — do not use the fell loop in fog, heavy rain or strong wind.
       </p>
       <div className="flex gap-6 mt-3 pt-3 border-t border-basalt/10">
         <div><p className="text-[10px] uppercase tracking-[0.1em] text-basalt/45">Hike</p><p className="code tnum text-[15px] font-medium text-basalt">2–3 hrs</p></div>
@@ -263,7 +262,7 @@ export function DayTwoDetail() {
   const [elevationSamples, setElevationSamples] = useState<ElevationSample[] | null>(null);
   const [crosshairPoint, setCrosshairPoint] = useState<{ km: number; coordinates: LngLat } | null>(null);
 
-  const handleRouteLoaded = useCallback((coords: LngLat[], _split: SplitResult, totalKm: number) => {
+  const handleRouteLoaded = useCallback((coords: LngLat[], totalKm: number) => {
     setRouteCoords(coords);
     setRouteTotalKm(totalKm);
     setElevationSamples(sampleElevation(coords, 25));
@@ -298,7 +297,7 @@ export function DayTwoDetail() {
 
             {/* Morning run — GPX-powered interactive route map */}
             <section className="mb-6">
-              <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík 4 km scenic run</p>
+              <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík Fell Loop</p>
               {/* Map + info panel composed feature */}
               <div className="border border-basalt/15 rounded-[7px] overflow-hidden">
                 <div className="flex flex-col xl:flex-row">
@@ -405,8 +404,7 @@ export function DayTwoDetail() {
         <section className="mb-6"><TripReadiness /></section>
         <section className="mb-6"><MobileDecisionPanel /></section>
         <section className="mb-6"><MobileTripStatus dateLine1="Tuesday 28 July 2026" dateLine2="Suðuroy exploration day" weatherLat={61.536} weatherLon={-6.81} weatherLabel="Øravík" /></section>
-        <section className="mb-6">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík 4 km scenic run</p>
+        <section className="mb-6">              <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík Fell Loop</p>
           <div className="border border-basalt/15 rounded-[8px] overflow-hidden">
             <div style={{ height: "clamp(340px, 58vh, 520px)" }}>
               <OravikRunMap

@@ -5,7 +5,7 @@
 // =============================================================================
 
 import { gpx } from "@tmcw/togeojson";
-import { length, lineString } from "@turf/turf";
+import { length, lineString, point, distance as turfDistance } from "@turf/turf";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -279,7 +279,137 @@ export function elevationStats(samples: ElevationSample[]) {
 }
 
 // ---------------------------------------------------------------------------
-// Validation
+// Coordinate-based nearest-point lookup
+// ---------------------------------------------------------------------------
+
+/**
+ * Find the index of the coordinate in coords that is nearest to the target.
+ */
+export function findNearestIndex(coords: LngLat[], targetLon: number, targetLat: number): number {
+  const target = point([targetLon, targetLat]);
+  let bestIdx = 0;
+  let bestDist = Infinity;
+  for (let i = 0; i < coords.length; i++) {
+    const d = turfDistance(target, point([coords[i][0], coords[i][1]]), { units: "kilometers" });
+    if (d < bestDist) {
+      bestDist = d;
+      bestIdx = i;
+    }
+  }
+  return bestIdx;
+}
+
+/**
+ * Split a coordinate array at the point nearest to a given coordinate.
+ */
+export function splitAtCoordinate(
+  coords: LngLat[],
+  targetLon: number,
+  targetLat: number,
+): { before: LngLat[]; after: LngLat[]; splitPoint: LngLat; splitIndex: number; distanceKm: number } | null {
+  const idx = findNearestIndex(coords, targetLon, targetLat);
+  if (idx <= 0 || idx >= coords.length - 1) return null;
+  const dists = cumulativeDistances(coords);
+  const before = coords.slice(0, idx + 1);
+  const after = coords.slice(idx);
+  return { before, after, splitPoint: coords[idx], splitIndex: idx, distanceKm: dists[idx] };
+}
+
+// ---------------------------------------------------------------------------
+// Fell-loop validation
+// ---------------------------------------------------------------------------
+
+/** Audited start coordinate (Bønhúsið). */
+export const FELL_LOOP_START: LngLat = [-6.810877108946443, 61.53244980610907];
+
+/** Audited trail-to-road transition coordinate. */
+export const FELL_LOOP_TRANSITION: LngLat = [-6.831779228523374, 61.525677144527435];
+
+/** Audited expected distance in km. */
+export const FELL_LOOP_EXPECTED_KM = 4.131;
+
+/** Display distance in km. */
+export const FELL_LOOP_DISPLAY_KM = 4.13;
+
+/** Audited transition distance from start in km. */
+export const FELL_LOOP_TRANSITION_KM = 1.532;
+
+/** Audited approximate ascent in metres. */
+export const FELL_LOOP_ASCENT_M = 222;
+
+/** Audited approximate highest point in metres. */
+export const FELL_LOOP_HIGHEST_M = 189;
+
+export interface FellLoopValidation {
+  valid: boolean;
+  totalKm: number;
+  errors: string[];
+  coords: LngLat[] | null;
+}
+
+/**
+ * Dedicated validator for the Øravík fell-loop GPX.
+ * Checks distance, closure, start proximity, transition proximity, and continuity.
+ */
+export function validateFellLoop(coords: LngLat[] | null): FellLoopValidation {
+  const errors: string[] = [];
+
+  // Rule 1: GPX contains a LineString with at least 2 coordinates
+  if (!coords || coords.length < 2) {
+    return { valid: false, totalKm: 0, errors: ["No route coordinates found in GPX file."], coords: null };
+  }
+
+  // Rule 2: Turf-calculated distance between 4.05 and 4.22 km
+  const totalKm = length(lineString(coords), { units: "kilometers" });
+  if (totalKm < 4.05 || totalKm > 4.22) {
+    errors.push(`Route length is ${totalKm.toFixed(3)} km — expected between 4.05 and 4.22 km.`);
+  }
+
+  // Rule 3: Route is closed — first and last track points within 20 m
+  const firstPt = point([coords[0][0], coords[0][1]]);
+  const lastPt = point([coords[coords.length - 1][0], coords[coords.length - 1][1]]);
+  const closureDist = turfDistance(firstPt, lastPt, { units: "kilometers" }) * 1000;
+  if (closureDist > 20) {
+    errors.push(`Route is not closed: start and end are ${closureDist.toFixed(1)} m apart (must be ≤ 20 m).`);
+  }
+
+  // Rule 4: Start point within 35 m of Bønhúsið
+  const startDist = turfDistance(point([FELL_LOOP_START[0], FELL_LOOP_START[1]]), firstPt, { units: "kilometers" }) * 1000;
+  if (startDist > 35) {
+    errors.push(`Start point is ${startDist.toFixed(1)} m from Bønhúsið (must be ≤ 35 m).`);
+  }
+
+  // Rule 5: Route passes within 30 m of audited transition
+  const nearestIdx = findNearestIndex(coords, FELL_LOOP_TRANSITION[0], FELL_LOOP_TRANSITION[1]);
+  const nearestPt = point([coords[nearestIdx][0], coords[nearestIdx][1]]);
+  const transitionDist = turfDistance(point([FELL_LOOP_TRANSITION[0], FELL_LOOP_TRANSITION[1]]), nearestPt, { units: "kilometers" }) * 1000;
+  if (transitionDist > 30) {
+    errors.push(`No route point within 30 m of the audited trail-to-road transition (nearest: ${transitionDist.toFixed(1)} m).`);
+  }
+
+  // Rule 6: No segment > 150 m discontinuity
+  for (let i = 1; i < coords.length; i++) {
+    const segDist = turfDistance(
+      point([coords[i - 1][0], coords[i - 1][1]]),
+      point([coords[i][0], coords[i][1]]),
+      { units: "kilometers" },
+    ) * 1000;
+    if (segDist > 150) {
+      errors.push(`Segment ${i} is ${segDist.toFixed(1)} m — exceeds 150 m discontinuity limit.`);
+      break;
+    }
+  }
+
+  return {
+    valid: errors.length === 0,
+    totalKm,
+    errors,
+    coords,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Generic validation (kept for backwards compatibility)
 // ---------------------------------------------------------------------------
 
 export interface ValidationResult {
@@ -290,7 +420,7 @@ export interface ValidationResult {
 }
 
 /**
- * Validate parsed route data: must have coordinates and be approximately 4 km.
+ * Validate parsed route data: must have coordinates and be approximately expected km.
  */
 export function validateRoute(
   coords: LngLat[] | null,
