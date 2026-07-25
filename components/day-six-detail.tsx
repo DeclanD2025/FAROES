@@ -12,6 +12,14 @@ import type maplibregl from "maplibre-gl";
 import { TripReadiness } from "@/components/trip-readiness";
 import { ConnectionChain } from "@/components/connection-chain";
 import { SourceRegister } from "@/components/source-register";
+import { LiveBoard, type LiveRow } from "@/components/live-board";
+import {
+  getFaeDeparturesUrl,
+  transformFaeDepartures,
+  getStnDeparturesUrl,
+  transformStnDepartures,
+  FLIGHT_COLUMNS,
+} from "@/lib/aviationstack";
 import { CONNECTION_CHAINS } from "@/lib/data/transport-matrices";
 import { provisional } from "@/lib/data/sources";
 import { SOURCE_LIBRARY } from "@/lib/data/sources";
@@ -195,6 +203,48 @@ function MobileDecisionPanel() {
 // SOURCES
 // =============================================================================
 
+// =============================================================================
+// Live flight board — static fallback data
+// =============================================================================
+
+const FAE_DEPARTURES_FALLBACK: LiveRow[] = [
+  { time: "08:00", flight: "RC 456", destination: "CPH", gate: "1", status: "Scheduled" },
+  { time: "09:10", flight: "RC 416", destination: "LGW", gate: "2", status: "Scheduled" },
+  { time: "12:30", flight: "SK 1788", destination: "CPH", gate: "1", status: "Scheduled" },
+  { time: "14:00", flight: "RC 458", destination: "BGO", gate: "2", status: "Scheduled" },
+];
+
+const STN_DEPARTURES_FALLBACK: LiveRow[] = [
+  { time: "14:00", flight: "FR 1234", destination: "BCN", gate: "42", status: "Scheduled" },
+  { time: "16:30", flight: "FR 5678", destination: "MAD", gate: "38", status: "Scheduled" },
+  { time: "18:00", flight: "FR 9012", destination: "DUB", gate: "45", status: "Scheduled" },
+  { time: "19:35", flight: "RK 330", destination: "GLA", gate: "40", status: "Scheduled" },
+  { time: "20:45", flight: "FR 3456", destination: "ALC", gate: "43", status: "Scheduled" },
+];
+
+// ---- Coach board columns & fallback ----
+
+const COACH_COLUMNS = [
+  { key: "time", label: "Time", mono: true, narrow: true },
+  { key: "service", label: "Service", mono: true, narrow: true },
+  { key: "destination", label: "To", narrow: true },
+  { key: "bay", label: "Bay", mono: true, narrow: true },
+  { key: "status", label: "Status" },
+];
+
+const LGW_STN_COACH_FALLBACK: LiveRow[] = [
+  { time: "10:00", service: "NX 025", destination: "Stansted", bay: "3", status: "Scheduled" },
+  { time: "11:00", service: "NX 025", destination: "Stansted", bay: "3", status: "Scheduled" },
+  { time: "12:00", service: "NX 025", destination: "Stansted", bay: "3", status: "Scheduled" },
+  { time: "13:00", service: "NX 025", destination: "Stansted", bay: "3", status: "Scheduled" },
+  { time: "14:00", service: "NX 025", destination: "Stansted", bay: "3", status: "Scheduled" },
+  { time: "15:00", service: "NX 025", destination: "Stansted", bay: "3", status: "Scheduled" },
+];
+
+// =============================================================================
+// SOURCES
+// =============================================================================
+
 const DAY6_SOURCES = [
   {
     claim: "RC 416 Vágar → Gatwick: 09:10–11:25",
@@ -308,6 +358,49 @@ export function DaySixDetail() {
               <JourneyTimeline steps={TIMELINE_STEPS} />
             </section>
 
+            {/* Live flight board — FAE departures (RC 416 highlighted) */}
+            <section className="mb-6">
+              <LiveBoard
+                title="FAE departures · Sat 1 Aug"
+                fetchUrl={getFaeDeparturesUrl() || undefined}
+                transform={transformFaeDepartures}
+                fallbackRows={FAE_DEPARTURES_FALLBACK}
+                sourceUrl="https://www.flightradar24.com/data/flights/rc416"
+                sourceLabel="Track RC 416"
+                columns={FLIGHT_COLUMNS}
+                highlightKey="flight"
+                highlightValue="RC 416"
+              />
+            </section>
+
+            {/* Live flight board — STN departures (RK 330 highlighted) */}
+            <section className="mb-6">
+              <LiveBoard
+                title="STN departures · Sat 1 Aug"
+                fetchUrl={getStnDeparturesUrl() || undefined}
+                transform={transformStnDepartures}
+                fallbackRows={STN_DEPARTURES_FALLBACK}
+                sourceUrl="https://www.flightradar24.com/data/flights/rk330"
+                sourceLabel="Track RK 330"
+                columns={FLIGHT_COLUMNS}
+                highlightKey="flight"
+                highlightValue="RK 330"
+              />
+            </section>
+
+            {/* Live coach board — National Express LGW → STN (13:00 highlighted) */}
+            <section className="mb-6">
+              <LiveBoard
+                title="National Express · LGW South → STN"
+                fallbackRows={LGW_STN_COACH_FALLBACK}
+                sourceUrl="https://www.nationalexpress.com"
+                sourceLabel="Book / track"
+                columns={COACH_COLUMNS}
+                highlightKey="time"
+                highlightValue="13:00"
+              />
+            </section>
+
             {/* Glasgow → Bellshill options */}
             <section className="mb-6">
               <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Glasgow Airport → Bellshill</p>
@@ -338,7 +431,7 @@ export function DaySixDetail() {
               />
               <div>
                 <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">FAROES → SCOTLAND</p>
-                <div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="journey" mapRef={mapRef} /></div>
+                <div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="journey-return" mapRef={mapRef} /></div>
               </div>
             </div>
           </aside>
@@ -363,7 +456,7 @@ export function DaySixDetail() {
             <p className="text-[12px] text-basalt/70">If RC 416 is delayed, the RK 330 booking is not protected. Travel insurance with missed-connection cover is essential.</p>
           </div>
         </section>
-        <section><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">FAROES → SCOTLAND</p><div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="journey" mapRef={mapRef} /></div></section>
+        <section><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">FAROES → SCOTLAND</p><div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="journey-return" mapRef={mapRef} /></div></section>
       </article>
     </>
   );

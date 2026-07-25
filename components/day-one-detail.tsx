@@ -12,6 +12,8 @@ import type maplibregl from "maplibre-gl";
 import { TripReadiness } from "@/components/trip-readiness";
 import { ConnectionChain } from "@/components/connection-chain";
 import { SourceRegister } from "@/components/source-register";
+import { LiveBoard, type LiveRow } from "@/components/live-board";
+import { getEdiDeparturesUrl, transformEdiDepartures, FLIGHT_COLUMNS } from "@/lib/aviationstack";
 import { CONNECTION_CHAINS } from "@/lib/data/transport-matrices";
 import { provisional } from "@/lib/data/sources";
 import { SOURCE_LIBRARY } from "@/lib/data/sources";
@@ -185,6 +187,24 @@ function MobileDecisionPanel() {
 // SOURCES
 // =============================================================================
 
+// =============================================================================
+// Live flight board — static fallback data
+// =============================================================================
+
+const EDI_DEPARTURES_FALLBACK: LiveRow[] = [
+  { time: "12:15", flight: "KL 934", destination: "AMS", gate: "12", status: "Scheduled" },
+  { time: "14:30", flight: "BA 1455", destination: "LHR", gate: "7", status: "Scheduled" },
+  { time: "16:00", flight: "U2 2312", destination: "BRS", gate: "15", status: "Scheduled" },
+  { time: "16:45", flight: "FR 6623", destination: "DUB", gate: "22", status: "Scheduled" },
+  { time: "17:10", flight: "RC 415", destination: "FAE", gate: "9", status: "Scheduled" },
+  { time: "17:30", flight: "BA 1461", destination: "LHR", gate: "5", status: "Scheduled" },
+  { time: "18:15", flight: "U2 4567", destination: "LTN", gate: "18", status: "Scheduled" },
+];
+
+// =============================================================================
+// SOURCES
+// =============================================================================
+
 const DAY1_SOURCES = [
   {
     claim: "ScotRail Bellshill → Haymarket: ~hourly, ~1h 03m",
@@ -256,6 +276,21 @@ export function DayOneDetail() {
               <ConnectionChain chain={CONNECTION_CHAINS.day1!} />
             </section>
 
+            {/* Live flight board — EDI departures (RC 415 highlighted) */}
+            <section className="mb-6">
+              <LiveBoard
+                title="EDI departures · Mon 27 Jul"
+                fetchUrl={getEdiDeparturesUrl() || undefined}
+                transform={transformEdiDepartures}
+                fallbackRows={EDI_DEPARTURES_FALLBACK}
+                sourceUrl="https://www.flightradar24.com/data/flights/rc415"
+                sourceLabel="Track RC 415"
+                columns={FLIGHT_COLUMNS}
+                highlightKey="flight"
+                highlightValue="RC 415"
+              />
+            </section>
+
             {/* Latest safe departures */}
             <section className="mb-6"><LatestSafeDepartures /></section>
 
@@ -280,7 +315,7 @@ export function DayOneDetail() {
               />
               <div>
                 <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">SCOTLAND → FØROYAR</p>
-                <div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="journey" mapRef={mapRef} /></div>
+                <div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="journey-outbound" mapRef={mapRef} /></div>
               </div>
             </div>
           </aside>
@@ -300,7 +335,7 @@ export function DayOneDetail() {
         <section className="mb-6"><MobileTripStatus dateLine1="Monday 27 July 2026" dateLine2="Flight at 17:10 from Edinburgh Airport" weatherLat={62.0097} weatherLon={-6.7716} weatherLabel="Tórshavn" /></section>
         <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Journey</p><MobileTimeline steps={TIMELINE_STEPS} /></section>
         <section className="mb-6"><LatestSafeDepartures /></section>
-        <section><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">SCOTLAND → FØROYAR</p><div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="journey" mapRef={mapRef} /></div></section>
+        <section><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">SCOTLAND → FØROYAR</p><div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="journey-outbound" mapRef={mapRef} /></div></section>
       </article>
     </>
   );

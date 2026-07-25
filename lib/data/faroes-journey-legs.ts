@@ -189,6 +189,73 @@ const ORAVIK_RUN_EXTENSION: LineString = {
 };
 
 // =============================================================================
+// Day 6 return journey LineStrings
+// =============================================================================
+
+// Leg: Sørvágur → Vágar Airport · Bus 300
+const SORVAGUR_TO_VAGAR: LineString = {
+  type: "LineString",
+  coordinates: [
+    [-7.3577, 62.0973],  // Sørvágur
+    [-7.3300, 62.0850],
+    [-7.3000, 62.0720],
+    [-7.2772, 62.0636],  // Vágar Airport
+  ],
+};
+
+// Leg: Vágar Airport → London Gatwick · Atlantic Airways RC 416
+const VAGAR_TO_GATWICK: LineString = {
+  type: "LineString",
+  coordinates: [
+    [-7.2772, 62.0636],  // FAE
+    [-6.5000, 61.0000],
+    [-5.0000, 59.5000],
+    [-3.0000, 57.5000],
+    [-1.5000, 55.5000],
+    [-0.5000, 53.5000],
+    [-0.1900, 51.1480],  // LGW
+  ],
+};
+
+// Leg: London Gatwick → London Stansted · National Express (M25/M11)
+const GATWICK_TO_STANSTED: LineString = {
+  type: "LineString",
+  coordinates: [
+    [-0.190, 51.148],  // LGW South Terminal
+    [-0.100, 51.200],
+    [0.000, 51.350],
+    [0.050, 51.550],
+    [0.120, 51.720],
+    [0.235, 51.885],  // STN
+  ],
+};
+
+// Leg: London Stansted → Glasgow · Ryanair RK 330
+const STANSTED_TO_GLASGOW: LineString = {
+  type: "LineString",
+  coordinates: [
+    [0.235, 51.885],   // STN
+    [-0.200, 52.500],
+    [-1.000, 53.500],
+    [-2.000, 54.500],
+    [-3.200, 55.300],
+    [-4.433, 55.872],  // GLA
+  ],
+};
+
+// Leg: Glasgow Airport → Bellshill · Taxi / road
+const GLASGOW_TO_BELLSHILL: LineString = {
+  type: "LineString",
+  coordinates: [
+    [-4.433, 55.872],  // GLA
+    [-4.350, 55.860],
+    [-4.250, 55.845],
+    [-4.150, 55.830],
+    [-4.024, 55.817],  // Bellshill Station
+  ],
+};
+
+// =============================================================================
 // JOURNEY_LEGS — the definitive ordered sequence
 // =============================================================================
 
@@ -349,6 +416,77 @@ export const JOURNEY_LEGS: JourneyLeg[] = [
     practicalNote:
       "Out-and-back along the fjordside path towards Trongisvágsfjørður. Flat, good surface, spectacular morning light on the fjord. Adds ~2 km to the run.",
     geometry: ORAVIK_RUN_EXTENSION,
+  },
+  // ---- Day 6 return legs ----
+  {
+    id: "leg-sorvagur-vagar",
+    fromPlaceId: "sorvagur",
+    toPlaceId: "vagar-airport",
+    mode: "bus",
+    departureTime: "07:40",
+    arrivalTime: "07:50",
+    duration: "10 min",
+    service: "Bus 300",
+    status: "confirmed",
+    practicalNote:
+      "Bus 300 Sørvágur → Vágar Airport. Village centre stop, 2 min from Guesthouse Hugo. DKK 20 pp or SSL Travel Card.",
+    geometry: SORVAGUR_TO_VAGAR,
+  },
+  {
+    id: "leg-vagar-gatwick",
+    fromPlaceId: "vagar-airport",
+    toPlaceId: "london-gatwick",
+    mode: "flight",
+    departureTime: "09:10 WEST",
+    arrivalTime: "11:25 BST",
+    duration: "2h 15m",
+    service: "RC 416 · Atlantic Airways",
+    status: "confirmed",
+    practicalNote:
+      "Atlantic Airways RC 416. Vágar → London Gatwick. Mykines on climb-out. Forth bridges on descent.",
+    geometry: VAGAR_TO_GATWICK,
+  },
+  {
+    id: "leg-gatwick-stansted",
+    fromPlaceId: "london-gatwick",
+    toPlaceId: "london-stansted",
+    mode: "bus",
+    departureTime: "13:00",
+    arrivalTime: "~15:15",
+    duration: "2h 15m",
+    service: "National Express",
+    status: "needs-booking",
+    practicalNote:
+      "National Express LGW South → STN via M25/M11. Book flexible ticket at nationalexpress.com. Wi-Fi, USB, toilet onboard.",
+    geometry: GATWICK_TO_STANSTED,
+  },
+  {
+    id: "leg-stansted-glasgow",
+    fromPlaceId: "london-stansted",
+    toPlaceId: "glasgow-airport",
+    mode: "flight",
+    departureTime: "19:35",
+    arrivalTime: "21:10",
+    duration: "1h 35m",
+    service: "RK 330 · Ryanair UK",
+    status: "confirmed",
+    practicalNote:
+      "Ryanair RK 330. Stansted → Glasgow. SEPARATE BOOKING — not protected. Glasgow's lights on approach. Left side window for Clyde views.",
+    geometry: STANSTED_TO_GLASGOW,
+  },
+  {
+    id: "leg-glasgow-bellshill",
+    fromPlaceId: "glasgow-airport",
+    toPlaceId: "bellshill-station",
+    mode: "bus",
+    departureTime: "21:10",
+    arrivalTime: "~22:00",
+    duration: "35–70 min",
+    service: "Taxi / Bus 500",
+    status: "confirmed",
+    practicalNote:
+      "Taxi rank outside domestic arrivals (~£35, 35 min). Or Bus 500 + ScotRail Glasgow Central → Bellshill (~£10, 1h 10m).",
+    geometry: GLASGOW_TO_BELLSHILL,
   },
 ];
 

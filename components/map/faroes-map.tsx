@@ -26,7 +26,7 @@ export type SelectedFeature =
   | { kind: "leg"; leg: JourneyLeg }
   | null;
 
-export type MapFilter = "journey" | "places" | "match" | "stay" | "suðuroy" | "run-oravik";
+export type MapFilter = "journey" | "journey-outbound" | "journey-return" | "places" | "match" | "stay" | "suðuroy" | "run-oravik";
 
 interface FaroesMapProps {
   onSelect: (feature: SelectedFeature) => void;
@@ -195,6 +195,14 @@ export default function FaroesMap({
     switch (f) {
       case "journey":
         return JOURNEY_STOPS;
+      case "journey-outbound":
+        // Day 1: Sequences 1–7 (Bellshill → Øravík)
+        return JOURNEY_STOPS.filter((p) => (p.routeSequence ?? 0) <= 7);
+      case "journey-return":
+        // Day 6: Sequences 8–11 + Bellshill (seq 1) as the return destination
+        return JOURNEY_STOPS.filter(
+          (p) => (p.routeSequence ?? 0) >= 8 || p.id === "bellshill-station"
+        );
       case "places":
         return ALL_PLACES;
       case "match":
@@ -273,6 +281,8 @@ export default function FaroesMap({
       fitBoundsAnimated(map, [[-6.84, 61.38], [-6.76, 61.57]], 60);
     } else if (filter === "run-oravik") {
       fitBoundsAnimated(map, [[-6.824, 61.525], [-6.804, 61.543]], 40);
+    } else if (filter === "journey-outbound" || filter === "journey-return") {
+      fitTrip();
     } else {
       fitBoundsAnimated(map, itineraryBounds(), 70);
     }
@@ -289,7 +299,7 @@ export default function FaroesMap({
         style: MAP_STYLE,
         bounds: itineraryBounds(),
         maxBounds: FAROE_MAX_BOUNDS,
-        minZoom: 4,
+        minZoom: 3,
         maxZoom: 15,
         bearing: 0,
         pitch: 0,
