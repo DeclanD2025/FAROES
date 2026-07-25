@@ -289,7 +289,7 @@ export default function FaroesMap({
         style: MAP_STYLE,
         bounds: itineraryBounds(),
         maxBounds: FAROE_MAX_BOUNDS,
-        minZoom: 7,
+        minZoom: 4,
         maxZoom: 15,
         bearing: 0,
         pitch: 0,

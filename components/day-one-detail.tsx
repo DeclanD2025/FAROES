@@ -43,32 +43,32 @@ const TIMELINE_STEPS: TimelineStep[] = [
     num: 1, title: "Home → Bellshill Station",
     subtitle: "40 Liberty Road, Bellshill ML4 2EX",
     middleLabel: "Walk", middleValue: "~6 min",
-    rightLabel: "Leave by", rightValue: "08:30",
-    footer: "Walk east on Liberty Rd to Main St. Station entrance on Main St. Door-to-platform: budget 8 min with luggage. Taxi contingency: Bellshill Taxis +44 1698 747447. If delayed: next train at 09:59.",
+    rightLabel: "Leave by", rightValue: "11:30",
+    footer: "Walk east on Liberty Rd to Main St. Station entrance on Main St. Door-to-platform: budget 8 min with luggage. Taxi contingency: Bellshill Taxis +44 1698 747447. If delayed: next train at 12:59.",
   },
   {
     num: 2, title: "ScotRail · Bellshill → Haymarket",
-    subtitle: "Recommended: 08:59 departure",
-    middleLabel: "Departs", middleValue: "08:59",
-    middleLabel2: "Arrives", middleValue2: "10:02",
+    subtitle: "Recommended: 11:59 departure",
+    middleLabel: "Departs", middleValue: "11:59",
+    middleLabel2: "Arrives", middleValue2: "13:02",
     rightLabel: "Journey", rightValue: "1h 03m",
-    footer: "RECOMMENDED SERVICE. Direct. Arrive EDI ~6h 30m before flight — massive buffer. Backup: 09:59 (still fine). Latest safe: 13:59 (EDI by ~15:00, 2h before flight). If all trains fail: taxi from Bellshill to EDI ~£45, 35 min.",
+    footer: "RECOMMENDED SERVICE. Direct. Arrive EDI ~3h 30m before flight — comfortable buffer. Backup: 12:59 (still fine). Latest safe: 13:59 (EDI by ~15:00, 2h before flight). If all trains fail: taxi from Bellshill to EDI ~£45, 35 min.",
     footerLink: { label: "Live times on ScotRail →", href: "https://www.scotrail.co.uk/plan-your-journey" },
   },
   {
     num: 3, title: "Haymarket → Edinburgh Airport",
     subtitle: "Edinburgh Tram · every 7–8 min",
-    middleLabel: "Departs", middleValue: "~10:05",
-    middleLabel2: "Arrives", middleValue2: "~10:35",
+    middleLabel: "Departs", middleValue: "~13:05",
+    middleLabel2: "Arrives", middleValue2: "~13:35",
     rightLabel: "Journey", rightValue: "~30 min",
     footer: "Tram stop is DIRECTLY OUTSIDE Haymarket station — no street crossing needed. Tap-on tap-off contactless or ticket machine. Alternative: Airport Bus 100 (every 10 min, ~30 min). Taxi ~£25, 20 min.",
   },
   {
     num: 4, title: "Edinburgh Airport · pre-flight",
     subtitle: "Domestic departures · check-in desks",
-    middleLabel: "Arrive by", middleValue: "~10:40",
-    rightLabel: "Contingency", rightValue: "~6h 20m",
-    footer: "Check-in online before leaving home. Bag drop if needed. Security: budget 30 min (summer Monday morning — moderate queues). Airside food: All Bar One (bar+dining), Wetherspoons (pub food), Pret (coffee+food). Flight boards ~30 min before departure from gates 7–10.",
+    middleLabel: "Arrive by", middleValue: "~13:40",
+    rightLabel: "Contingency", rightValue: "~3h 20m",
+    footer: "Check-in online before leaving home. Bag drop if needed. Security: budget 30 min (summer Monday lunchtime — moderate queues). Airside food: All Bar One (bar+dining), Wetherspoons (pub food), Pret (coffee+food). Flight boards ~30 min before departure from gates 7–10.",
   },
   {
     num: 5, title: "Atlantic Airways RC 415",
@@ -121,7 +121,7 @@ const TIMELINE_STEPS: TimelineStep[] = [
 
 const SUMMARY_ITEMS: SummaryItem[] = [
   { icon: "H", label: "Leave home", time: "08:30", note: "Bellshill" },
-  { icon: "T", label: "Train", time: "08:59", note: "→ Haymarket" },
+  { icon: "T", label: "Train", time: "11:59", note: "→ Haymarket" },
   { icon: "F", label: "Flight", time: "EDI 17:10", note: "RC 415" },
   { icon: "S", label: "Ferry", time: "21:15", note: "M/F Smyril" },
   { icon: "A", label: "Arrive", time: "~23:30", note: "Øravík" },
@@ -138,7 +138,7 @@ function LatestSafeDepartures() {
         Latest safe departures · Home → FAE
       </p>
       <div className="space-y-2 text-[12px]">
-        <SafeTime label="Leave home by" time="08:30" note="Catch 08:59 from Bellshill. Comfortable buffer at every stage." />
+        <SafeTime label="Leave home by" time="11:30" note="Catch 11:59 from Bellshill. Comfortable buffer at every stage." />
         <SafeTime label="Latest train from Bellshill" time="13:59" note="Arrives Haymarket 15:02. Tram to EDI ~15:30. Still 1h 40m before flight." />
         <SafeTime label="Abandon-rails deadline" time="15:00" note="If not on a train by now: take taxi straight to EDI from Bellshill (~£45, 35 min)." />
         <SafeTime label="EDI security latest" time="16:30" note="Gate closes ~16:40. 40 min before departure. Do NOT cut it closer." />
@@ -168,9 +168,9 @@ function MobileDecisionPanel() {
   return (
     <div className="border border-basalt/15 rounded-[8px] p-4">
       <p className="text-[10px] uppercase tracking-[0.12em] text-fjord/60">Leave home by</p>
-      <p className="code tnum text-[36px] font-medium text-basalt leading-none mt-1">08:30</p>
+      <p className="code tnum text-[36px] font-medium text-basalt leading-none mt-1">11:30</p>
       <p className="text-[13px] text-basalt/65 mt-2">
-        Catch the <strong>08:59</strong> from Bellshill. Flight <strong>EDI 17:10</strong>.
+        Catch the <strong>11:59</strong> from Bellshill. Flight <strong>EDI 17:10</strong>.
         Ferry <strong>21:15</strong> from Tórshavn — the LAST boat. Arrive Øravík <strong>~23:30</strong>.
       </p>
       <div className="flex gap-6 mt-3 pt-3 border-t border-basalt/10">

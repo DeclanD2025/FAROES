@@ -6,7 +6,7 @@
 
 import type { LineString } from "geojson";
 
-export type TransportMode = "bus" | "ferry" | "car" | "walk" | "flight";
+export type TransportMode = "bus" | "ferry" | "car" | "walk" | "flight" | "train" | "tram";
 
 export interface JourneyLeg {
   id: string;
@@ -26,7 +26,53 @@ export interface JourneyLeg {
 // LineString geometries — all defined FIRST, before they are referenced
 // =============================================================================
 
-// Leg 1: Vágar Airport → Tórshavn · Bus 300 / road
+// Leg 1: Bellshill → Haymarket · ScotRail
+const BELLSHILL_TO_HAYMARKET: LineString = {
+  type: "LineString",
+  coordinates: [
+    [-4.024, 55.817],  // Bellshill Station
+    [-3.950, 55.835],
+    [-3.850, 55.855],
+    [-3.720, 55.870],
+    [-3.550, 55.900],
+    [-3.380, 55.925],
+    [-3.219, 55.946],  // Haymarket Station
+  ],
+};
+
+// Leg 2: Haymarket → Edinburgh Airport · Tram
+const HAYMARKET_TO_EDI: LineString = {
+  type: "LineString",
+  coordinates: [
+    [-3.219, 55.946],  // Haymarket
+    [-3.250, 55.948],
+    [-3.300, 55.949],
+    [-3.363, 55.950],  // Edinburgh Airport
+  ],
+};
+
+// Leg 3: Edinburgh Airport → Vágar Airport · Atlantic Airways RC 415
+const EDI_TO_VAGAR: LineString = {
+  type: "LineString",
+  coordinates: [
+    [-3.363, 55.950],  // Edinburgh Airport
+    [-3.500, 56.200],
+    [-3.800, 56.600],
+    [-4.200, 57.000],
+    [-4.800, 57.500],
+    [-5.500, 58.000],
+    [-6.200, 58.500],
+    [-6.800, 59.000],
+    [-7.100, 59.500],
+    [-7.250, 60.000],
+    [-7.300, 60.500],
+    [-7.290, 61.000],
+    [-7.280, 61.500],
+    [-7.277, 62.064],  // Vágar Airport
+  ],
+};
+
+// Leg 4: Vágar Airport → Tórshavn · Bus 300 / road
 const VAGAR_TO_TORSHAVN: LineString = {
   type: "LineString",
   coordinates: [
@@ -147,6 +193,48 @@ const ORAVIK_RUN_EXTENSION: LineString = {
 // =============================================================================
 
 export const JOURNEY_LEGS: JourneyLeg[] = [
+  {
+    id: "leg-bellshill-haymarket",
+    fromPlaceId: "bellshill-station",
+    toPlaceId: "haymarket",
+    mode: "train",
+    departureTime: "11:59",
+    arrivalTime: "13:02",
+    duration: "1h 03m",
+    service: "ScotRail",
+    status: "confirmed",
+    practicalNote:
+      "ScotRail Bellshill → Haymarket. Direct service. Backup at 12:59. Confirm near the date at scotrail.co.uk.",
+    geometry: BELLSHILL_TO_HAYMARKET,
+  },
+  {
+    id: "leg-haymarket-edi",
+    fromPlaceId: "haymarket",
+    toPlaceId: "edinburgh-airport",
+    mode: "tram",
+    departureTime: "~13:05",
+    arrivalTime: "~13:35",
+    duration: "~30 min",
+    service: "Edinburgh Tram",
+    status: "confirmed",
+    practicalNote:
+      "Tram stop is directly outside Haymarket station. Every 7–8 min. Tap-on tap-off contactless.",
+    geometry: HAYMARKET_TO_EDI,
+  },
+  {
+    id: "leg-edi-vagar",
+    fromPlaceId: "edinburgh-airport",
+    toPlaceId: "vagar-airport",
+    mode: "flight",
+    departureTime: "17:10",
+    arrivalTime: "18:35",
+    duration: "1h 25m",
+    service: "RC 415 · Atlantic Airways",
+    status: "confirmed",
+    practicalNote:
+      "Atlantic Airways RC 415. Edinburgh → Vágar direct. Forth bridges visible right side ~3 min after takeoff.",
+    geometry: EDI_TO_VAGAR,
+  },
   {
     id: "leg-vagar-torshavn",
     fromPlaceId: "vagar-airport",
