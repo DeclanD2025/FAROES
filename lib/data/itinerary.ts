@@ -99,14 +99,13 @@ export const DAYS: DayPlan[] = [
     chapter: "The journey north",
     location: "Edinburgh · Vágar · Tórshavn · Øravík",
     narrative:
-      "An Atlantic Airways afternoon crossing, a forty-five minute bus to the capital, then the last boat of the day slipping south through the Suðuroyarfjørður. Arrival in Øravík well after midnight.",
+      "An Atlantic Airways afternoon crossing followed by a live connection check. The previous same-evening Suðuroy chain is not a safe commitment; keep a Tórshavn overnight fallback ready.",
     stages: [
       { kind: "flight", ref: "RC 415", dep: "Edinburgh 17:10", arr: "Vágar 18:35", note: "1h 25m · direct" },
-      { kind: "bus",    ref: "Bus 300", dep: "Vágar Airport 19:00", arr: "Tórshavn 19:45", note: "45 min · change for the ferry" },
-      { kind: "ferry",  ref: "M/F Smyril", dep: "Tórshavn 21:15", arr: "Krambatangi 23:20", note: "2h 05m · Route 7 · pre-booked" },
-      { kind: "anchor", time: "23:20", title: "Brief transfer to Øravík", detail: "Bus 700 two stops or taxi 2 km." },
+      { kind: "anchor", time: "After landing", title: "Check live connection", detail: "Do not assume Route 300 and the 21:15 Smyril connect safely; confirm against SSL and flight status." },
+      { kind: "anchor", time: "If unsafe", title: "Tórshavn overnight", detail: "Inform the Øravík host and use the next verified Route 7 sailing." },
     ],
-    couldDisrupt: "The 21:15 is the last boat of the day. If RC 415 is held by Faroese fog, we sleep in Tórshavn.",
+    couldDisrupt: "The airport-to-Suðuroy connection is not verified as operational. A Tórshavn overnight is the safe contingency.",
     composition: "image-led",
     heroCue: {
       caption: "Múlafossur, the waterfall that walks into the Atlantic.",
@@ -140,16 +139,15 @@ export const DAYS: DayPlan[] = [
     weekday: "Wednesday",
     iso: "2026-07-29",
     chapter: "Ólavsøka",
-    location: "Øravík · Krambatangi · Tórshavn",
+    location: "Øravík · Suðuroy",
     narrative:
-      "The national day. Parliament opens, boat race finals fill the harbour, and Tórshavn swells with national costumes and chain dancing. Ferry north at 11:30 — same crossing as matchday tomorrow. The last boat back is the only deadline.",
+      "Ólavsøka affects the island timetable. Keep the day on Suðuroy, check SSL's special Route 700 services, and prepare the following day's match journey rather than taking an unsupported ferry plan north.",
     stages: [
-      { kind: "ferry", ref: "M/F Smyril", dep: "Krambatangi 11:30", arr: "Tórshavn 13:35", note: "Out · 2h 05m" },
-      { kind: "anchor", time: "14:00", title: "Ólavsøka boat races", detail: "National rowing finals at Tórshavn harbour. Free to watch. The sporting heart of the day." },
-      { kind: "anchor", time: "16:00", title: "Harbour festival & pubs", detail: "Chain dancing, street music, OY Brewing, Tórshøll. Old-town Tinganes is two minutes from the ferry." },
-      { kind: "ferry", ref: "M/F Smyril", dep: "Tórshavn 21:15", arr: "Krambatangi 23:20", note: "Last sailing · pad to Øravík", critical: true },
+      { kind: "anchor", time: "Morning", title: "Check special services", detail: "SSL publishes a different Ólavsøka schedule. Route 700 includes request-only services." },
+      { kind: "anchor", time: "Day", title: "Stay on Suðuroy", detail: "Choose a local, public-transport-compatible plan; do not assume access to a car." },
+      { kind: "anchor", time: "Evening", title: "Prepare match day", detail: "Confirm Thursday ferry booking and pre-book the Øravík/Krambatangi taxi." },
     ],
-    couldDisrupt: "If the ferry is cancelled for swell, we stay on Suðuroy. The backup plans — Fámjin, Froðba, or local Øravík — are ready.",
+    couldDisrupt: "The former 11:30 northbound plan conflicts with SSL's published Ólavsøka timetable. Stay based on Suðuroy.",
     composition: "map-led",
     heroCue: {
       caption: "Tórshavn on Ólavsøka — the harbour fills with boats, crowds, and the sound of chain dancing.",
@@ -187,13 +185,13 @@ export const DAYS: DayPlan[] = [
     chapter: "Walking and repositioning north",
     location: "Øravík · Tórshavn · Sørvágur",
     narrative:
-      "One last ferry crossing, this time chasing the late sun towards the airport island. Guesthouse Hugo is ten minutes from the terminal — we want an easy morning, not a panicked dawn.",
+      "The next move north needs a deliberate choice: SSL's Friday timetable lists 07:00 and 16:00 northbound sailings, not the old 11:30 plan. The onward Sørvágur connection must be confirmed.",
     stages: [
-      { kind: "ferry", ref: "M/F Smyril", dep: "Krambatangi 16:00", arr: "Tórshavn 18:05", note: "2h 05m" },
-      { kind: "bus",   ref: "Bus 300", dep: "Tórshavn 18:30", arr: "Sørvágur 19:15", note: "45 min · stops at Vágar Airport en route" },
-      { kind: "anchor", time: "19:30", title: "Guesthouse Hugo · check-in", detail: "Code 9432 · luggage down, no pressure to be anywhere tonight." },
+      { kind: "ferry", ref: "M/F Smyril", dep: "Suðuroy 07:00 or 16:00", arr: "Tórshavn 13:00 or 18:30", note: "Friday Route 7 · choose and verify booking" },
+      { kind: "anchor", time: "Before sailing", title: "Confirm onward transfer", detail: "Verify Tórshavn–Sørvágur public transport or arrange a pre-booked taxi; do not rely on a guessed connection." },
+      { kind: "anchor", time: "Before travel", title: "Confirm Hugo arrival", detail: "Ask Guesthouse Hugo about late check-in after the ferry choice is made." },
     ],
-    couldDisrupt: "The Friday timetable differs from Thursday's. If the 16:00 ferry is cancelled for swell, the 21:15 may still run — keep the option open.",
+    couldDisrupt: "Friday onward travel is not operationally complete until the selected ferry-to-Sørvágur connection and late check-in are confirmed.",
     composition: "split-rhythm",
     heroCue: {
       caption: "Sørvágur — the airport island seen at the end of the trip.",
@@ -251,7 +249,7 @@ export const FERRY = {
     { dep: "Tórshavn 14:15", arr: "Krambatangi 16:20" },
     { dep: "Tórshavn 21:15", arr: "Krambatangi 23:20", highlight: true, note: "last boat" },
   ],
-  booking: "booking.ssl.fo · foot passengers queue 1 h, gate closes 5 min before sailing",
+  booking: "booking.ssl.fo · foot passengers may queue 1 h at Krambatangi; gate closes 5 min before sailing",
 } as const;
 
 export const PUBS_NEAR_GROUND = [

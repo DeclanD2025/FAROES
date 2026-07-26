@@ -245,7 +245,7 @@ function LuggageStrategy() {
         <p>• <strong>Hugo storage:</strong> Contact host (+298 232101) to ask if bags can be left before 14:00 if arriving on an early ferry.</p>
         <p>• <strong>Vágar Airport:</strong> No luggage storage at the airport. Cannot leave bags there.</p>
         <p>• <strong>Carrying luggage:</strong> If exploring before check-in, Bus 300 and village walks are manageable with backpacks. Gásadalur taxi with luggage is fine — leave bags in the taxi while you photograph.</p>
-        <p>• <strong>Tórshavn layover:</strong> If there's a gap between ferry arrival and Bus 300 departure, the bus station has basic seating but no lockers. Keep bags with you.</p>
+        <p>• <strong>Tórshavn layover:</strong> If there’s a gap between ferry arrival and Bus 300 departure, the bus station has basic seating but no lockers. Keep bags with you.</p>
       </div>
     </div>
   );
@@ -337,7 +337,7 @@ export function DayFiveDetail() {
               <h1 className="text-[clamp(2.5rem,3.5vw,3.2rem)] leading-[1.04] mt-1.5 text-basalt tracking-[-0.01em]" style={{ fontFamily: "var(--font-cinzel)" }}>North to Vágar</h1>
               <p className="text-[20px] font-medium text-basalt/80 mt-2">Øravík → Tórshavn → Sørvágur → Vágar exploration</p>
               <p className="text-[14px] text-basalt/60 mt-2 max-w-[38rem]">
-                One last ferry crossing, then chasing the late sun across Vágar. Bøur, Gásadalur (by taxi), and the village that puts us ten minutes from tomorrow's flight.
+                One last ferry crossing, then chasing the late sun across Vágar. Bøur, Gásadalur (by taxi), and the village that puts us ten minutes from tomorrow’s flight.
               </p>
             </div>
 

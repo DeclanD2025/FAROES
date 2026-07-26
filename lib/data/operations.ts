@@ -1,0 +1,196 @@
+// Operational trip data. This file is the only source for time-critical
+// transport assumptions introduced during the 26 July 2026 production audit.
+
+export type ConfidenceLabel =
+  | "Confirmed from booking"
+  | "Verified from official source"
+  | "Likely, but reconfirm before departure"
+  | "Requires same-day verification"
+  | "Contingency only";
+
+export type TransportLeg = {
+  id: string;
+  date: string;
+  title: string;
+  operator: string;
+  service: string;
+  departure: string;
+  arrival: string;
+  duration: string;
+  leaveBy: string;
+  confidence: ConfidenceLabel;
+  action: string;
+  fallback: string;
+};
+
+export const OFFICIAL_SOURCES = {
+  sslRoute7: {
+    label: "SSL Route 7 timetable",
+    url: "https://www.ssl.fo/en/timetable/ferry/7-suduroy-torshavn",
+    checked: "26 July 2026",
+  },
+  sslRoute700: {
+    label: "SSL Route 700 timetable",
+    url: "https://www.ssl.fo/en/timetable/bus/700-sumba-vagur-tvoeroyri",
+    checked: "26 July 2026",
+  },
+  sslBooking: {
+    label: "SSL booking",
+    url: "https://booking.ssl.fo",
+    checked: "26 July 2026",
+  },
+  sslTravelCard: {
+    label: "SSL Tourist Travel Card",
+    url: "https://www.ssl.fo/en/prices/tourist-travel-card",
+    checked: "26 July 2026",
+  },
+} as const;
+
+export const CRITICAL_TRANSPORT: TransportLeg[] = [
+  {
+    id: "monday-arrival",
+    date: "Mon 27 Jul",
+    title: "Vágar Airport → Tórshavn → Suðuroy",
+    operator: "Atlantic Airways / SSL",
+    service: "RC 415 + Route 300 + Smyril Route 7",
+    departure: "RC 415 arrives 18:35 (booking record)",
+    arrival: "No confirmed same-evening arrival at Øravík",
+    duration: "Connection not validated",
+    leaveBy: "Decide accommodation before travel",
+    confidence: "Requires same-day verification",
+    action: "Do not rely on the 21:15 Smyril. Confirm the flight's actual arrival, Route 300 connection and a Tórshavn overnight fallback before leaving Edinburgh.",
+    fallback: "Stay in Tórshavn; use the next verified Route 7 sailing and arrange the Suðuroy transfer with SSL or a pre-booked taxi.",
+  },
+  {
+    id: "thursday-north",
+    date: "Thu 30 Jul",
+    title: "Krambatangi → Tórshavn",
+    operator: "Strandfaraskip Landsins",
+    service: "Route 7 · M/F Smyril · foot passenger",
+    departure: "11:30",
+    arrival: "13:35",
+    duration: "2h 05m",
+    leaveBy: "Be at Krambatangi by 10:30",
+    confidence: "Verified from official source",
+    action: "Foot-passenger gate closes five minutes before departure. SSL permits queuing at Krambatangi one hour before sailing. Pre-book / confirm the passenger reservation.",
+    fallback: "The next northbound Thursday sailing arrives after kick-off. A cancellation means the match journey fails.",
+  },
+  {
+    id: "thursday-south",
+    date: "Thu 30 Jul",
+    title: "Tórshavn → Krambatangi",
+    operator: "Strandfaraskip Landsins",
+    service: "Route 7 · M/F Smyril · foot passenger",
+    departure: "21:15",
+    arrival: "23:20",
+    duration: "2h 05m",
+    leaveBy: "Reach the foot-passenger gate by 20:30; it closes 21:10",
+    confidence: "Verified from official source",
+    action: "Carry an overnight layer, medicines, charger and ID to the match. Leave the stadium immediately after the required work; do not plan food or interviews after full time.",
+    fallback: "If missed or cancelled: stay in Tórshavn, contact SSL, then reassess Friday's northbound plan. There is no late-night land alternative.",
+  },
+  {
+    id: "friday-north",
+    date: "Fri 31 Jul",
+    title: "Suðuroy → Tórshavn",
+    operator: "Strandfaraskip Landsins",
+    service: "Route 7 · M/F Smyril",
+    departure: "07:00 or 16:00 (Friday timetable)",
+    arrival: "13:00 or 18:30 respectively",
+    duration: "Official page states 2h 05m; timetable connection must be reconfirmed",
+    leaveBy: "Book the Øravík/Krambatangi taxi and choose a sailing before Thursday evening",
+    confidence: "Verified from official source",
+    action: "The old 11:30 Friday plan is not a Friday Route 7 sailing. Confirm the exact terminal call, foot-passenger booking and onward Tórshavn → Sørvágur connection with SSL.",
+    fallback: "If the 07:00 is impractical after match day, the 16:00 protects rest but requires a confirmed late transfer or accommodation alternative.",
+  },
+];
+
+export const DAY_OPERATIONS = [
+  {
+    number: 1,
+    date: "Monday 27 July 2026",
+    base: "Tórshavn contingency, then Øravík when transport is confirmed",
+    headline: "Do not commit to a Suðuroy arrival on an assumed connection.",
+    carry: ["offline booking records", "water and food", "warm layer", "Tórshavn overnight details"],
+    actions: [
+      ["Before Edinburgh", "Check RC 415 status and save a Tórshavn overnight option."],
+      ["After landing", "Use live SSL information; only board onward transport that leaves a safe buffer for the ferry."],
+      ["If the 21:15 ferry cannot be safely reached", "Stay in Tórshavn. Inform the Øravík host and move the arrival plan to Tuesday."],
+    ],
+    risk: "The original same-evening airport-to-ferry chain is not confirmed as operational.",
+  },
+  {
+    number: 2,
+    date: "Tuesday 28 July 2026",
+    base: "Øravík, Suðuroy",
+    headline: "Use the clear-weather window for the approved Øravík Fell Loop.",
+    carry: ["trail shoes", "waterproof layer", "phone with GPX saved offline", "water", "warm layer"],
+    actions: [
+      ["Before leaving", "Check weather and visibility. Do not use the fell section in fog, strong wind, heavy rain or darkness."],
+      ["Run block", "Walk 112 m to Bønhúsið, allow 55–75 minutes moving time plus warm-up, stops, cool-down, shower and food."],
+      ["Later", "Buy the next morning's supplies and verify Wednesday's reduced Ólavsøka local-bus service if travelling beyond Øravík."],
+    ],
+    risk: "The GPX supports a 4.13 km loop, but weather—not pace—decides whether it is safe.",
+  },
+  {
+    number: 3,
+    date: "Wednesday 29 July 2026 · Ólavsøka",
+    base: "Øravík, Suðuroy",
+    headline: "Stay on Suðuroy; treat Ólavsøka transport as special-service territory.",
+    carry: ["food for Thursday breakfast", "charged power bank", "cash/card", "warm layer"],
+    actions: [
+      ["Morning", "Check SSL's Ólavsøka notices. Route 700 has special services and request-only rules."],
+      ["Day plan", "Use a local, public-transport-compatible Suðuroy day or remain in Øravík; do not build the itinerary around Tórshavn."],
+      ["Evening", "Pack match-day bag, pre-book Øravík/Krambatangi taxi and confirm Thursday foot-passenger reservation."],
+    ],
+    risk: "The former 11:30 northbound plan conflicts with SSL's published Ólavsøka timetable and has been withdrawn.",
+  },
+  {
+    number: 4,
+    date: "Thursday 30 July 2026 · match day",
+    base: "Øravík, Suðuroy",
+    headline: "The return ferry is possible only with a disciplined stadium exit.",
+    carry: ["match ticket/accreditation", "ferry booking", "phone and power bank", "overnight essentials", "waterproof layer"],
+    actions: [
+      ["10:15", "Leave Øravík by pre-booked taxi for Krambatangi; do not assume a convenient local bus."],
+      ["10:30", "Join the foot-passenger queue for the verified 11:30 Smyril."],
+      ["20:00", "Target stadium exit at the final whistle. Be at the ferry gate no later than 20:30; the gate closes at 21:10."],
+    ],
+    risk: "Extra time, delayed coverage, a slow exit or ferry disruption can make the return fail. The itinerary is tight but conditionally viable.",
+  },
+  {
+    number: 5,
+    date: "Friday 31 July 2026",
+    base: "Øravík → Tórshavn → Sørvágur",
+    headline: "The old 11:30 northbound ferry does not run on Friday.",
+    carry: ["all luggage", "Guesthouse Hugo confirmation", "taxi contact", "food and water"],
+    actions: [
+      ["Before Thursday evening", "Choose 07:00 or 16:00 Route 7; confirm terminal, booking and the Øravík transfer."],
+      ["Before sailing", "Confirm the onward Tórshavn–Sørvágur connection or arrange a pre-booked taxi."],
+      ["Before departure", "Ask Guesthouse Hugo about late arrival and access instructions."],
+    ],
+    risk: "Friday onward travel is not operationally complete until the selected ferry-to-Sørvágur connection and late check-in are confirmed.",
+  },
+  {
+    number: 6,
+    date: "Saturday 1 August 2026",
+    base: "Sørvágur → Vágar Airport → home",
+    headline: "Confirm the airport transfer the evening before; keep a taxi fallback.",
+    carry: ["passport", "boarding passes offline", "phone cable", "travel insurance details"],
+    actions: [
+      ["Friday evening", "Confirm the Saturday Route 300 service or pre-book the short airport taxi."],
+      ["Before leaving Hugo", "Complete online check-in and verify flight status."],
+      ["At Gatwick", "Use only a coach or rail option that preserves the separate Stansted flight check-in buffer."],
+    ],
+    risk: "The separate Gatwick–Stansted transfer remains a personal-connection risk, not an airline-protected connection.",
+  },
+] as const;
+
+export const BOOKINGS_AUDIT = [
+  { name: "Øravík accommodation", provider: "Booking record", date: "27–31 Jul", status: "Confirmed from booking" as ConfidenceLabel, action: "Save host arrival instructions offline; arrival night remains dependent on Monday transport.", location: "Við Á 7, Øravík, 827, Faroe Islands" },
+  { name: "Guesthouse Hugo", provider: "Booking record", date: "31 Jul–1 Aug", status: "Confirmed from booking" as ConfidenceLabel, action: "Confirm late-arrival procedure after the Friday ferry choice is made.", location: "Sørvágur" },
+  { name: "Atlantic Airways flights", provider: "Booking record", date: "27 Jul / 1 Aug", status: "Confirmed from booking" as ConfidenceLabel, action: "Check in online and save boarding passes offline.", location: "EDI–FAE / FAE–LGW" },
+  { name: "Thursday Smyril outbound", provider: "SSL Route 7", date: "30 Jul · 11:30", status: "Verified from official source" as ConfidenceLabel, action: "Confirm / retain foot-passenger booking before Wednesday evening.", location: "Krambatangi → Tórshavn" },
+  { name: "Thursday Smyril return", provider: "SSL Route 7", date: "30 Jul · 21:15", status: "Verified from official source" as ConfidenceLabel, action: "Confirm / retain foot-passenger booking and carry overnight essentials.", location: "Tórshavn → Krambatangi" },
+  { name: "Friday repositioning", provider: "SSL Route 7", date: "31 Jul · 07:00 or 16:00", status: "Requires same-day verification" as ConfidenceLabel, action: "Choose the sailing and verify terminal, onward transfer and Hugo late-arrival before Thursday evening.", location: "Suðuroy → Tórshavn → Sørvágur" },
+] as const;

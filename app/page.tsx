@@ -34,7 +34,7 @@ export default function HomePage() {
           Expedition command
         </h1>
         <p className="text-[16px] text-basalt/60 mt-3 max-w-[36rem]">
-          One train, one flight, one ferry, six days, one football match. Every detail planned.
+          Six days, one football match, and a live operational record for the connections that matter.
         </p>
         {!countdown.arrived && countdown.phrase && (
           <p className="code tnum text-[18px] text-rust font-medium mt-3">
@@ -59,9 +59,9 @@ export default function HomePage() {
           color="text-basalt"
         />
         <StateCard
-          label="Next hard deadline"
-          value="Mon · RC 415 at 17:10"
-          detail="Check in online before leaving"
+          label="Priority decision"
+          value="Monday Suðuroy connection"
+          detail="Keep a Tórshavn overnight fallback ready"
           color="text-rust"
         />
       </div>
@@ -76,13 +76,13 @@ export default function HomePage() {
           </p>
           <div className="space-y-2 text-[13px]">
             <AlertItem
-              label="Last ferry"
-              detail="21:15 from Tórshavn is the only boat back to Suðuroy. Miss it = sleep in Tórshavn. Gate closes 21:10."
+              label="Thursday return ferry"
+              detail="21:15 Tórshavn → Krambatangi is verified. Target the gate by 20:30; foot passengers cannot board after 21:10."
               urgency="critical"
             />
             <AlertItem
               label="Ólavsøka · 29 July"
-              detail="National holiday. Shops closed. Stock up on 28 July. Cafés may have reduced hours."
+              detail="Special ferry and Route 700 services apply. Stay based on Suðuroy and confirm any shop or bus hours directly."
               urgency="warning"
             />
             <AlertItem
@@ -201,8 +201,8 @@ export default function HomePage() {
           />
           <BookingCard
             label="Ferries"
-            detail="Route 7 · 4 crossings pre-booked at ssl.fo"
-            status="Pre-booked"
+            detail="Thursday service is verified; Monday and Friday chains need confirmation"
+            status="Action needed"
           />
         </div>
       </section>

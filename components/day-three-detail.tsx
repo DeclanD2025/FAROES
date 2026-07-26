@@ -213,7 +213,7 @@ export function DayThreeDetail() {
               <p className="text-[20px] font-medium text-basalt/80 mt-2">Øravík · Krambatangi · Tórshavn</p>
               <p className="text-[14px] text-basalt/60 mt-2 max-w-[38rem]">
                 The national day. Ferry north to Tórshavn for the boat races, harbour celebrations,
-                and the biggest party of the Faroese year. Same ferry as matchday tomorrow — we'll
+                and the biggest party of the Faroese year. Same ferry as matchday tomorrow — we’ll
                 know the crossing by heart. The match is tomorrow.
               </p>
             </div>

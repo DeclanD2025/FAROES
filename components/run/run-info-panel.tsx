@@ -36,6 +36,8 @@ const ROUTE_FACTS = [
   { label: "Surface", value: "Trail + road" },
   { label: "Profile", value: "Challenging" },
   { label: "Ascent", value: "~222 m" },
+  { label: "Descent", value: "~222 m" },
+  { label: "Low / high", value: "6 m / 189 m" },
   { label: "Est. time", value: "55–75 min" },
 ];
 

@@ -300,7 +300,7 @@ export function DaySixDetail() {
               <p className="text-[20px] font-medium text-basalt/80 mt-2">Sørvágur → Gatwick → Stansted → Glasgow → Bellshill</p>
               <p className="text-[14px] text-basalt/60 mt-2 max-w-[38rem]">
                 Two flights, one coach, one self-transfer. If RC 416 is on time, the connections are comfortable.
-                If it's delayed, you need to know exactly how late is too late.
+                If it’s delayed, you need to know exactly how late is too late.
               </p>
             </div>
 
@@ -444,7 +444,7 @@ export function DaySixDetail() {
           <p className="text-[11px] tracking-[0.14em] uppercase text-rust font-medium">Day 6 · Saturday · 1 August</p>
           <h1 className="text-[clamp(2rem,8vw,2.6rem)] leading-[1.06] mt-1 text-basalt tracking-[-0.01em]" style={{ fontFamily: "var(--font-cinzel)" }}>Homeward</h1>
           <p className="text-[17px] font-medium text-basalt/80 mt-1.5">Sørvágur → Gatwick → Stansted → Glasgow</p>
-          <p className="text-[14px] text-basalt/60 mt-2">Two flights, one coach, and Glasgow's lights at the end.</p>
+          <p className="text-[14px] text-basalt/60 mt-2">Two flights, one coach, and Glasgow’s lights at the end.</p>
         </div>
         <section className="mb-6"><TripReadiness /></section>
         <section className="mb-6"><MobileDecisionPanel /></section>

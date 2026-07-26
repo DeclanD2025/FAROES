@@ -22,7 +22,7 @@ export function PlaceholderPage({ title, description }: PlaceholderPageProps) {
       <hr className="my-8 border-basalt/10" />
 
       <div className="space-y-3">
-        <p className="text-[13px] text-basalt/60">What's available now:</p>
+        <p className="text-[13px] text-basalt/60">What’s available now:</p>
         <ul className="space-y-1.5">
           <li>
             <Link href="/day/1" className="text-[14px] text-fjord underline underline-offset-2 decoration-fjord/30 hover:text-rust transition-colors">

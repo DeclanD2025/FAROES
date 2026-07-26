@@ -134,7 +134,7 @@ function useForecast(lat: number, lon: number): LocationData {
       setData({ current, forecast, loading: false, error: false });
     };
 
-    setData({ current: null, forecast: [], loading: true, error: false });
+    // Preserve the previous data while the async refresh below is in flight.
     run();
     const id = setInterval(run, 1_800_000); // refresh every 30 min
     return () => {

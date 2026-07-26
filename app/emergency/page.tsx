@@ -377,7 +377,7 @@ export default function EmergencyPage() {
         <p className="text-[13px] text-basalt/70">
           <strong>GHIC/EHIC is NOT valid in the Faroe Islands.</strong> The Faroes are outside the EU/EEA for healthcare purposes.
           You need travel insurance with medical cover, including hiking and missed-connection cover for the self-transfer on Day 6.
-          Keep your policy number and emergency claims number saved offline — write them down, don't just screenshot.
+          Keep your policy number and emergency claims number saved offline — write them down, don’t just screenshot.
         </p>
       </section>
     </article>

@@ -174,11 +174,11 @@ function WhyThisRoute() {
   return (
     <div className="border border-basalt/15 rounded-[7px] p-4">
       <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">
-        Why this is today's route
+        Why this is today’s route
       </p>
       <ul className="space-y-2 text-[13px] text-basalt/70">
         <li>• Hvannhagi is the best genuinely bus-accessible hike from Øravík — the trailhead is at Hov village, reachable by Bus 700 in ~15 min.</li>
-        <li>• It's a moderate ridge walk with a spectacular lake-and-island payoff, without needing a car.</li>
+        <li>• It’s a moderate ridge walk with a spectacular lake-and-island payoff, without needing a car.</li>
         <li>• The orange-post waymarking provides navigation guidance (though not in fog).</li>
         <li>• Beinisvørð — the iconic Suðuroy cliff — is NOT bus-accessible. The trailhead is ~8 km from the nearest bus stop on narrow roads. It requires a pre-booked taxi (~DKK 400–500 return) and is a better fit for Day 3 if the weather is right.</li>
         <li>• Hov village adds a quick cultural stop (Viking chieftain's mound) that works in any weather.</li>
@@ -426,4 +426,3 @@ export function DayTwoDetail() {
     </>
   );
 }
-

@@ -43,7 +43,6 @@ export function LiveBoard({
 
   useEffect(() => {
     if (!fetchUrl || !transform) {
-      setStatus("static");
       return;
     }
 

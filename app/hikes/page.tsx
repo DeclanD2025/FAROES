@@ -9,6 +9,9 @@ import { HIKES, type HikeRoute, type HikeDifficulty, getDifficultyLabel, getDiff
 import { JOURNEY_STOPS } from "@/lib/data/faroes-places";
 
 const DIFFICULTIES: (HikeDifficulty | "all")[] = ["all", "easy", "moderate", "hard", "very-hard"];
+// The command centre only lists routes that fit this no-car trip. Other
+// research entries remain in the data file but are not operational plans.
+const TRIP_HIKES = HIKES.filter((hike) => hike.id === "oravik-fell-loop");
 
 function locName(id: string) { return JOURNEY_STOPS.find(l => l.id === id)?.name ?? id; }
 
@@ -17,8 +20,8 @@ export default function HikesPage() {
   const [selectedHike, setSelectedHike] = useState<HikeRoute | null>(null);
 
   const filtered = useMemo(() => {
-    if (difficultyFilter === "all") return HIKES;
-    return HIKES.filter(h => h.difficulty === difficultyFilter);
+    if (difficultyFilter === "all") return TRIP_HIKES;
+    return TRIP_HIKES.filter(h => h.difficulty === difficultyFilter);
   }, [difficultyFilter]);
 
   if (selectedHike) {
@@ -33,8 +36,7 @@ export default function HikesPage() {
           Hiking routes.
         </h1>
         <p className="caption mt-3 max-w-[36rem]">
-          Route data requires verification from official sources. Do not rely on unverified data for navigation.
-          Check conditions before each hike.
+          The approved no-car route is shown below. Its GPX is the authoritative line; check conditions before departure.
         </p>
       </header>
 
