@@ -6,7 +6,6 @@
 
 "use client";
 
-import { useState } from "react";
 import { TripReadiness } from "@/components/trip-readiness";
 import { ConnectionChain } from "@/components/connection-chain";
 import { SourceRegister } from "@/components/source-register";
