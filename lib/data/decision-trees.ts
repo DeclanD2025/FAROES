@@ -72,7 +72,7 @@ export const DAY3_DECISION: DecisionTree = {
   id: "day3-olavsoka",
   day: 3,
   title: "Ólavsøka plan · Wednesday 29 July",
-  decisionBy: "09:00 — check ferry status + Tórshavn weather",
+  decisionBy: "05:30 — check ferry status + Tórshavn weather",
   nodes: [
     {
       id: "d3-olavsoka",
@@ -80,7 +80,7 @@ export const DAY3_DECISION: DecisionTree = {
       options: [
         {
           label: "Ferry to Tórshavn",
-          description: "11:30 ferry north → boat races at the harbour, harbour festival, pubs, last ferry back 21:15. ~13 hour day. Same ferry as matchday tomorrow.",
+          description: "07:00 special sailing north → a full day in Tórshavn, then the 21:15 return. Be at Krambatangi by 06:00 and leave the city centre at 20:20.",
           planId: "d3-torshavn",
           likelihood: "preferred",
         },

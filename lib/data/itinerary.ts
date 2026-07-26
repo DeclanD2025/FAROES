@@ -139,15 +139,15 @@ export const DAYS: DayPlan[] = [
     weekday: "Wednesday",
     iso: "2026-07-29",
     chapter: "Ólavsøka",
-    location: "Øravík · Suðuroy",
+    location: "Øravík · Krambatangi · Tórshavn",
     narrative:
-      "Ólavsøka affects the island timetable. Keep the day on Suðuroy, check SSL's special Route 700 services, and prepare the following day's match journey rather than taking an unsupported ferry plan north.",
+      "The national day in the capital. Take the special early Smyril north, join Tórshavn for Ólavsøka, then protect the 21:15 sailing back to Suðuroy for match day tomorrow.",
     stages: [
-      { kind: "anchor", time: "Morning", title: "Check special services", detail: "SSL publishes a different Ólavsøka schedule. Route 700 includes request-only services." },
-      { kind: "anchor", time: "Day", title: "Stay on Suðuroy", detail: "Choose a local, public-transport-compatible plan; do not assume access to a car." },
-      { kind: "anchor", time: "Evening", title: "Prepare match day", detail: "Confirm Thursday ferry booking and pre-book the Øravík/Krambatangi taxi." },
+      { kind: "ferry", ref: "M/F Smyril", dep: "Krambatangi 07:00", arr: "Tórshavn ~09:05", note: "Special Ólavsøka sailing · arrive at the terminal by 06:00" },
+      { kind: "anchor", time: "Day", title: "Ólavsøka in Tórshavn", detail: "Procession, Parliament opening, harbour, exhibitions and the live city programme. Most normal shops are closed." },
+      { kind: "ferry", ref: "M/F Smyril", dep: "Tórshavn 21:15", arr: "Krambatangi ~23:20", note: "Return · be at Farstøðin by 20:30", critical: true },
     ],
-    couldDisrupt: "The former 11:30 northbound plan conflicts with SSL's published Ólavsøka timetable. Stay based on Suðuroy.",
+    couldDisrupt: "Festival demand, weather or a missed departure. The special-day pair is 07:00 northbound and 21:15 southbound; pre-arrange both Øravík ↔ Krambatangi transfers.",
     composition: "map-led",
     heroCue: {
       caption: "Tórshavn on Ólavsøka — the harbour fills with boats, crowds, and the sound of chain dancing.",

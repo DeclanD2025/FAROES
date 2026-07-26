@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type maplibregl from "maplibre-gl";
 import { DAY_OPERATIONS, OFFICIAL_SOURCES } from "@/lib/data/operations";
 import type { MapFilter, SelectedFeature } from "@/components/map/faroes-map";
+import { DayThreeFieldGuide } from "@/components/day-three-field-guide";
 
 const FaroesMap = dynamic(() => import("@/components/map/faroes-map"), {
   ssr: false,
@@ -13,17 +14,11 @@ const FaroesMap = dynamic(() => import("@/components/map/faroes-map"), {
 });
 
 const MAPS: Record<number, { filter: MapFilter; title: string; detail: string }> = {
-  3: { filter: "suðuroy", title: "Suðuroy base map", detail: "Keep the Ólavsøka day local; use this map to orient the Øravík, Krambatangi and Tvøroyri options." },
+  3: { filter: "journey", title: "Ólavsøka crossing map", detail: "Øravík → Krambatangi → Tórshavn in the morning, then the 21:15 Smyril back to Suðuroy." },
   5: { filter: "journey-outbound", title: "Northbound repositioning map", detail: "The geographical sequence remains Suðuroy → Tórshavn → Sørvágur; confirm the Friday connection before travelling." },
 };
 
 const PRACTICAL_NOTES: Record<number, { title: string; body: string; href?: string; label?: string }[]> = {
-  3: [
-    { title: "What Ólavsøka is", body: "The Faroes’ national celebration runs over 28–29 July. The 29th is Saint Olaf’s day, also the annual opening of the Løgting (Parliament): a national holiday with a history reaching back to Olaf II’s death in 1030.", href: "https://www.faroeislands.fo/the-big-picture/national-symbols/national-day/", label: "National Day background ↗" },
-    { title: "What happens — and where", body: "The procession, Parliament ceremony, rowing, concerts, exhibitions, chain dancing and the late communal singing belong in Tórshavn. They are not a realistic same-day side trip from an Øravík base without a specifically confirmed ferry plan.", href: "https://visitfaroeislands.com/en/whatson/events/event/st-olafs-national-celebration?lang=en", label: "Ólavsøka overview ↗" },
-    { title: "Your Suðuroy plan", body: "Let the occasion set the mood, but keep the day local: Øravík, Tvøroyri harbour and the wooden church are enough. The old assembly landscape above Øravík, Tingstovan / Uppi millum Stovur, is useful context — not an unmarked shortcut or a reason to head out in poor visibility." },
-    { title: "Resupply and transport first", body: "Shop in Tvøroyri for Thursday breakfast, water, ferry snacks and medicines. Øravík has no proper supermarket and Krambatangi is not a resupply stop. Treat Route 700 as special-service territory: check SSL on the day, and arrange any request-only departure by its stated deadline.", href: "https://www.ssl.fo/en/timetable/bus/700-sumba-vagur-tvoeroyri/", label: "SSL Route 700 ↗" },
-  ],
   5: [
     { title: "Pack as a travel day", body: "Keep every charger, medication, passport, ferry record and Guesthouse Hugo confirmation in one day bag. Do not put the Friday transfer essentials in checked or inaccessible luggage." },
     { title: "Food and water before the ferry", body: "Buy food on Suðuroy before the selected sailing. Treat Tórshavn only as a contingency stop: onward transport to Sørvágur is not operational until it has been confirmed or replaced with a taxi." },
@@ -75,6 +70,9 @@ export function OperationalDay({ number }: { number: number }) {
         <p className="text-[14px] leading-relaxed text-basalt">{day.risk}</p>
       </section>
 
+      {number === 3 ? (
+        <DayThreeFieldGuide actions={day.actions} completedActions={completedActions} onToggleAction={toggleAction} />
+      ) : (
       <section className="mt-10 max-w-[48rem]">
         <h2 className="label border-b border-basalt/15 pb-2">The day, in order</h2>
         <ol className="mt-1 divide-y divide-basalt/10">
@@ -87,6 +85,7 @@ export function OperationalDay({ number }: { number: number }) {
           ))}
         </ol>
       </section>
+      )}
 
       {map && (
         <section className="mt-10 max-w-[58rem]">
@@ -113,8 +112,8 @@ export function OperationalDay({ number }: { number: number }) {
 
       {PRACTICAL_NOTES[number] && (
         <section className="mt-10 max-w-[58rem]">
-          <h2 className="label border-b border-basalt/15 pb-2">{number === 3 ? "Ólavsøka · what changes today" : "Supplies, places and local context"}</h2>
-          <div className={`mt-4 grid grid-cols-1 ${number === 3 ? "md:grid-cols-2" : "md:grid-cols-3"} gap-3`}>
+          <h2 className="label border-b border-basalt/15 pb-2">Supplies, places and local context</h2>
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
             {PRACTICAL_NOTES[number].map((note) => <article key={note.title} className="border border-basalt/15 rounded-[7px] p-4"><h3 className="text-[14px] font-medium text-basalt">{note.title}</h3><p className="mt-2 text-[12px] leading-relaxed text-basalt/70">{note.body}</p>{note.href && <a href={note.href} target="_blank" rel="noreferrer" className="mt-3 inline-block text-[12px] text-fjord underline underline-offset-4">{note.label}</a>}</article>)}
           </div>
         </section>
