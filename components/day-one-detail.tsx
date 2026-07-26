@@ -89,12 +89,12 @@ const TIMELINE_STEPS: TimelineStep[] = [
     footer: "Walk across tarmac. Non-Schengen passport control — passport stamp on request. Arrivals duty-free open. No SIM vendor — buy eSIM before departure. Bus stop 50 m from terminal exit. Bus 300 typically meets RC 415 — but NOT guaranteed.",
   },
   {
-    num: 7, title: "Bus 300 · Vágar Airport → Tórshavn",
-    subtitle: "Via Vágatunnilin subsea tunnel",
-    middleLabel: "Departs", middleValue: "~19:00",
-    middleLabel2: "Arrives", middleValue2: "~19:45",
-    rightLabel: "Journey", rightValue: "~45 min",
-    footer: "DKK 90 pp or 7-day SSL Travel Card (DKK 700 ≈ £80 pp — covers all buses and foot ferries). Bus terminates at Tórshavn bus station. Ferry terminal (Farstøðin) is ~10 min walk or short taxi.",
+    num: 7, title: "Confirmed AirportTaxi · Vágar Airport → Farstøðin",
+    subtitle: "Flogvøllin → Farstøðin, Eystara Bryggja, Tórshavn",
+    middleLabel: "Trigger", middleValue: "RC 415 arrival",
+    middleLabel2: "Passengers", middleValue2: "2",
+    rightLabel: "Luggage", rightValue: "Cabin only",
+    footer: "CONFIRMED BOOKING · Taxi og AirportTaxi will monitor RC 415 on Monday 27 July and drive directly to the ferry terminal. Booking note: reach Farstøðin for the 21:15 Smyril; the taxi starts its approach two hours before the flight arrival. Keep the service number and booking email saved offline. This replaces the assumed Bus 300 connection.",
   },
   {
     num: 8, title: "Tórshavn · ferry connection",

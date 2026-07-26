@@ -11,6 +11,10 @@ import dynamic from "next/dynamic";
 import { DAYS, type DayStage } from "@/lib/data/itinerary";
 import type { SelectedFeature } from "@/components/map/faroes-map";
 import type maplibregl from "maplibre-gl";
+import { DayOneDetail } from "@/components/day-one-detail";
+import { DayTwoDetail } from "@/components/day-two-detail";
+import { DayFourDetail } from "@/components/day-four-detail";
+import { DaySixDetail } from "@/components/day-six-detail";
 import { OperationalDay } from "@/components/operational-day";
 
 const FaroesMap = dynamic(() => import("@/components/map/faroes-map"), {
@@ -105,9 +109,14 @@ export function DayDetail({ num: rawNum }: { num: string }) {
 
   const dayNum = parseInt(day.num, 10);
 
-  // A single operational format now prevents conflicting copies of ferry and
-  // bus assumptions from appearing across bespoke day components.
-  if (dayNum >= 1 && dayNum <= 6) return <OperationalDay number={dayNum} />;
+  // Keep the richer, map-led expedition pages where their content remains
+  // usable. Days 3 and 5 use the audited operational view because their old
+  // ferry plans contradicted the verified special/Friday timetables.
+  if (dayNum === 1) return <DayOneDetail />;
+  if (dayNum === 2) return <DayTwoDetail />;
+  if (dayNum === 4) return <DayFourDetail />;
+  if (dayNum === 6) return <DaySixDetail />;
+  if (dayNum === 3 || dayNum === 5) return <OperationalDay number={dayNum} />;
 
   return (
     <article className="px-6 sm:px-8 lg:px-12 pt-8 sm:pt-10 pb-20 max-w-[72rem]">

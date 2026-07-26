@@ -1,8 +1,28 @@
+"use client";
+
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import { useCallback, useRef, useState } from "react";
+import type maplibregl from "maplibre-gl";
 import { DAY_OPERATIONS, OFFICIAL_SOURCES } from "@/lib/data/operations";
+import type { MapFilter, SelectedFeature } from "@/components/map/faroes-map";
+
+const FaroesMap = dynamic(() => import("@/components/map/faroes-map"), {
+  ssr: false,
+  loading: () => <div className="h-[22rem] border border-basalt/15 bg-fog/20 flex items-center justify-center"><p className="caption">Loading map…</p></div>,
+});
+
+const MAPS: Record<number, { filter: MapFilter; title: string; detail: string }> = {
+  3: { filter: "suðuroy", title: "Suðuroy base map", detail: "Keep the Ólavsøka day local; use this map to orient the Øravík, Krambatangi and Tvøroyri options." },
+  5: { filter: "journey-outbound", title: "Northbound repositioning map", detail: "The geographical sequence remains Suðuroy → Tórshavn → Sørvágur; confirm the Friday connection before travelling." },
+};
 
 export function OperationalDay({ number }: { number: number }) {
   const day = DAY_OPERATIONS.find((item) => item.number === number);
+  const mapRef = useRef<maplibregl.Map | null>(null);
+  const [selected, setSelected] = useState<SelectedFeature>(null);
+  const map = MAPS[number];
+  const onSelect = useCallback((feature: SelectedFeature) => setSelected(feature), []);
   if (!day) return null;
 
   return (
@@ -32,6 +52,16 @@ export function OperationalDay({ number }: { number: number }) {
           ))}
         </ol>
       </section>
+
+      {map && (
+        <section className="mt-10 max-w-[58rem]">
+          <header className="border-b border-basalt/15 pb-2 mb-4">
+            <h2 className="label">{map.title}</h2>
+            <p className="caption mt-1">{map.detail}</p>
+          </header>
+          <FaroesMap mapRef={mapRef} onSelect={onSelect} selected={selected} filter={map.filter} height="22rem" />
+        </section>
+      )}
 
       <section className="mt-10 max-w-[48rem]">
         <h2 className="label border-b border-basalt/15 pb-2">Carry</h2>
