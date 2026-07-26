@@ -36,14 +36,14 @@ const FaroesMap = dynamic(() => import("@/components/map/faroes-map"), {
 const PLAN_TORSHAVN = {
   id: "d3-torshavn",
   title: "Tórshavn for Ólavsøka — the national day",
-  condition: "Ferry running, weather manageable, energy for a 13-hour day",
+  condition: "Ferry running, weather manageable, and a confirmed evening return",
   ferryOut: {
     vessel: "M/F Smyril",
     route: "Route 7",
-    dep: "Krambatangi 11:30",
-    arr: "Tórshavn 13:35",
+    dep: "Krambatangi 14:30",
+    arr: "Tórshavn ~16:35",
     duration: "2h 05m",
-    note: "Café onboard. Upper deck for fjord approach views. Pre-booked at ssl.fo.",
+    note: "Café onboard. Upper deck for the fjord approach. Confirm the passenger booking at ssl.fo.",
   },
   ferryBack: {
     vessel: "M/F Smyril",
@@ -55,25 +55,23 @@ const PLAN_TORSHAVN = {
     critical: true,
   },
   timeline: [
-    { time: "~08:00", action: "Wake up · breakfast at Við á 7. ESLA supplies, coffee. Check yr.no for Tórshavn." },
-    { time: "~09:30", action: "Pack day bag: waterproof layer, phone charger, match ticket saved offline, SSL Travel Card." },
-    { time: "~10:15", action: "Bus 700 from Ferjuleðan to Krambatangi (2 stops, ~8 min, DKK 20 or Travel Card)." },
-    { time: "~10:30", action: "Arrive Krambatangi. Foot-passenger queue. Boarding from ~11:00." },
-    { time: "11:30", action: "Ferry departs. Café: hot food, beer, coffee. Upper deck — the approach into Tórshavn is the best 20 minutes of the crossing." },
-    { time: "13:35", action: "Arrive Tórshavn. Walk to Tinganes (2 min from ferry) — the old town peninsula, government since 1848." },
-    { time: "~14:00", action: "Ólavsøka boat races at the harbour. National rowing finals — the main sporting event. Crowds gather along the waterfront. Free to watch." },
-    { time: "~15:30", action: "Explore the harbour festival. Chain dancing, street music, food stalls, national costumes. Parliament ceremony concluded — the city is in full celebration." },
-    { time: "~16:30", action: "OY Brewing (5 min from harbour). Site-brewed beer, food. The pre-match room tomorrow — scope it today. Also nearby: Tórshøll (cheap Faroese pints, working-class football crowd)." },
-    { time: "~18:00", action: "Dinner in town. Irish Pub Tórshavn (fish & chips, harbour), or Etika (Faroese-Japanese, book ahead). Mikkeller (craft bar, old lanes) for a post-dinner beer." },
-    { time: "~19:30", action: "Evening concerts and festivities. The city stays alive deep into the night — but we have a ferry to catch." },
+    { time: "Morning", action: "Slow start at Við á 7. The Parliament procession happens before we arrive; check Tórshavn weather and the live Ólavsøka programme." },
+    { time: "12:45", action: "Pack waterproofs, ferry booking, charger, water and a snack. Treat ordinary shop opening hours as unreliable on the public holiday." },
+    { time: "13:15", action: "Take the pre-booked taxi from Øravík to Krambatangi. Do not stake the day on an unconfirmed local bus." },
+    { time: "13:30", action: "Arrive Krambatangi and join the foot-passenger queue. The gate closes at 14:25." },
+    { time: "14:30", action: "Ferry departs. Use the crossing to choose between a confirmed meal and festival stalls." },
+    { time: "~16:35", action: "Arrive Tórshavn. Walk to Tinganes and Vágsbotnur; use the live programme to choose an exhibition, food, music or chain dancing." },
+    { time: "~17:30", action: "Harbour and old town. The 2026 rowing is on Tuesday, so make Wednesday an evening of city atmosphere rather than chasing a race that has already finished." },
+    { time: "~18:30", action: "Eat in town only if it is confirmed open or booked. For Faroese seafood, Barbara Fish House / ROKS are strong leads; use festival food as the flexible fallback." },
+    { time: "~19:45", action: "One final confirmed event or a short stroll. The return ferry sets the ceiling on the evening." },
     { time: "~20:30", action: "Start heading toward Farstøðin (ferry terminal). ~10 min walk from the harbour. Don't leave it later than this." },
     { time: "21:15", action: "Ferry departs Tórshavn. Café onboard. 2h 05m crossing. Seasickness: sit midships lower deck if rough." },
     { time: "23:20", action: "Arrive Krambatangi. Bus 700 two stops to Øravík or taxi +298 239550 (~DKK 150, 5 min). Self check-in at Við á 7." },
-    { time: "~23:45", action: "Back at base. Shower, wind down. Tomorrow: matchday. Same ferry again at 11:30. Set alarm for 09:00." },
+    { time: "~23:45", action: "Back at base. Shower, wind down and prepare for Thursday match day." },
   ],
-  transport: "Ferry M/F Smyril Route 7 both ways. Bus 700 to/from Krambatangi. SSL Travel Card covers all. Pre-book ferries at ssl.fo.",
+  transport: "Ferry M/F Smyril Route 7 both ways. Pre-book or confirm the Øravík ↔ Krambatangi taxis and the passenger ferry booking at ssl.fo.",
   weather: "Check yr.no for Tórshavn (not Øravík). The boat races and harbour are outdoors — waterproof layer essential. Tórshavn is more sheltered than Suðuroy but still Faroese weather.",
-  notes: "This is the same ferry schedule as matchday (Day 4). You'll do this crossing twice in two days — worth it. The midnight singing (Midnáttarsangurin) happens after our ferry departs — we miss the finale but catch the full day of celebrations. If the ferry is cancelled, Plan B/C/D on Suðuroy are the fallback.",
+  notes: "This is an evening in the capital, not the full programme. The midnight singing (Midnáttarsangurin) happens after our ferry departs; if the ferry is cancelled, Plan B/C/D on Suðuroy are the fallback.",
 };
 
 // =============================================================================
@@ -150,20 +148,19 @@ const PLAN_LOCAL = {
 
 const OLAVSOKA_BRIEFING = {
   title: "Ólavsøka · 29 July 2026",
-  summary: "The Faroese national holiday — the biggest day of the year. Parliament opens, boat race finals fill the harbour, chain dancing runs through the old town, and Tórshavn swells with people in national costume. We're taking the ferry north to be part of it.",
+  summary: "The Faroese national holiday — Parliament opens in the morning, then Tórshavn fills with music, food, exhibitions and dancing. We are taking the afternoon ferry north for the evening atmosphere.",
   keyEvents: [
-    { event: "Boat race finals", time: "Afternoon, Tórshavn harbour", note: "National rowing championships. Free to watch from the waterfront. The sporting heart of Ólavsøka." },
+    { event: "Boat race finals", time: "Tuesday 28 July", note: "The 2026 Ólavsøka rowing takes place the previous day; do not plan Wednesday around it." },
     { event: "Harbour festival", time: "All afternoon and evening", note: "Chain dancing, street music, food stalls, national costumes. The old town (Tinganes) and harbour are the centre of it." },
-    { event: "Parliament ceremony", time: "Morning (we miss this)", note: "Formal opening at the cathedral and parliament house. Concluded before we arrive at 13:35." },
+    { event: "Parliament ceremony", time: "Morning (we miss this)", note: "Formal opening at the cathedral and Parliament House. Concluded before we arrive at ~16:35." },
     { event: "Midnight singing", time: "~00:00 (we miss this)", note: "Midnáttarsangurin at the town square — thousands gather. Our ferry departs 21:15 so we can't stay for it." },
   ],
   practical: [
-    "Ferry both ways is pre-booked. Same M/F Smyril, same Route 7 as matchday tomorrow.",
-    "SSL Travel Card covers all bus and ferry travel for the day.",
+    "Confirm the afternoon ferry booking and pre-book the Øravík ↔ Krambatangi taxi transfers.",
     "Stock up on matchday supplies on Tuesday 28 July — Bónus and most shops are closed on Ólavsøka.",
-    "Restaurants and bars ARE open. Hotel Tvøroyri, OY Brewing, Tórshøll, and the Irish Pub will all be serving.",
+    "Restaurants and bars may have holiday hours; do not rely on a normal opening time without confirmation.",
     "Wear something red, white, and blue — the Faroese colours. You'll blend in with the national costume crowd.",
-    "Bring waterproofs. The boat races are outdoors and Faroese weather doesn't take a holiday.",
+    "Bring waterproofs. The evening programme is outdoors and Faroese weather doesn't take a holiday.",
   ],
 };
 
@@ -382,17 +379,17 @@ export function DayThreeDetail() {
             {/* Sources */}
             <SourceRegister items={[
               {
-                claim: "Ferry times: Krambatangi 11:30 → Tórshavn 13:35, Tórshavn 21:15 → Krambatangi 23:20",
+                claim: "Ferry times: Krambatangi 14:30 → Tórshavn ~16:35, Tórshavn 21:15 → Krambatangi ~23:20",
                 verification: verified(
                   "SSL Route 7 timetable · M/F Smyril",
                   { title: SOURCE_LIBRARY.ssl.title, url: SOURCE_LIBRARY.ssl.url },
                 ),
               },
               {
-                claim: "Ólavsøka boat races and harbour celebrations — 29 July 2026",
+                claim: "Ólavsøka city celebrations — 29 July 2026; rowing takes place the previous day",
                 verification: provisional(
                   "Visit Tórshavn · Ólavsøka programme",
-                  "The boat race finals are the main afternoon event. Confirm exact times closer to the date.",
+                  "Use the live city programme for the evening’s exact running order and holiday-opening changes.",
                   { title: SOURCE_LIBRARY.visitTorshavn.title, url: SOURCE_LIBRARY.visitTorshavn.url },
                 ),
               },
@@ -484,10 +481,10 @@ export function DayThreeDetail() {
             <p className="text-[11px] uppercase tracking-[0.12em] text-claret/70 font-medium mb-2">✦ Ólavsøka · 29 July</p>
             <p className="text-[12px] text-basalt/70 mb-3">{OLAVSOKA_BRIEFING.summary}</p>
             <div className="space-y-2 text-[11px] text-basalt/60">
-              <p>🚣 Boat races — afternoon at the harbour</p>
+              <p>🚣 Rowing took place Tuesday — Wednesday is for the city programme</p>
               <p>🎭 Chain dancing + street music — all day</p>
-              <p>🍺 OY Brewing, Tórshøll, Irish Pub — all open</p>
-              <p>⛴️ Ferry 11:30 north, 21:15 south — pre-booked</p>
+              <p>🍺 Confirm holiday opening hours before choosing a bar or restaurant</p>
+              <p>⛴️ Ferry 14:30 north, 21:15 south — confirm booking</p>
               <p>⚠️ Stock up Tuesday — shops closed on Ólavsøka</p>
             </div>
           </div>

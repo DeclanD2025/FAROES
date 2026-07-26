@@ -81,8 +81,8 @@ export function DayThreeFieldGuide({ actions, completedActions, onToggleAction }
           <div className="grid gap-px overflow-hidden border border-basalt/15 bg-basalt/15 sm:grid-cols-[1fr_auto_1fr]">
             <div className="bg-wool p-4">
               <p className="label text-fjord">Out</p>
-              <p className="mt-2 code text-[1.5rem] text-basalt">07:00 → ~09:05</p>
-              <p className="mt-1 text-[13px] text-basalt/60">Krambatangi → Tórshavn · arrive at the terminal by 06:00.</p>
+              <p className="mt-2 code text-[1.5rem] text-basalt">14:30 → ~16:35</p>
+              <p className="mt-1 text-[13px] text-basalt/60">Krambatangi → Tórshavn · arrive at the terminal by 13:30.</p>
             </div>
             <div className="hidden bg-fog/40 px-3 text-[11px] text-basalt/45 sm:flex sm:items-center">ÓLAVSØKA</div>
             <div className="bg-wool p-4">
@@ -149,7 +149,7 @@ export function DayThreeFieldGuide({ actions, completedActions, onToggleAction }
             <div className="grid grid-cols-[7rem_1fr] gap-3 py-3"><dt className="label">Centre</dt><dd className="text-basalt/70">Road closures are normal during Ólavsøka. From the terminal, walking is the dependable choice.</dd></div>
             <div className="grid grid-cols-[7rem_1fr] gap-3 py-3"><dt className="label">Programme</dt><dd className="text-basalt/70">Use Tímin / the city’s live programme for the actual running order, not old blog timings.</dd></div>
             <div className="grid grid-cols-[7rem_1fr] gap-3 py-3"><dt className="label">Food</dt><dd className="text-basalt/70">Carry a snack, then book or confirm. Holiday opening hours override ordinary listings.</dd></div>
-            <div className="grid grid-cols-[7rem_1fr] gap-3 py-3"><dt className="label">After land</dt><dd className="text-basalt/70">Your Krambatangi → Øravík ride needs to be arranged before the 07:00 departure.</dd></div>
+            <div className="grid grid-cols-[7rem_1fr] gap-3 py-3"><dt className="label">After land</dt><dd className="text-basalt/70">Your Krambatangi → Øravík ride needs to be arranged before the 14:30 departure.</dd></div>
           </dl>
         </div>
       )}

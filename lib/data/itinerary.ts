@@ -141,13 +141,13 @@ export const DAYS: DayPlan[] = [
     chapter: "Ólavsøka",
     location: "Øravík · Krambatangi · Tórshavn",
     narrative:
-      "The national day in the capital. Take the special early Smyril north, join Tórshavn for Ólavsøka, then protect the 21:15 sailing back to Suðuroy for match day tomorrow.",
+      "An Ólavsøka evening in the capital. Take the special afternoon Smyril north, join Tórshavn for food, music and the festival atmosphere, then protect the 21:15 sailing back to Suðuroy for match day tomorrow.",
     stages: [
-      { kind: "ferry", ref: "M/F Smyril", dep: "Krambatangi 07:00", arr: "Tórshavn ~09:05", note: "Special Ólavsøka sailing · arrive at the terminal by 06:00" },
-      { kind: "anchor", time: "Day", title: "Ólavsøka in Tórshavn", detail: "Procession, Parliament opening, harbour, exhibitions and the live city programme. Most normal shops are closed." },
+      { kind: "ferry", ref: "M/F Smyril", dep: "Krambatangi 14:30", arr: "Tórshavn ~16:35", note: "Special Ólavsøka sailing · arrive at the terminal by 13:30" },
+      { kind: "anchor", time: "Evening", title: "Ólavsøka in Tórshavn", detail: "Harbour, exhibitions, food, music and the live city programme. Most normal shops are closed." },
       { kind: "ferry", ref: "M/F Smyril", dep: "Tórshavn 21:15", arr: "Krambatangi ~23:20", note: "Return · be at Farstøðin by 20:30", critical: true },
     ],
-    couldDisrupt: "Festival demand, weather or a missed departure. The special-day pair is 07:00 northbound and 21:15 southbound; pre-arrange both Øravík ↔ Krambatangi transfers.",
+    couldDisrupt: "Festival demand, weather or a missed departure. The final special northbound sailing is 14:30, followed by the 21:15 southbound return; pre-arrange both Øravík ↔ Krambatangi transfers.",
     composition: "map-led",
     heroCue: {
       caption: "Tórshavn on Ólavsøka — the harbour fills with boats, crowds, and the sound of chain dancing.",
