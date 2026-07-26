@@ -6,9 +6,7 @@
 
 "use client";
 
-import { useState, useRef } from "react";
-import dynamic from "next/dynamic";
-import type maplibregl from "maplibre-gl";
+import { useState } from "react";
 import { TripReadiness } from "@/components/trip-readiness";
 import { ConnectionChain } from "@/components/connection-chain";
 import { SourceRegister } from "@/components/source-register";
@@ -17,6 +15,7 @@ import { getEdiDeparturesUrl, transformEdiDepartures, FLIGHT_COLUMNS } from "@/l
 import { CONNECTION_CHAINS } from "@/lib/data/transport-matrices";
 import { provisional } from "@/lib/data/sources";
 import { SOURCE_LIBRARY } from "@/lib/data/sources";
+import { FlightRouteGraphic } from "@/components/flight-route-graphic";
 import {
   type TimelineStep,
   type SummaryItem,
@@ -26,15 +25,6 @@ import {
   JourneyTimeline,
   MobileTimeline,
 } from "@/components/day-widgets";
-
-const FaroesMap = dynamic(() => import("@/components/map/faroes-map"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full border border-basalt/15 bg-fog/20 flex items-center justify-center" style={{ minHeight: 280 }}>
-      <p className="caption">Loading map…</p>
-    </div>
-  ),
-});
 
 // =============================================================================
 // Timeline data — expanded with complete operational detail
@@ -245,8 +235,6 @@ const DAY1_SOURCES = [
 // =============================================================================
 
 export function DayOneDetail() {
-  const mapRef = useRef<maplibregl.Map | null>(null);
-
   return (
     <>
       {/* DESKTOP */}
@@ -314,8 +302,7 @@ export function DayOneDetail() {
                 weatherLabel="Tórshavn"
               />
               <div>
-                <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">SCOTLAND → FØROYAR</p>
-                <div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="journey-outbound" mapRef={mapRef} /></div>
+                <FlightRouteGraphic />
               </div>
             </div>
           </aside>
@@ -335,7 +322,7 @@ export function DayOneDetail() {
         <section className="mb-6"><MobileTripStatus dateLine1="Monday 27 July 2026" dateLine2="Flight at 17:10 from Edinburgh Airport" weatherLat={62.0097} weatherLon={-6.7716} weatherLabel="Tórshavn" /></section>
         <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Journey</p><MobileTimeline steps={TIMELINE_STEPS} /></section>
         <section className="mb-6"><LatestSafeDepartures /></section>
-        <section><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">SCOTLAND → FØROYAR</p><div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="journey-outbound" mapRef={mapRef} /></div></section>
+        <section><FlightRouteGraphic /></section>
       </article>
     </>
   );
