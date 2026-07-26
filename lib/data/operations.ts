@@ -110,7 +110,8 @@ export const DAY_OPERATIONS = [
     number: 1,
     date: "Monday 27 July 2026",
     base: "Tórshavn contingency, then Øravík when transport is confirmed",
-    headline: "Do not commit to a Suðuroy arrival on an assumed connection.",
+    chapter: "The journey north",
+    briefing: "Do not commit to a Suðuroy arrival on an assumed connection.",
     carry: ["offline booking records", "water and food", "warm layer", "Tórshavn overnight details"],
     actions: [
       ["Before Edinburgh", "Check RC 415 status and save a Tórshavn overnight option."],
@@ -123,7 +124,8 @@ export const DAY_OPERATIONS = [
     number: 2,
     date: "Tuesday 28 July 2026",
     base: "Øravík, Suðuroy",
-    headline: "Use the clear-weather window for the approved Øravík Fell Loop.",
+    chapter: "The cliffs of Suðuroy",
+    briefing: "Use the clear-weather window for the approved Øravík Fell Loop.",
     carry: ["trail shoes", "waterproof layer", "phone with GPX saved offline", "water", "warm layer"],
     actions: [
       ["Before leaving", "Check weather and visibility. Do not use the fell section in fog, strong wind, heavy rain or darkness."],
@@ -136,7 +138,8 @@ export const DAY_OPERATIONS = [
     number: 3,
     date: "Wednesday 29 July 2026 · Ólavsøka",
     base: "Øravík, Suðuroy",
-    headline: "Stay on Suðuroy; treat Ólavsøka transport as special-service territory.",
+    chapter: "Ólavsøka",
+    briefing: "Stay on Suðuroy; treat Ólavsøka transport as special-service territory.",
     carry: ["food for Thursday breakfast", "charged power bank", "cash/card", "warm layer"],
     actions: [
       ["Morning", "Check SSL's Ólavsøka notices. Route 700 has special services and request-only rules."],
@@ -149,7 +152,8 @@ export const DAY_OPERATIONS = [
     number: 4,
     date: "Thursday 30 July 2026 · match day",
     base: "Øravík, Suðuroy",
-    headline: "The return ferry is possible only with a disciplined stadium exit.",
+    chapter: "Motherwell v HB",
+    briefing: "The return ferry is possible only with a disciplined stadium exit.",
     carry: ["match ticket/accreditation", "ferry booking", "phone and power bank", "overnight essentials", "waterproof layer"],
     actions: [
       ["10:15", "Leave Øravík by pre-booked taxi for Krambatangi; do not assume a convenient local bus."],
@@ -162,7 +166,8 @@ export const DAY_OPERATIONS = [
     number: 5,
     date: "Friday 31 July 2026",
     base: "Øravík → Tórshavn → Sørvágur",
-    headline: "The old 11:30 northbound ferry does not run on Friday.",
+    chapter: "Repositioning north",
+    briefing: "The old 11:30 northbound ferry does not run on Friday.",
     carry: ["all luggage", "Guesthouse Hugo confirmation", "taxi contact", "food and water"],
     actions: [
       ["Before Thursday evening", "Choose 07:00 or 16:00 Route 7; confirm terminal, booking and the Øravík transfer."],
@@ -175,7 +180,8 @@ export const DAY_OPERATIONS = [
     number: 6,
     date: "Saturday 1 August 2026",
     base: "Sørvágur → Vágar Airport → home",
-    headline: "Confirm the airport transfer the evening before; keep a taxi fallback.",
+    chapter: "Homeward, via London",
+    briefing: "Confirm the airport transfer the evening before; keep a taxi fallback.",
     carry: ["passport", "boarding passes offline", "phone cable", "travel insurance details"],
     actions: [
       ["Friday evening", "Confirm the Saturday Route 300 service or pre-book the short airport taxi."],

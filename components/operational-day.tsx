@@ -10,9 +10,10 @@ export function OperationalDay({ number }: { number: number }) {
       <header className="pb-7 border-b border-basalt/15">
         <p className="label text-rust">Day {day.number} · {day.date}</p>
         <h1 className="mt-3 text-[clamp(2rem,4.4vw,3rem)] leading-[1.04] tracking-[-0.012em] text-basalt" style={{ fontFamily: "var(--font-cinzel)" }}>
-          {day.headline}
+          {day.chapter}
         </h1>
-        <p className="caption mt-3">Base: {day.base}</p>
+        <p className="mt-3 max-w-[44rem] text-[15px] leading-relaxed text-basalt/70">{day.briefing}</p>
+        <p className="caption mt-2">Base: {day.base}</p>
       </header>
 
       <section className="mt-8 max-w-[48rem] border border-rust/25 bg-rust/[0.035] p-4 rounded-[7px]">
