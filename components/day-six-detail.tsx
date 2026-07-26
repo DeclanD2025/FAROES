@@ -178,6 +178,17 @@ const HOME_OPTIONS = [
   { method: "Pick-up", time: "~35 min", cost: "Free", note: "If someone's collecting you — pickup point is the short-stay car park." },
 ];
 
+function HomewardSupplyCard() {
+  return <section className="border border-basalt/15 rounded-[7px] p-4">
+    <p className="label text-fjord">Transit supplies</p>
+    <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3 text-[12px] leading-relaxed text-basalt/70">
+      <div><p className="font-medium text-basalt">Leave Hugo with</p><p className="mt-1">Passport, both boarding passes, coach booking, phone cable, power bank, medication and a snack in the same small bag.</p></div>
+      <div><p className="font-medium text-basalt">Gatwick reset</p><p className="mt-1">Use South Terminal food shops to replace water and food before the coach. Do not let a meal stop erode the 13:00 coach buffer.</p></div>
+      <div><p className="font-medium text-basalt">Stansted buffer</p><p className="mt-1">Charge everything, check Ryanair’s gate and keep a back-up meal. The large buffer is for disruption, not an excuse to delay security.</p></div>
+    </div>
+  </section>;
+}
+
 // =============================================================================
 // Mobile
 // =============================================================================
@@ -355,8 +366,10 @@ export function DaySixDetail() {
             {/* LAYER B — Operating plan */}
             <section className="mb-6">
               <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-3">Homeward timeline</p>
-              <JourneyTimeline steps={TIMELINE_STEPS} />
+              <JourneyTimeline steps={TIMELINE_STEPS} completionKey="day-6" />
             </section>
+
+            <section className="mb-6"><HomewardSupplyCard /></section>
 
             {/* Live flight board — FAE departures (RC 416 highlighted) */}
             <section className="mb-6">
@@ -449,7 +462,8 @@ export function DaySixDetail() {
         <section className="mb-6"><TripReadiness /></section>
         <section className="mb-6"><MobileDecisionPanel /></section>
         <section className="mb-6"><MobileTripStatus dateLine1="Saturday 1 August 2026" dateLine2="Homeward · 2 flights · 1 coach" weatherLat={62.0706} weatherLon={-7.3221} weatherLabel="Sørvágur" /></section>
-        <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Homeward timeline</p><MobileTimeline steps={TIMELINE_STEPS} /></section>
+        <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Homeward timeline</p><MobileTimeline steps={TIMELINE_STEPS} completionKey="day-6" /></section>
+        <section className="mb-6"><HomewardSupplyCard /></section>
         <section className="mb-6">
           <div className="border border-rust/20 bg-rust/[0.02] rounded-[8px] p-4">
             <p className="text-[11px] uppercase tracking-[0.12em] text-rust font-medium mb-1">Self-transfer — not protected</p>

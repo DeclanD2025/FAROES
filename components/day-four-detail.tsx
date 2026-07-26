@@ -48,6 +48,17 @@ const PRE_DEPARTURE_ITEMS = [
   { icon: "Fd", text: "Food for return ferry — buy at Bónus Tvøroyri on Wed or bring from base" },
 ];
 
+function MatchdaySupplyCard() {
+  return <section className="border border-basalt/15 rounded-[7px] p-4">
+    <p className="label text-fjord">Supplies and last chances</p>
+    <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3 text-[12px] leading-relaxed text-basalt/70">
+      <div><p className="font-medium text-basalt">Before Øravík</p><p className="mt-1">Carry a filled water bottle, ferry snacks, a waterproof layer, power bank and a dry bag. You may not have time to shop after the match.</p></div>
+      <div><p className="font-medium text-basalt">Tórshavn window</p><p className="mt-1">Eat early and buy any extra food before heading to the ground. Keep the ferry QR record, ID and medication on your person, not in a day bag left elsewhere.</p></div>
+      <div><p className="font-medium text-basalt">Before full time</p><p className="mt-1">Refill water and put on the warm layer before the final minutes. The only post-match plan is the walk or taxi to Farstøðin; food and drinks wait for the ferry.</p></div>
+    </div>
+  </section>;
+}
+
 // =============================================================================
 // Timeline data
 // =============================================================================
@@ -445,8 +456,10 @@ export function DayFourDetail() {
           {/* LAYER B — Operating plan */}
           <section className="mb-6">
             <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-3">Matchday timeline</p>
-            <JourneyTimeline steps={DAY_FOUR_TIMELINE} />
+              <JourneyTimeline steps={DAY_FOUR_TIMELINE} completionKey="day-4" />
           </section>
+
+          <section className="mb-6"><MatchdaySupplyCard /></section>
 
           {/* LAYER C — Decision plan */}
           <section className="mb-6">
@@ -536,9 +549,10 @@ export function DayFourDetail() {
         <section className="mb-6"><TripReadiness /></section>
         <section className="mb-6"><MobileDecisionPanel /></section>
         <section className="mb-6"><MobileTripStatus dateLine1="Thursday 30 July 2026" dateLine2="Matchday · HB Tórshavn v Motherwell" weatherLat={62.0097} weatherLon={-6.7716} weatherLabel="Tórshavn" /></section>
-        <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Matchday timeline</p><MobileTimeline steps={DAY_FOUR_TIMELINE} /></section>
+        <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Matchday timeline</p><MobileTimeline steps={DAY_FOUR_TIMELINE} completionKey="day-4" /></section>
         <section className="mb-6"><DecisionTreeView tree={DAY4_DECISION} /></section>
         <section className="mb-6"><MobileFerryScenarios /></section>
+        <section className="mb-6"><MatchdaySupplyCard /></section>
         <section><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">TÓRSHAVN · MATCHDAY</p><div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="match" mapRef={mapRef} /></div></section>
       </article>
     </>

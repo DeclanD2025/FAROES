@@ -345,7 +345,7 @@ export function DayOneDetail() {
             {/* LAYER B — Operating plan */}
             <section className="mb-6">
               <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-3">Journey timeline</p>
-              <JourneyTimeline steps={TIMELINE_STEPS} />
+              <JourneyTimeline steps={TIMELINE_STEPS} completionKey="day-1" />
             </section>
 
             {/* LAYER E — Sources */}
@@ -380,7 +380,7 @@ export function DayOneDetail() {
         <section className="mb-6"><TripReadiness /></section>
         <section className="mb-6"><MobileDecisionPanel /></section>
         <section className="mb-6"><MobileTripStatus dateLine1="Monday 27 July 2026" dateLine2="Flight at 17:10 from Edinburgh Airport" weatherLat={62.0097} weatherLon={-6.7716} weatherLabel="Tórshavn" /></section>
-        <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Journey</p><MobileTimeline steps={TIMELINE_STEPS} /></section>
+        <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Journey</p><MobileTimeline steps={TIMELINE_STEPS} completionKey="day-1" /></section>
         <section className="mb-6"><LatestSafeDepartures /></section>
         <section className="mb-6"><FlightDelayFallback /></section>
         <section><FlightRouteGraphic /></section>

@@ -358,7 +358,7 @@ export function DayFiveDetail() {
             {/* LAYER B — Operating plan */}
             <section className="mb-6">
               <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-3">Journey north</p>
-              <JourneyTimeline steps={DAY_FIVE_TIMELINE} />
+              <JourneyTimeline steps={DAY_FIVE_TIMELINE} completionKey="day-5" />
             </section>
 
             {/* LAYER D — Vágar exploration */}
@@ -426,7 +426,7 @@ export function DayFiveDetail() {
         <section className="mb-6"><TripReadiness /></section>
         <section className="mb-6"><MobileDecisionPanel /></section>
         <section className="mb-6"><MobileTripStatus dateLine1="Friday 31 July 2026" dateLine2="Repositioning to Sørvágur" weatherLat={62.0706} weatherLon={-7.3221} weatherLabel="Sørvágur" /></section>
-        <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Journey north</p><MobileTimeline steps={DAY_FIVE_TIMELINE} /></section>
+        <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Journey north</p><MobileTimeline steps={DAY_FIVE_TIMELINE} completionKey="day-5" /></section>
         <section className="mb-6"><FerryComparisonTable /></section>
         <section className="mb-6"><DecisionTreeView tree={DAY5_DECISION} /></section>
         <section><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">SUÐUROY → VÁGAR</p><div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="journey" mapRef={mapRef} /></div></section>

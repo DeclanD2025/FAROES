@@ -25,6 +25,47 @@ export interface TimelineStep {
   footerLink?: { label: string; href: string };
 }
 
+const COMPLETION_EVENT = "faroe-trip-step-completion";
+
+function useStepCompletion(scope: string, steps: TimelineStep[]) {
+  const [complete, setComplete] = useState<Record<number, boolean>>({});
+
+  useEffect(() => {
+    const key = `faroe-trip:${scope}:done`;
+    const load = () => {
+      try {
+        const stored = window.localStorage.getItem(key);
+        setComplete(stored ? JSON.parse(stored) as Record<number, boolean> : {});
+      } catch {
+        setComplete({});
+      }
+    };
+    const sync = (event: Event) => {
+      const detail = (event as CustomEvent<{ scope?: string }>).detail;
+      if (detail?.scope === scope) load();
+    };
+    load();
+    window.addEventListener(COMPLETION_EVENT, sync);
+    return () => window.removeEventListener(COMPLETION_EVENT, sync);
+  }, [scope]);
+
+  const toggle = (step: number) => {
+    const key = `faroe-trip:${scope}:done`;
+    setComplete((current) => {
+      const next = { ...current, [step]: !current[step] };
+      try {
+        window.localStorage.setItem(key, JSON.stringify(next));
+        window.dispatchEvent(new CustomEvent(COMPLETION_EVENT, { detail: { scope } }));
+      } catch {
+        // The itinerary remains usable in private browsing even if storage is blocked.
+      }
+      return next;
+    });
+  };
+
+  return { complete, toggle, count: steps.filter((step) => complete[step.num]).length };
+}
+
 export interface SummaryItem {
   icon: string;
   label: string;
@@ -346,9 +387,11 @@ export function SummaryStrip({ items }: { items: SummaryItem[] }) {
 // JourneyTimeline — vertical timeline with numbered steps (desktop)
 // =============================================================================
 
-export function JourneyTimeline({ steps }: { steps: TimelineStep[] }) {
+export function JourneyTimeline({ steps, completionKey = "timeline" }: { steps: TimelineStep[]; completionKey?: string }) {
+  const { complete, toggle, count } = useStepCompletion(completionKey, steps);
   return (
     <div className="relative">
+      <p className="mb-3 text-[11px] text-basalt/50">{count}/{steps.length} steps done · saved on this device</p>
       <div
         className="absolute left-[17px] top-8 bottom-8 w-px border-l border-dashed border-fjord/25"
         aria-hidden
@@ -370,7 +413,7 @@ export function JourneyTimeline({ steps }: { steps: TimelineStep[] }) {
 
             {/* Content card */}
             <div className="flex-1 min-w-0">
-              <div className="border border-basalt/15 rounded-[7px] p-3.5 flex items-center gap-4 flex-wrap">
+              <div className={`border rounded-[7px] p-3.5 flex items-center gap-4 flex-wrap transition-colors ${complete[step.num] ? "border-moss/30 bg-moss/[0.035]" : "border-basalt/15"}`}>
                 {/* Title block */}
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-[15px] text-basalt leading-tight">
@@ -421,6 +464,14 @@ export function JourneyTimeline({ steps }: { steps: TimelineStep[] }) {
                     {step.rightValue}
                   </p>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => toggle(step.num)}
+                  aria-pressed={Boolean(complete[step.num])}
+                  className={`shrink-0 border px-2.5 py-2 text-[10px] uppercase tracking-[.08em] transition-colors focus-visible:outline-2 focus-visible:outline-navy ${complete[step.num] ? "border-moss/35 bg-moss/10 text-moss" : "border-basalt/20 text-basalt/60 hover:border-moss/35 hover:text-moss"}`}
+                >
+                  {complete[step.num] ? "Done" : "Mark done"}
+                </button>
               </div>
 
               {/* Footer note */}
@@ -451,9 +502,11 @@ export function JourneyTimeline({ steps }: { steps: TimelineStep[] }) {
 // MobileTimeline — compact vertical timeline for mobile
 // =============================================================================
 
-export function MobileTimeline({ steps }: { steps: TimelineStep[] }) {
+export function MobileTimeline({ steps, completionKey = "timeline" }: { steps: TimelineStep[]; completionKey?: string }) {
+  const { complete, toggle, count } = useStepCompletion(completionKey, steps);
   return (
     <div className="space-y-2.5">
+      <p className="text-[11px] text-basalt/50">{count}/{steps.length} steps done · saved on this device</p>
       {steps.map((step) => (
         <div key={step.num} className="flex gap-3">
           <div className="w-[34px] h-[34px] rounded-full bg-navy flex items-center justify-center shrink-0 mt-0.5">
@@ -461,8 +514,8 @@ export function MobileTimeline({ steps }: { steps: TimelineStep[] }) {
               {step.num}
             </span>
           </div>
-          <div className="flex-1 min-w-0 border border-basalt/15 rounded-[7px] p-3">
-            <p className="font-medium text-[15px] text-basalt">{step.title}</p>
+          <div className={`flex-1 min-w-0 border rounded-[7px] p-3 ${complete[step.num] ? "border-moss/30 bg-moss/[0.035]" : "border-basalt/15"}`}>
+            <div className="flex items-start justify-between gap-3"><p className="font-medium text-[15px] text-basalt">{step.title}</p><button type="button" onClick={() => toggle(step.num)} aria-pressed={Boolean(complete[step.num])} className={`shrink-0 border px-2 py-1 text-[9px] uppercase tracking-[.08em] ${complete[step.num] ? "border-moss/35 text-moss" : "border-basalt/20 text-basalt/60"}`}>{complete[step.num] ? "Done" : "Done?"}</button></div>
             <p className="text-[12px] text-basalt/55">{step.subtitle}</p>
             <div className="flex items-baseline gap-3 mt-2">
               <p className="text-[11px] text-basalt/45">{step.rightLabel}:</p>

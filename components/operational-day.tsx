@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type maplibregl from "maplibre-gl";
 import { DAY_OPERATIONS, OFFICIAL_SOURCES } from "@/lib/data/operations";
 import type { MapFilter, SelectedFeature } from "@/components/map/faroes-map";
@@ -17,12 +17,45 @@ const MAPS: Record<number, { filter: MapFilter; title: string; detail: string }>
   5: { filter: "journey-outbound", title: "Northbound repositioning map", detail: "The geographical sequence remains Suðuroy → Tórshavn → Sørvágur; confirm the Friday connection before travelling." },
 };
 
+const PRACTICAL_NOTES: Record<number, { title: string; body: string; href?: string; label?: string }[]> = {
+  3: [
+    { title: "Resupply before the holiday disruption", body: "Use Tvøroyri for the practical shop: buy Thursday breakfast, water, ferry snacks and anything you need for a late return. Øravík has no proper supermarket and Krambatangi is not a resupply stop." },
+    { title: "A local, low-commitment day", body: "Use the weather window for Øravík, Tvøroyri harbour and the wooden church rather than forcing a cross-island plan. The old Suðuroy assembly landscape, Tingstovan / Uppi millum Stovur, is above Øravík; treat it as context, not an unmarked shortcut." },
+    { title: "Culture without a transport gamble", body: "Fámjin’s church holds the first Faroese flag and Hvalba has coal-mining history, but both should be separate, confirmed transport outings. On Ólavsøka, local Route 700 services and request-only rules come first.", href: "https://visitfaroeislands.com/en/see-do/inspiration-guides/popular-guides/regional-guides/suduroy", label: "Suðuroy guide ↗" },
+  ],
+  5: [
+    { title: "Pack as a travel day", body: "Keep every charger, medication, passport, ferry record and Guesthouse Hugo confirmation in one day bag. Do not put the Friday transfer essentials in checked or inaccessible luggage." },
+    { title: "Food and water before the ferry", body: "Buy food on Suðuroy before the selected sailing. Treat Tórshavn only as a contingency stop: onward transport to Sørvágur is not operational until it has been confirmed or replaced with a taxi." },
+    { title: "Arrival at Sørvágur", body: "Message Hugo before the ferry leaves with the realistic arrival time, then save the self-check-in instructions offline. If the later ferry is chosen, confirm that a late arrival remains accepted before you board." },
+  ],
+};
+
 export function OperationalDay({ number }: { number: number }) {
   const day = DAY_OPERATIONS.find((item) => item.number === number);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const [selected, setSelected] = useState<SelectedFeature>(null);
+  const [completedActions, setCompletedActions] = useState<boolean[]>([]);
   const map = MAPS[number];
   const onSelect = useCallback((feature: SelectedFeature) => setSelected(feature), []);
+
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(`faroe-trip:day-${number}:actions`);
+      setCompletedActions(stored ? JSON.parse(stored) as boolean[] : []);
+    } catch {
+      setCompletedActions([]);
+    }
+  }, [number]);
+
+  const toggleAction = (index: number) => {
+    setCompletedActions((current) => {
+      const next = [...current];
+      next[index] = !next[index];
+      try { window.localStorage.setItem(`faroe-trip:day-${number}:actions`, JSON.stringify(next)); } catch { /* storage is optional */ }
+      return next;
+    });
+  };
+
   if (!day) return null;
 
   return (
@@ -44,10 +77,11 @@ export function OperationalDay({ number }: { number: number }) {
       <section className="mt-10 max-w-[48rem]">
         <h2 className="label border-b border-basalt/15 pb-2">The day, in order</h2>
         <ol className="mt-1 divide-y divide-basalt/10">
-          {day.actions.map(([time, action]) => (
-            <li key={time} className="grid grid-cols-[7.5rem_1fr] gap-4 py-4">
+          {day.actions.map(([time, action], index) => (
+            <li key={time} className={`grid grid-cols-[7.5rem_1fr_auto] gap-4 py-4 ${completedActions[index] ? "bg-moss/[0.025]" : ""}`}>
               <p className="code text-fjord tnum text-[13px]">{time}</p>
               <p className="text-[14px] leading-relaxed text-basalt">{action}</p>
+              <button type="button" onClick={() => toggleAction(index)} aria-pressed={Boolean(completedActions[index])} className={`h-fit border px-2.5 py-1.5 text-[10px] uppercase tracking-[.08em] focus-visible:outline-2 focus-visible:outline-navy ${completedActions[index] ? "border-moss/35 text-moss" : "border-basalt/20 text-basalt/60 hover:border-moss/35"}`}>{completedActions[index] ? "Done" : "Mark done"}</button>
             </li>
           ))}
         </ol>
@@ -75,6 +109,15 @@ export function OperationalDay({ number }: { number: number }) {
           Transport facts checked against <a href={OFFICIAL_SOURCES.sslRoute7.url} target="_blank" rel="noreferrer" className="text-fjord underline underline-offset-4">SSL</a> on {OFFICIAL_SOURCES.sslRoute7.checked}. Local buses and disruption notices still require a same-day check.
         </p>
       </section>
+
+      {PRACTICAL_NOTES[number] && (
+        <section className="mt-10 max-w-[58rem]">
+          <h2 className="label border-b border-basalt/15 pb-2">Supplies, places and local context</h2>
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+            {PRACTICAL_NOTES[number].map((note) => <article key={note.title} className="border border-basalt/15 rounded-[7px] p-4"><h3 className="text-[14px] font-medium text-basalt">{note.title}</h3><p className="mt-2 text-[12px] leading-relaxed text-basalt/70">{note.body}</p>{note.href && <a href={note.href} target="_blank" rel="noreferrer" className="mt-3 inline-block text-[12px] text-fjord underline underline-offset-4">{note.label}</a>}</article>)}
+          </div>
+        </section>
+      )}
 
       <nav className="mt-10 max-w-[48rem] flex items-center justify-between border-t border-basalt/15 pt-5">
         {number > 1 ? <Link href={`/day/${number - 1}`} className="code text-[13px] underline underline-offset-4 decoration-basalt/30">← Day {number - 1}</Link> : <span />}

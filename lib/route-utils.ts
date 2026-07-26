@@ -32,11 +32,28 @@ export function parseGpxToGeoJSON(xml: string): GeoJSON.FeatureCollection {
   return fc as GeoJSON.FeatureCollection;
 }
 
-/** Extract the first track LineString coordinates from a GeoJSON FeatureCollection. */
+/**
+ * Extract the first GPX track from a GeoJSON FeatureCollection.
+ * togeojson represents GPX tracks with one or more track segments as a
+ * MultiLineString; the audited Øravík GPX currently has one segment, but this
+ * also joins valid multi-segment tracks without inserting a synthetic gap.
+ */
 export function extractTrackCoords(fc: GeoJSON.FeatureCollection): LngLat[] | null {
   for (const f of fc.features) {
     if (f.geometry?.type === "LineString") {
       return (f.geometry as GeoJSON.LineString).coordinates;
+    }
+    if (f.geometry?.type === "MultiLineString") {
+      const segments = (f.geometry as GeoJSON.MultiLineString).coordinates;
+      const coords: LngLat[] = [];
+      for (const segment of segments) {
+        for (const coordinate of segment) {
+          const next = coordinate as LngLat;
+          const previous = coords.at(-1);
+          if (!previous || previous[0] !== next[0] || previous[1] !== next[1]) coords.push(next);
+        }
+      }
+      if (coords.length) return coords;
     }
   }
   return null;

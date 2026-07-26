@@ -63,21 +63,21 @@ const OravikRunMap = dynamic(() => import("@/components/run/oravik-run-map"), {
 
 const PRIMARY_HIKE = {
   name: "Hvannhagi Ridge",
-  trailhead: "Hov village (reachable by Bus 700 from Ferjuleðan)",
-  trailheadAccess: "Bus 700 from Øravík (Ferjuleðan) · 4 stops south · ~15 min · DKK 20",
-  routeType: "Out-and-back · orange T-marked posts",
-  distance: "~5 km round trip",
+  trailhead: "Above Suðuroyar Sjúkrahús, Tvøroyri",
+  trailheadAccess: "Use Route 700 from Øravík towards Tvøroyri, then walk uphill to the hospital trailhead. Confirm the actual Tuesday service with SSL before leaving.",
+  routeType: "Out-and-back · orange waymarked posts",
+  distance: "~5–6 km round trip",
   ascent: "~200 m total ascent",
-  duration: "2–3 hrs at moderate pace",
-  terrain: "Grassy ridge, some rocky sections, boggy after rain, lake at turnaround",
-  navigation: "Follow orange T-marked posts from Hov. Posts may be hard to see in fog — do NOT attempt in poor visibility.",
+  duration: "~2 hrs moving, allow 2½–3 hrs door to door",
+  terrain: "Grassy valley path, steep sections and boggy ground after rain",
+  navigation: "Follow the orange waymarkers from above the hospital. They can disappear in fog — do NOT attempt in poor visibility.",
   exposure: "Moderate. Some ridge sections with drop-offs. Cliff edge near the lake.",
   weatherThreshold: "Do NOT attempt if: wind > 15 m/s, visibility < 500 m, persistent rain (posts become invisible in fog).",
   food: "No facilities. Bring water (at least 1L pp), snacks, lunch.",
   water: "Stream water available but treat before drinking. Bring your own as primary.",
-  returnTransport: "Bus 700 north from Hov to Øravík. Last bus ~22:00 but check SSL timetable.",
-  taxiFallback: "Suðuroy taxi +298 239550. ~DKK 200 from Hov to Øravík.",
-  missedBus: "Hov is ~8 km from Øravík. Walkable in ~2h along Route 14 (road walking, narrow shoulders). Last resort only.",
+  returnTransport: "Return to Tvøroyri, then use Route 700 back to Øravík. Timetables and special services must be checked on the day.",
+  taxiFallback: "Suðuroy taxi +298 239550. Pre-book if you need a fixed return after the hike.",
+  missedBus: "Stay in Tvøroyri for food or supplies while you confirm the next service; do not rely on an unverified late road walk.",
 };
 
 const ALT_HIKE_LOWER = {
@@ -128,33 +128,33 @@ const DAY_TWO_TIMELINE: TimelineStep[] = [
     footer: "Check wind, visibility, and rain on yr.no for Øravík and Hov. If wind > 15 m/s or visibility < 500 m, switch to lower-risk plan.",
   },
   {
-    num: 3, title: "Bus 700 → Hov",
-    subtitle: "Ferjuleðan stop · 4 stops south",
-    middleLabel: "Depart", middleValue: "~09:30",
-    rightLabel: "Fare", rightValue: "DKK 20",
-    footer: "DKK 20 pp or SSL Travel Card. Tell the driver 'Hov' — they know. Journey ~15 min. Bus meets the road at the village centre.",
+    num: 3, title: "Route 700 → Tvøroyri",
+    subtitle: "Øravík / Ferjuleðan → Tvøroyri · verify the Tuesday departure",
+    middleLabel: "Fare", middleValue: "DKK 20",
+    rightLabel: "Before boarding", rightValue: "Check SSL",
+    footer: "Ask the driver for the closest stop for Suðuroyar Sjúkrahús / Hvannhagi. Do not use a guessed timetable: Route 700 and special services can change around Ólavsøka.",
   },
   {
-    num: 4, title: "Hvannhagi ridge walk",
-    subtitle: "Orange T-marked posts from Hov · out-and-back",
-    middleLabel: "Distance", middleValue: "~5 km",
-    middleLabel2: "Duration", middleValue2: "2–3 hrs",
+    num: 4, title: "Hvannhagi lake and valley",
+    subtitle: "Orange waymarkers from above Tvøroyri Hospital · out-and-back",
+    middleLabel: "Moving time", middleValue: "~2 hrs",
+    middleLabel2: "Allow", middleValue2: "2½–3 hrs",
     rightLabel: "Ascent", rightValue: "~200 m",
-    footer: "Ridge walk above a lake facing Stóra Dímun island. Posts vanish in fog — do NOT attempt in poor visibility. Turnaround at the lake viewpoint. Pack water, waterproofs, snacks.",
+    footer: "Follow the orange posts to the Ice-Age lake below the steep crescent of rock. It is a weather-dependent hike: turn back if cloud drops onto the route, the ground is too slick, or wind affects balance. Pack water, food and a windproof layer.",
   },
   {
-    num: 5, title: "Hov village · chieftain's mound",
-    subtitle: "30 min loop · burial mound overlooking harbour",
-    middleLabel: "Walk", middleValue: "~30 min",
-    rightLabel: "Free", rightValue: "loop",
-    footer: "Viking chieftain's burial mound. Quick, easy, works in any weather. Good add-on after the ridge walk or as a complete Plan B if conditions are poor.",
+    num: 5, title: "Tvøroyri · history and resupply",
+    subtitle: "Church, harbour, Visit Suðuroy and Bónus",
+    middleLabel: "Allow", middleValue: "45–75 min",
+    rightLabel: "Priority", rightValue: "Food first",
+    footer: "Restock dinner, Thursday breakfast and ferry snacks before sightseeing. If open, use Visit Suðuroy for trail and transport advice. The wooden church tells the town’s maritime-growth story; the present building was brought from Norway and completed in 1908.",
   },
   {
-    num: 6, title: "Bus 700 → Tvøroyri",
-    subtitle: "2 stops north · dinner at Hotel Tvøroyri",
-    middleLabel: "Depart", middleValue: "~17:00",
-    rightLabel: "Arrive", rightValue: "~17:10",
-    footer: "Pizzeria, bar, the same locals every night. Cash and card accepted. Last Bus 700 north to Øravík ~22:00 — check SSL timetable. If walking back: ~3.5 km, 45 min on narrow road — not recommended after dark.",
+    num: 6, title: "Return to Øravík",
+    subtitle: "Route 700 or pre-booked taxi",
+    middleLabel: "Before leaving", middleValue: "Check departure",
+    rightLabel: "Dinner", rightValue: "Supplies / Tvøroyri",
+    footer: "Do not leave the town without confirming your return. If the next bus is unsuitable, eat in Tvøroyri then use the saved taxi contact; avoid an unplanned narrow-road walk after dark.",
   },
 ];
 
@@ -184,6 +184,34 @@ function WhyThisRoute() {
         <li>• Hov village adds a quick cultural stop (Viking chieftain's mound) that works in any weather.</li>
       </ul>
     </div>
+  );
+}
+
+function SuduroyFieldGuide() {
+  return (
+    <section className="border border-basalt/15 rounded-[7px] p-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-basalt/10 pb-3">
+        <div><p className="label text-fjord">Suðuroy field notes</p><h2 className="mt-1 text-[18px] font-medium text-basalt">Make the hike day useful, not just scenic.</h2></div>
+        <a href="https://visitfaroeislands.com/en/see-do/inspiration-guides/popular-guides/regional-guides/suduroy" target="_blank" rel="noreferrer" className="text-[12px] text-fjord underline underline-offset-4">Island guide ↗</a>
+      </div>
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-5 text-[13px] leading-relaxed text-basalt/75">
+        <div>
+          <p className="label">Hvannhagi plan</p>
+          <p className="mt-2">The official route begins above the hospital in Tvøroyri and follows orange posts to an Ice-Age lake in a grass valley beneath steep rock. Treat it as an out-and-back: keep enough time and energy for the same route back.</p>
+          <p className="mt-2 text-rust">Abort for fog, persistent rain, strong wind or uncertain footing. The orange markers are not a substitute for visibility.</p>
+        </div>
+        <div>
+          <p className="label">Supply stop</p>
+          <p className="mt-2"><strong className="text-basalt">Bónus Tvøroyri:</strong> buy Wednesday breakfast, run food, water, ferry snacks and any back-up dinner before leaving town. Øravík has no proper shop; Krambatangi has only basic terminal facilities.</p>
+          <p className="mt-2">Also restock a charged power bank, pain relief/plasters and a dry bag. Check the actual shop and pharmacy hours before relying on them.</p>
+        </div>
+        <div>
+          <p className="label">History and places</p>
+          <p className="mt-2"><strong className="text-basalt">Øravík:</strong> the old island assembly site, Tingstovan / Uppi millum Stovur, lies in the valley above the village. <strong className="text-basalt">Tvøroyri:</strong> its growth was tied to shipping and fishing; the Norwegian wooden church was completed in 1908.</p>
+          <p className="mt-2">For another clear-weather day, Fámjin’s church holds the first Faroese flag; Hvalba’s coal-mining history and the southern cliffs are better treated as separate, transport-planned outings.</p>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -330,10 +358,12 @@ export function DayTwoDetail() {
             {/* Why this route */}
             <section className="mb-6"><WhyThisRoute /></section>
 
+            <section className="mb-6"><SuduroyFieldGuide /></section>
+
             {/* LAYER B — Operating plan */}
             <section className="mb-6">
               <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-3">Day plan</p>
-              <JourneyTimeline steps={DAY_TWO_TIMELINE} />
+              <JourneyTimeline steps={DAY_TWO_TIMELINE} completionKey="day-2" />
             </section>
 
             {/* LAYER C — Decision plan */}
@@ -422,9 +452,10 @@ export function DayTwoDetail() {
             )}
           </div>
         </section>
-        <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Day plan</p><MobileTimeline steps={DAY_TWO_TIMELINE} /></section>
+        <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Day plan</p><MobileTimeline steps={DAY_TWO_TIMELINE} completionKey="day-2" /></section>
         <section className="mb-6"><DecisionTreeView tree={DAY2_DECISION} /></section>
         <section className="mb-6"><WhyThisRoute /></section>
+        <section className="mb-6"><SuduroyFieldGuide /></section>
         <section><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">SUÐUROY · FAROE ISLANDS</p><div style={{ minHeight: 420 }}><FaroesMap onSelect={() => {}} selected={null} filter="suðuroy" mapRef={mapRef} /></div></section>
       </article>
     </>
