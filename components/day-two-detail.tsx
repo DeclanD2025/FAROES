@@ -31,6 +31,7 @@ import {
   type LngLat,
   sampleElevation,
 } from "@/lib/route-utils";
+import { OravikFamjinVagurMap } from "@/components/oravik-famjin-vagur-map";
 
 const FaroesMap = dynamic(() => import("@/components/map/faroes-map"), {
   ssr: false,
@@ -114,56 +115,55 @@ const BEINISVORD_NOTE = {
 
 const DAY_TWO_TIMELINE: TimelineStep[] = [
   {
-    num: 1, title: "Morning run · Øravík Fell Loop",
-    subtitle: "Bønhúsið → village path → old-road return",
-    middleLabel: "Duration", middleValue: "55–75 min",
-    rightLabel: "Leave by", rightValue: "06:30–07:00",
-    footer: "Challenging mixed-surface fell run. Walk 112 m from Við á 7 to Bønhúsið. Climb the official village path west, then return via route 99, old track, Fámjinsvegur and Bóndatún. Do not use in fog, darkness, heavy rain or strong wind. Do not enter Fámjinstunnilin or Hovstunnilin.",
+    num: 1, title: "Wake, fuel & make the go / no-go call",
+    subtitle: "Við á 7 · weather, kit and offline navigation",
+    middleLabel: "Window", middleValue: "07:00–08:00",
+    rightLabel: "Leave", rightValue: "~08:00",
+    footer: "Decision point 1. Check visibility, wind, rain, equipment and everyone’s condition. Komoot is primary; Organic Maps is the phone backup. Keep all three GPX tracks offline; charge phones, watches and power banks. Carry waterproofs, a warm layer, food, water, inhaler, first aid and blister treatment.",
   },
   {
-    num: 2, title: "Breakfast & weather check",
-    subtitle: "Við á 7 · ESLA supplies",
-    middleLabel: "Decide by", middleValue: "08:30",
-    rightLabel: "Check", rightValue: "yr.no",
-    footer: "Check wind, visibility, and rain on yr.no for Øravík and Hov. If wind > 15 m/s or visibility < 500 m, switch to lower-risk plan.",
+    num: 2, title: "Leg 1 · Øravík → Fámjin",
+    subtitle: "Øraskarð · Kirkjuvatn · Fámjin Church",
+    middleLabel: "Official", middleValue: "5 km · 1h 30m",
+    rightLabel: "Target", rightValue: "09:30–10:00",
+    footer: "Start by the stone-wall gate and follow the official village path via Øraskarð and Kirkjuvatn. Some ground is wet, stony and steep. In Fámjin, allow 20–30 minutes for the church/original Merkið, food and water.",
   },
   {
-    num: 3, title: "Route 700 → Tvøroyri",
-    subtitle: "Øravík / Ferjuleðan → Tvøroyri · verify the Tuesday departure",
-    middleLabel: "Fare", middleValue: "DKK 20",
-    rightLabel: "Before boarding", rightValue: "Check SSL",
-    footer: "Ask the driver for the closest stop for Suðuroyar Sjúkrahús / Hvannhagi. Do not use a guessed timetable: Route 700 and special services can change around Ólavsøka.",
+    num: 3, title: "Leg 2 · Fámjin → Vágur",
+    subtitle: "Reyðabakki · Mittvatn · Ryskivatn",
+    middleLabel: "Official", middleValue: "7 km · 2h 15m",
+    rightLabel: "Leave", rightValue: "10:15–10:30",
+    footer: "Decision point 2: reassess weather and pace before continuing. Follow the official village path from Fámjin Church via the lakes to Vágur; it includes steep ground and loose gravel. No mandatory hiking charge is identified on the three official village paths; Fámjin Church donation is optional.",
   },
   {
-    num: 4, title: "Hvannhagi lake and valley",
-    subtitle: "Orange waymarkers from above Tvøroyri Hospital · out-and-back",
-    middleLabel: "Moving time", middleValue: "~2 hrs",
-    middleLabel2: "Allow", middleValue2: "2½–3 hrs",
-    rightLabel: "Ascent", rightValue: "~200 m",
-    footer: "Follow the orange posts to the Ice-Age lake below the steep crescent of rock. It is a weather-dependent hike: turn back if cloud drops onto the route, the ground is too slick, or wind affects balance. Pack water, food and a windproof layer.",
+    num: 4, title: "Vágur · lunch & bailout decision",
+    subtitle: "Trailhead / grove · food · weather check",
+    middleLabel: "Target", middleValue: "12:30–13:15",
+    rightLabel: "Break", rightValue: "30–45 min",
+    footer: "Decision point 3. Vágur is the principal bailout point: arrange road transport to Øravík if conditions, pace or energy are not right. Do not continue merely to complete the loop.",
   },
   {
-    num: 5, title: "Tvøroyri · history and resupply",
-    subtitle: "Church, harbour, Visit Suðuroy and Bónus",
-    middleLabel: "Allow", middleValue: "45–75 min",
-    rightLabel: "Priority", rightValue: "Food first",
-    footer: "Restock dinner, Thursday breakfast and ferry snacks before sightseeing. If open, use Visit Suðuroy for trail and transport advice. The wooden church tells the town’s maritime-growth story; the present building was brought from Norway and completed in 1908.",
+    num: 5, title: "Leg 3 · Vágur → Øravík",
+    subtitle: "Hvannadal · Vágsskarð · Hovsdalur · Mannaskarð · Tingstovan",
+    middleLabel: "Official", middleValue: "8 km · 2h 40m",
+    rightLabel: "Begin", rightValue: "13:15–14:00",
+    footer: "The final village path climbs steeply out of Vágur and returns via Mannaskarð and Tingstovan. Officially medium, but serious as a combined full-day loop. Never improvise a Borgarknappur summit route.",
   },
   {
-    num: 6, title: "Return to Øravík",
-    subtitle: "Route 700 or pre-booked taxi",
-    middleLabel: "Before leaving", middleValue: "Check departure",
-    rightLabel: "Dinner", rightValue: "Supplies / Tvøroyri",
-    footer: "Do not leave the town without confirming your return. If the next bus is unsuitable, eat in Tvøroyri then use the saved taxi contact; avoid an unplanned narrow-road walk after dark.",
+    num: 6, title: "Return, recovery & optional run",
+    subtitle: "Øravík accommodation",
+    middleLabel: "Expected", middleValue: "16:00–18:00",
+    rightLabel: "Emergency", rightValue: "112",
+    footer: "The full plan is approximately 20 km, 6h 25m official moving time and a realistic 8–9 hours door-to-door. The 4 km run is only an optional recovery outing after everyone returns safely and still feels physically sound—not a fixed obligation.",
   },
 ];
 
 const DAY_TWO_SUMMARY: SummaryItem[] = [
-  { icon: "R", label: "Run", time: "55–75 min", note: "Øravík Fell Loop" },
-  { icon: "Bs", label: "Bus route", time: "700", note: "Coastal spine" },
-  { icon: "Hk", label: "Primary hike", time: "2–3 hrs", note: "Hvannhagi" },
-  { icon: "Wk", label: "Walking total", time: "~3–4 hrs", note: "~8–10 km" },
-  { icon: "Dn", label: "Dinner", time: "~17:00", note: "Hotel Tvøroyri" },
+  { icon: "01", label: "Leg 1", time: "5 km", note: "Øravík → Fámjin" },
+  { icon: "02", label: "Leg 2", time: "7 km", note: "Fámjin → Vágur" },
+  { icon: "03", label: "Leg 3", time: "8 km", note: "Vágur → Øravík" },
+  { icon: "Σ", label: "Official moving", time: "6h 25m", note: "~20 km" },
+  { icon: "!", label: "Bailout", time: "Vágur", note: "Road transport" },
 ];
 
 // =============================================================================
@@ -177,11 +177,11 @@ function WhyThisRoute() {
         Why this is today’s route
       </p>
       <ul className="space-y-2 text-[13px] text-basalt/70">
-        <li>• Hvannhagi is the best genuinely bus-accessible hike from Øravík — the trailhead is at Hov village, reachable by Bus 700 in ~15 min.</li>
-        <li>• It’s a moderate ridge walk with a spectacular lake-and-island payoff, without needing a car.</li>
-        <li>• The orange-post waymarking provides navigation guidance (though not in fog).</li>
-        <li>• Beinisvørð — the iconic Suðuroy cliff — is NOT bus-accessible. The trailhead is ~8 km from the nearest bus stop on narrow roads. It requires a pre-booked taxi (~DKK 400–500 return) and is a better fit for Day 3 if the weather is right.</li>
-        <li>• Hov village adds a quick cultural stop (Viking chieftain's mound) that works in any weather.</li>
+        <li>• This is the planned three-leg route: Øravík → Fámjin (5 km / 1h 30m), Fámjin → Vágur (7 km / 2h 15m), then Vágur → Øravík (8 km / 2h 40m).</li>
+        <li>• Each leg is officially graded medium; together they are a serious full-day undertaking, not a casual circuit.</li>
+        <li>• The website map is deliberately schematic. Use Komoot and the downloaded official GPX tracks for every navigation decision.</li>
+        <li>• Fámjin is the cultural pause; Vágur is the practical bailout. Treat road transport back to Øravík as a good decision, not a failure.</li>
+        <li>• A 4 km run can happen later only if everyone is safely back, fed and genuinely fresh.</li>
       </ul>
     </div>
   );
@@ -309,11 +309,10 @@ export function DayTwoDetail() {
             {/* Header */}
             <div className="mb-6">
               <p className="text-[12px] tracking-[0.14em] uppercase text-rust font-medium">Day 2 · Tuesday · 28 July 2026</p>
-              <h1 className="text-[clamp(2.5rem,3.5vw,3.2rem)] leading-[1.04] mt-1.5 text-basalt tracking-[-0.01em]" style={{ fontFamily: "var(--font-cinzel)" }}>Run &amp; the ridge</h1>
-              <p className="text-[20px] font-medium text-basalt/80 mt-2">Øravík · Hov · Hvannhagi · Tvøroyri</p>
+              <h1 className="text-[clamp(2.5rem,3.5vw,3.2rem)] leading-[1.04] mt-1.5 text-basalt tracking-[-0.01em]" style={{ fontFamily: "var(--font-cinzel)" }}>The Suðuroy village paths</h1>
+              <p className="text-[20px] font-medium text-basalt/80 mt-2">Øravík · Fámjin · Vágur · Øravík</p>
               <p className="text-[14px] text-basalt/60 mt-2 max-w-[38rem]">
-                A morning run on the Øravík Fell Loop, then Bus 700 south for the Hvannhagi ridge walk.
-                No car needed — every stop is on the bus route or on foot. Thursday is the match — today is the day to earn your pint.
+                Three official village-path legs make a serious full-day loop. Navigation lives in Komoot and the saved GPX tracks; this page is the operational plan, not a mountain-navigation substitute.
               </p>
             </div>
 
@@ -322,6 +321,8 @@ export function DayTwoDetail() {
 
             {/* LAYER A — Day at a glance */}
             <section className="mb-6"><SummaryStrip items={DAY_TWO_SUMMARY} /></section>
+
+            <section className="mb-6"><OravikFamjinVagurMap /></section>
 
             {/* Morning run — GPX-powered interactive route map */}
             <section className="mb-6">
@@ -427,13 +428,14 @@ export function DayTwoDetail() {
       <article className="lg:hidden px-4 pt-6 pb-24 max-w-[640px] mx-auto">
         <div className="mb-6">
           <p className="text-[11px] tracking-[0.14em] uppercase text-rust font-medium">Day 2 · Tuesday · 28 July</p>
-          <h1 className="text-[clamp(2rem,8vw,2.6rem)] leading-[1.06] mt-1 text-basalt tracking-[-0.01em]" style={{ fontFamily: "var(--font-cinzel)" }}>Run &amp; the ridge</h1>
-          <p className="text-[17px] font-medium text-basalt/80 mt-1.5">Øravík · Hov · Hvannhagi</p>
-          <p className="text-[14px] text-basalt/60 mt-2">Morning run, Bus 700 to Hov, Hvannhagi ridge walk. No car needed.</p>
+          <h1 className="text-[clamp(2rem,8vw,2.6rem)] leading-[1.06] mt-1 text-basalt tracking-[-0.01em]" style={{ fontFamily: "var(--font-cinzel)" }}>The Suðuroy village paths</h1>
+          <p className="text-[17px] font-medium text-basalt/80 mt-1.5">Øravík · Fámjin · Vágur · Øravík</p>
+          <p className="text-[14px] text-basalt/60 mt-2">Three official route sections: ~20 km, 6h 25m official moving time, 8–9 hours realistic allowance.</p>
         </div>
         <section className="mb-6"><TripReadiness /></section>
         <section className="mb-6"><MobileDecisionPanel /></section>
         <section className="mb-6"><MobileTripStatus dateLine1="Tuesday 28 July 2026" dateLine2="Suðuroy exploration day" weatherLat={61.536} weatherLon={-6.81} weatherLabel="Øravík" /></section>
+        <section className="mb-6"><OravikFamjinVagurMap /></section>
         <section className="mb-6">              <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík Fell Loop</p>
           <div className="border border-basalt/15 rounded-[8px] overflow-hidden">
             <OravikRunMap
