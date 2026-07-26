@@ -176,8 +176,8 @@ export const TO_AIRBNB = {
     { method: "Walk", detail: "2 km · ~25 min on Route 14. Partial footpath, mostly road. Dark at 23:20 — not advised without torch.", status: "not-recommended" },
   ],
   airbnbAddress: "Við á 7, Øravík 827, Suðuroy",
-  airbnbCheckIn: "Self check-in. Lockbox code in host message. Save offline.",
-  airbnbContact: "Contact host via Airbnb app. Message before departure (arrival ~23:30).",
+  airbnbCheckIn: "Gist self check-in. Host Arnbjørn confirms the key will be in the door on arrival; look for the Gist sign above the entrance.",
+  airbnbContact: "Contact host Arnbjørn via Airbnb app. Message before departure (arrival ~23:30).",
   nearestShop: "Tvøroyri (3–4 km north) · open till 22:00 Mon. Get supplies before ferry.",
   arrivalNote: "Arrival ~23:30–midnight. Still twilight — sunset ~22:15, sunrise ~04:45. Eye mask essential.",
 } as const;

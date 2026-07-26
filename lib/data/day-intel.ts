@@ -311,7 +311,7 @@ export const LAST_CHANCE_SUPPLIES: LastChanceCard[] = [
     items: [
       "Buy food at Edinburgh Airport airside for late arrival",
       "Buy food on Smyril ferry if café is open",
-      "Confirm lockbox code before losing signal",
+      "Save Arnbjørn’s Gist arrival message before losing signal",
       "Save taxi number +298 239550",
     ],
   },

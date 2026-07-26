@@ -100,11 +100,11 @@ const TIMELINE_STEPS: TimelineStep[] = [
     footerLink: { label: "Book at ssl.fo →", href: "https://booking.ssl.fo" },
   },
   {
-    num: 10, title: "Krambatangi → Øravík · Við á 7",
+    num: 10, title: "Krambatangi → Gist · Øravík",
     subtitle: "Bus 700 or walk · 2 km",
     middleLabel: "Arrive gate", middleValue: "~23:25",
     rightLabel: "Transfer", rightValue: "Bus 700",
-    footer: "Bus 700 from Krambatangi (Ferjuleðan stop) — two stops to Øravík, ~8 min, DKK 20. If bus doesn't run that late: pre-book taxi +298 239550 (~DKK 150, 5 min). Last resort: walk 2 km (25 min, uphill, unlit road — not recommended with luggage). Self check-in: lockbox at Við á 7. Still twilight at midnight — eye mask essential.",
+    footer: "Bus 700 from Krambatangi (Ferjuleðan stop) — two stops to Øravík, ~8 min, DKK 20. If bus doesn't run that late: pre-book taxi +298 239550 (~DKK 150, 5 min). Last resort: walk 2 km (25 min, uphill, unlit road — not recommended with luggage). At Við á 7, look for the “Gist” sign; host Arnbjørn confirms the key will be in the door on arrival. Still twilight at midnight — eye mask essential.",
   },
 ];
 

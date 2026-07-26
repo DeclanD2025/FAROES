@@ -118,7 +118,7 @@ export const DAY1_CONNECTIONS: ConnectionChain = {
       scheduledBuffer: "—",
       minimumBuffer: "—",
       risk: "low",
-      consequence: "Final destination. Self check-in with lockbox.",
+      consequence: "Final destination. Gist self check-in; host Arnbjørn says the key will be in the door on arrival.",
       backup: "Taxi if bus doesn't run. ~DKK 150.",
     },
   ],

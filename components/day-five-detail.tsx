@@ -107,7 +107,7 @@ const DAY_FIVE_TIMELINE: TimelineStep[] = [
     subtitle: "Við á 7, Øravík 827",
     middleLabel: "Checkout", middleValue: "By 12:00",
     rightLabel: "Morning", rightValue: "Free",
-    footer: "Leave the key in the lockbox. Final walk round the village. Pack everything — you're leaving Suðuroy permanently. Bus 700 to Krambatangi from Ferjuleðan.",
+    footer: "Follow Arnbjørn’s departure instruction for the key. Final walk round the village. Pack everything — you're leaving Suðuroy permanently. Bus 700 to Krambatangi from Ferjuleðan.",
   },
   {
     num: 2, title: "Bus 700 → Krambatangi",

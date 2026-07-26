@@ -225,7 +225,7 @@ export const DAY_OPERATIONS = [
 ] as const;
 
 export const BOOKINGS_AUDIT = [
-  { name: "Øravík accommodation", provider: "Booking record", date: "27–31 Jul", status: "Confirmed from booking" as ConfidenceLabel, action: "Save host arrival instructions offline; arrival night remains dependent on Monday transport.", location: "Við Á 7, Øravík, 827, Faroe Islands" },
+  { name: "Gist · Øravík Airbnb", provider: "Airbnb · host Arnbjørn", date: "27–31 Jul", status: "Confirmed from booking" as ConfidenceLabel, action: "Self check-in: look for the Gist sign above the entrance; the host confirms the key will be in the door on arrival. Arrival night remains dependent on Monday transport.", location: "Við Á 7, Øravík, 827, Faroe Islands" },
   { name: "Guesthouse Hugo", provider: "Booking record", date: "31 Jul–1 Aug", status: "Confirmed from booking" as ConfidenceLabel, action: "Confirm late-arrival procedure after the Friday ferry choice is made.", location: "Sørvágur" },
   { name: "Atlantic Airways flights", provider: "Booking record", date: "27 Jul / 1 Aug", status: "Confirmed from booking" as ConfidenceLabel, action: "Check in online and save boarding passes offline.", location: "EDI–FAE / FAE–LGW" },
   { name: "Monday Smyril to Suðuroy", provider: "SSL booking record", date: "27 Jul · 21:15", status: "Confirmed from booking" as ConfidenceLabel, action: "Two adult foot passengers. Save the QR ticket offline and reach the foot-passenger gate before its 21:10 closure.", location: "Tórshavn → Krambatangi" },

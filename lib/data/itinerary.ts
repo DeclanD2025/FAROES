@@ -36,11 +36,14 @@ export const TRIP = {
 // -----------------------------------------------------------------------------
 export const BOOKINGS = {
   airbnb: {
-    label: "Øravík guesthouse",
+    label: "Gist · Øravík",
     nights: 4,
     address: "Við á 7, Øravík 827, Suðuroy",
     pricePerTwo: "£232/night · £928 total",
-    listing: "https://www.airbnb.com/l/zdrMEniF",
+    host: "Arnbjørn",
+    checkIn: "Self check-in · key in the door on arrival",
+    arrivalMarker: "Look for the Gist sign above the entrance.",
+    listing: "https://www.airbnb.co.uk/rooms/43322258",
   },
   hugo: {
     label: "Guesthouse Hugo",
