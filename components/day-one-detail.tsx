@@ -212,11 +212,11 @@ const DAY1_SOURCES = [
     ),
   },
   {
-    claim: "Bus 300 Vágar Airport → Tórshavn: ~45 min, DKK 90",
+    claim: "AirportTaxi: Vágar Airport → Farstøðin for RC 415 arrival",
     verification: provisional(
-      "SSL Bus 300 timetable",
-      "Check summer 2026 timetable at ssl.fo",
-      { title: SOURCE_LIBRARY.ssl.title, url: SOURCE_LIBRARY.ssl.url },
+      "Taxi og AirportTaxi booking confirmation",
+      "Taxi monitors RC 415; keep the confirmation and contact details offline.",
+      { title: "Taxi og AirportTaxi", url: "https://taxi.fo" },
     ),
   },
   {
@@ -244,7 +244,7 @@ export function DayOneDetail() {
           <h1 className="text-[clamp(2.5rem,3.5vw,3.2rem)] leading-[1.04] mt-1.5 text-basalt tracking-[-0.01em]" style={{ fontFamily: "var(--font-cinzel)" }}>The journey north</h1>
           <p className="text-[20px] font-medium text-basalt/80 mt-2">Bellshill → Edinburgh → Vágar → Tórshavn → Øravík</p>
           <p className="text-[14px] text-basalt/60 mt-2 max-w-[38rem]">
-            One train, one tram, one flight, one bus, one ferry, one final short hop.
+            One train, one tram, one flight, one confirmed airport taxi, one ferry, one final short hop.
             ~15 hours door to door across Scotland and the North Atlantic.
           </p>
         </div>
@@ -314,7 +314,7 @@ export function DayOneDetail() {
           <p className="text-[11px] tracking-[0.14em] uppercase text-rust font-medium">Day 1 · Monday · 27 July</p>
           <h1 className="text-[clamp(2rem,8vw,2.6rem)] leading-[1.06] mt-1 text-basalt tracking-[-0.01em]" style={{ fontFamily: "var(--font-cinzel)" }}>The journey north</h1>
           <p className="text-[17px] font-medium text-basalt/80 mt-1.5">Bellshill → Edinburgh → Vágar → Øravík</p>
-          <p className="text-[14px] text-basalt/60 mt-2">One flight, one bus, one ferry, one short hop. ~15 hours door to door.</p>
+          <p className="text-[14px] text-basalt/60 mt-2">One flight, one confirmed airport taxi, one ferry, one short hop. ~15 hours door to door.</p>
         </div>
         <section className="mb-6"><TripReadiness /></section>
         <section className="mb-6"><MobileDecisionPanel /></section>

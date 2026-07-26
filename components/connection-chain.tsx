@@ -1,6 +1,6 @@
 // =============================================================================
 // ConnectionChain — visual connection diagram for multi-leg journeys.
-// Shows: scheduled arrival → scheduled departure → transfer buffer →
+// Shows: each leg's scheduled departure → arrival, plus transfer buffer →
 // minimum comfortable buffer → risk state → backup.
 // =============================================================================
 
@@ -66,9 +66,9 @@ function ConnectionRow({ link }: { link: ConnectionLink }) {
 
         {/* Times */}
         <div className="flex items-center gap-2 text-[13px]">
-          <span className="code text-fjord">{link.arrivalTime}</span>
-          <span className="text-basalt/30">→</span>
           <span className="code text-fjord">{link.departureTime}</span>
+          <span className="text-basalt/30">→</span>
+          <span className="code text-fjord">{link.arrivalTime}</span>
         </div>
       </div>
 
