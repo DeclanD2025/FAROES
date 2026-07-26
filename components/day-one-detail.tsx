@@ -9,8 +9,6 @@
 import { TripReadiness } from "@/components/trip-readiness";
 import { ConnectionChain } from "@/components/connection-chain";
 import { SourceRegister } from "@/components/source-register";
-import { LiveBoard, type LiveRow } from "@/components/live-board";
-import { getEdiDeparturesUrl, transformEdiDepartures, FLIGHT_COLUMNS } from "@/lib/aviationstack";
 import { CONNECTION_CHAINS } from "@/lib/data/transport-matrices";
 import { provisional } from "@/lib/data/sources";
 import { SOURCE_LIBRARY } from "@/lib/data/sources";
@@ -176,19 +174,25 @@ function MobileDecisionPanel() {
 // SOURCES
 // =============================================================================
 
-// =============================================================================
-// Live flight board — static fallback data
-// =============================================================================
-
-const EDI_DEPARTURES_FALLBACK: LiveRow[] = [
-  { time: "12:15", flight: "KL 934", destination: "AMS", gate: "12", status: "Scheduled" },
-  { time: "14:30", flight: "BA 1455", destination: "LHR", gate: "7", status: "Scheduled" },
-  { time: "16:00", flight: "U2 2312", destination: "BRS", gate: "15", status: "Scheduled" },
-  { time: "16:45", flight: "FR 6623", destination: "DUB", gate: "22", status: "Scheduled" },
-  { time: "17:10", flight: "RC 415", destination: "FAE", gate: "9", status: "Scheduled" },
-  { time: "17:30", flight: "BA 1461", destination: "LHR", gate: "5", status: "Scheduled" },
-  { time: "18:15", flight: "U2 4567", destination: "LTN", gate: "18", status: "Scheduled" },
-];
+function FlightGateCard() {
+  return (
+    <section className="border border-claret/25 bg-claret/[0.025] rounded-[7px] p-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="label text-rust">Your Edinburgh departure</p>
+          <h2 className="mt-1 text-[19px] font-medium text-basalt">RC 415 · Edinburgh → Vágar</h2>
+        </div>
+        <a href="https://www.flightradar24.com/data/flights/rc415" target="_blank" rel="noreferrer" className="text-[12px] text-fjord underline underline-offset-4">Track flight ↗</a>
+      </div>
+      <div className="mt-4 grid grid-cols-3 border-y border-basalt/10 divide-x divide-basalt/10">
+        <div className="py-3 pr-3"><p className="label">Departure</p><p className="code tnum mt-1 text-fjord">17:10 BST</p></div>
+        <div className="px-3 py-3"><p className="label">Destination</p><p className="code mt-1 text-fjord">FAE · Vágar</p></div>
+        <div className="pl-3 py-3"><p className="label">Gate</p><p className="code tnum mt-1 text-rust">9</p></div>
+      </div>
+      <p className="caption mt-3">Gate 9 is the current planning detail. Check the airport boards and Atlantic Airways app on the day; gates can change.</p>
+    </section>
+  );
+}
 
 // =============================================================================
 // SOURCES
@@ -263,20 +267,7 @@ export function DayOneDetail() {
               <ConnectionChain chain={CONNECTION_CHAINS.day1!} />
             </section>
 
-            {/* Live flight board — EDI departures (RC 415 highlighted) */}
-            <section className="mb-6">
-              <LiveBoard
-                title="EDI departures · Mon 27 Jul"
-                fetchUrl={getEdiDeparturesUrl() || undefined}
-                transform={transformEdiDepartures}
-                fallbackRows={EDI_DEPARTURES_FALLBACK}
-                sourceUrl="https://www.flightradar24.com/data/flights/rc415"
-                sourceLabel="Track RC 415"
-                columns={FLIGHT_COLUMNS}
-                highlightKey="flight"
-                highlightValue="RC 415"
-              />
-            </section>
+            <section className="mb-6"><FlightGateCard /></section>
 
             {/* Latest safe departures */}
             <section className="mb-6"><LatestSafeDepartures /></section>
