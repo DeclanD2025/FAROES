@@ -5,7 +5,7 @@ import { useState } from "react";
 type GuideTab = "plan" | "food" | "context" | "field-notes";
 
 interface DayThreeFieldGuideProps {
-  actions: string[][];
+  actions: readonly (readonly [string, string])[];
   completedActions: boolean[];
   onToggleAction: (index: number) => void;
 }
