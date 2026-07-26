@@ -27,6 +27,7 @@ const SECONDARY: NavItem[] = [
   { href: "/food-drink", label: "Food & drink" },
   { href: "/hikes", label: "Hiking routes" },
   { href: "/match-day", label: "Match guide" },
+  { href: "/connectivity", label: "Mobile data" },
   { href: "/packing", label: "Documents" },
 ];
 

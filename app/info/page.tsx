@@ -3,6 +3,7 @@
 // Thin rules separate sections. Stamper-style date on the right column.
 
 import { BOOKINGS, TRIP } from "@/lib/data/itinerary";
+import { CONNECTIVITY_PLAN } from "@/lib/data/connectivity";
 
 export default function InfoPage() {
   return (
@@ -63,6 +64,11 @@ export default function InfoPage() {
           National Express · Gatwick → Stansted
           <br />
           <a className="code" href="https://nationalexpress.com">nationalexpress.com</a> · typical <span className="tnum">2h 15m</span>
+        </Row>
+        <Row label="Mobile data">
+          Nomad · {CONNECTIVITY_PLAN.allowanceGb} GB / {CONNECTIVITY_PLAN.validityDays} days · {CONNECTIVITY_PLAN.network}
+          <br />
+          <a className="code" href="/connectivity">Open mobile-data field guide →</a>
         </Row>
         <Row label="Atlas · base">
           Øravík, Suðuroy

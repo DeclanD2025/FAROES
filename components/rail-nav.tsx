@@ -34,6 +34,7 @@ const NAV_SECTIONS: NavSection[] = [
       { href: "/itinerary", label: "Full itinerary" },
       { href: "/transport", label: "Transport" },
       { href: "/bookings", label: "Bookings" },
+      { href: "/connectivity", label: "Mobile data", subtitle: "eSIM · offline safety" },
       { href: "/packing", label: "Documents" },
     ],
   },

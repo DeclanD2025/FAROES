@@ -110,7 +110,7 @@ export default function HikesPage() {
         <p className="label text-rust mb-1">Hiking safety</p>
         <p className="caption">
           Faroe Islands weather can change rapidly. Check conditions before each hike. Carry waterproofs, food, water,
-          and a fully charged phone with offline maps. Tell someone your route and expected return time.
+          and a fully charged phone with offline maps. Tell someone your route and expected return time. GPS can show your position without signal, but live sharing cannot be assumed — carry a power bank and keep the route downloaded.
           In an emergency, call <span className="code">112</span>.
         </p>
       </aside>

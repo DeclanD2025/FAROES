@@ -13,6 +13,7 @@ import { CONNECTION_CHAINS } from "@/lib/data/transport-matrices";
 import { provisional } from "@/lib/data/sources";
 import { SOURCE_LIBRARY } from "@/lib/data/sources";
 import { FlightRouteGraphic } from "@/components/flight-route-graphic";
+import { ArrivalConnectivityCard } from "@/components/connectivity-guide";
 import {
   type TimelineStep,
   type SummaryItem,
@@ -73,7 +74,7 @@ const TIMELINE_STEPS: TimelineStep[] = [
     subtitle: "Sørvágur, Vágar · single terminal",
     middleLabel: "Arrive", middleValue: "18:35",
     rightLabel: "Onward", rightValue: "Booked taxi",
-    footer: "Walk across tarmac. Non-Schengen passport control — passport stamp on request. Arrivals duty-free open. No SIM vendor — buy eSIM before departure. Your AirportTaxi booking monitors RC 415 and goes directly to Farstøðin — no Bus 300 decision needed.",
+    footer: "Walk across tarmac. Non-Schengen passport control — passport stamp on request. Arrivals duty-free open. No SIM vendor: switch your pre-installed “Faroes Data” eSIM on here, with giffgaff data roaming OFF. Your AirportTaxi booking monitors RC 415 and goes directly to Farstøðin — no Bus 300 decision needed.",
   },
   {
     num: 7, title: "Confirmed AirportTaxi · Vágar Airport → Farstøðin",
@@ -326,6 +327,7 @@ export function DayOneDetail() {
           <div className="min-w-0">
             {/* Trip Readiness */}
             <section className="mb-6"><TripReadiness /></section>
+            <section className="mb-6"><ArrivalConnectivityCard /></section>
 
             {/* LAYER A — Day at a glance */}
             <section className="mb-6"><SummaryStrip items={SUMMARY_ITEMS} /></section>
@@ -378,6 +380,7 @@ export function DayOneDetail() {
           <p className="text-[14px] text-basalt/60 mt-2">One flight, one confirmed airport taxi, one ferry, one short hop. ~15 hours door to door.</p>
         </div>
         <section className="mb-6"><TripReadiness /></section>
+        <section className="mb-6"><ArrivalConnectivityCard /></section>
         <section className="mb-6"><MobileDecisionPanel /></section>
         <section className="mb-6"><MobileTripStatus dateLine1="Monday 27 July 2026" dateLine2="Flight at 17:10 from Edinburgh Airport" weatherLat={62.0097} weatherLon={-6.7716} weatherLabel="Tórshavn" /></section>
         <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Journey</p><MobileTimeline steps={TIMELINE_STEPS} completionKey="day-1" /></section>

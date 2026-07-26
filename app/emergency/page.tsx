@@ -133,7 +133,7 @@ const DISRUPTIONS: DisruptionProtocol[] = [
     whoToContact: "Accommodation host — they can help with local calls. Faroese police +298 351448 if stolen. Your mobile carrier — suspend service and report loss.",
     whatToHaveReady: "Printed copies of all bookings, tickets, and contacts. This site's printed trip pack. A backup credit card stored separately from the phone. A written list of critical phone numbers.",
     backupPlan: "Buy a cheap phone in Tórshavn (Elgiganten, SMS shopping centre). Use wifi at cafés and the ferry (M/F Smyril has free wifi). Contact home via email or Airbnb messaging.",
-    whatNotToDo: "Don't assume Find My iPhone will work on Faroese mobile networks. Don't keep all your travel documents only on your phone. Don't rely on public computers being available on Suðuroy.",
+    whatNotToDo: "Don't assume Find My is live without an eSIM or Wi‑Fi connection; without signal, it may only show the last known location. Don't keep all your travel documents only on your phone. Don't rely on public computers being available on Suðuroy.",
   },
   {
     id: "illness-injury",

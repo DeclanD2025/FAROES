@@ -25,7 +25,7 @@ const CHECKLIST_ITEMS = [
   { id: "bd-taxi-contacts", group: "Save", what: "Taxi numbers saved: Suðuroy +298 239550, Tórshavn +298 313131", why: "Late-night Krambatangi arrivals. Ferry disruption fallback.", deadline: "Before departure", relatedDay: "1,4" },
   { id: "bd-food-late-arrival", group: "Pack", what: "Food plan for late Monday arrival (~23:30)", why: "No shop in Øravík. Everything closed. Buy at Edinburgh Airport or Smyril café.", deadline: "Day 1", relatedDay: "1" },
   { id: "bd-olavsoka-supply", group: "Confirm", what: "Ólavsøka supply plan — 29 July may affect shops/transport", why: "National holiday. Confirm what's open on Suðuroy. Stock up 28 July.", deadline: "Day 2", relatedDay: "3" },
-  { id: "bd-esim", group: "Book", what: "eSIM for Faroe Islands data purchased and activated", why: "No SIM vendor at Vágar Airport. Buy before departure. Test it works.", deadline: "Day 1", relatedDay: "1" },
+  { id: "bd-esim", group: "Book", what: "Install Nomad Faroe eSIM · 10 GB / 30 days", why: "Buy and install on Scottish Wi‑Fi, label it “Faroes Data”, then leave it off until landing. giffgaff data roaming stays OFF in the Faroes.", deadline: "Before leaving Scotland", relatedDay: "1" },
 ];
 
 const GROUPS = ["Book", "Download", "Save", "Pack", "Confirm"] as const;
