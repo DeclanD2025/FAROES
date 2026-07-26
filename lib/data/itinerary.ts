@@ -139,15 +139,15 @@ export const DAYS: DayPlan[] = [
     weekday: "Wednesday",
     iso: "2026-07-29",
     chapter: "Ólavsøka",
-    location: "Øravík · Krambatangi · Tórshavn",
+    location: "Øravík · Krambatangi · Tórshavn · choose 07:00 or 14:30",
     narrative:
-      "An Ólavsøka evening in the capital. Take the special afternoon Smyril north, join Tórshavn for food, music and the festival atmosphere, then protect the 21:15 sailing back to Suðuroy for match day tomorrow.",
+      "Choose a full national day or a compact Ólavsøka evening in the capital, then protect the 21:15 sailing back to Suðuroy for match day tomorrow.",
     stages: [
-      { kind: "ferry", ref: "M/F Smyril", dep: "Krambatangi 14:30", arr: "Tórshavn ~16:35", note: "Special Ólavsøka sailing · arrive at the terminal by 13:30" },
-      { kind: "anchor", time: "Evening", title: "Ólavsøka in Tórshavn", detail: "Harbour, exhibitions, food, music and the live city programme. Most normal shops are closed." },
+      { kind: "ferry", ref: "M/F Smyril", dep: "Krambatangi 07:00 or 14:30", arr: "Tórshavn ~09:05 or ~16:35", note: "Special Ólavsøka choices · terminal by 06:00 or 13:30" },
+      { kind: "anchor", time: "Day / evening", title: "Ólavsøka in Tórshavn", detail: "07:00 gives the official programme and full day; 14:30 gives food, music and evening atmosphere. Most normal shops are closed." },
       { kind: "ferry", ref: "M/F Smyril", dep: "Tórshavn 21:15", arr: "Krambatangi ~23:20", note: "Return · be at Farstøðin by 20:30", critical: true },
     ],
-    couldDisrupt: "Festival demand, weather or a missed departure. The final special northbound sailing is 14:30, followed by the 21:15 southbound return; pre-arrange both Øravík ↔ Krambatangi transfers.",
+    couldDisrupt: "Festival demand, weather or a missed departure. Choose 07:00 for the full day or 14:30 for the evening; both use the 21:15 southbound return. Pre-arrange both Øravík ↔ Krambatangi transfers.",
     composition: "map-led",
     heroCue: {
       caption: "Tórshavn on Ólavsøka — the harbour fills with boats, crowds, and the sound of chain dancing.",

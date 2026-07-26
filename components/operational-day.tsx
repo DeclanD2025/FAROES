@@ -14,7 +14,7 @@ const FaroesMap = dynamic(() => import("@/components/map/faroes-map"), {
 });
 
 const MAPS: Record<number, { filter: MapFilter; title: string; detail: string }> = {
-  3: { filter: "journey", title: "Ólavsøka crossing map", detail: "Øravík → Krambatangi → Tórshavn on the 14:30 Smyril, then the 21:15 return to Suðuroy." },
+  3: { filter: "journey", title: "Ólavsøka crossing map", detail: "Choose the 07:00 full-day or 14:30 evening Smyril to Tórshavn; both return to Suðuroy at 21:15." },
   5: { filter: "journey-outbound", title: "Northbound repositioning map", detail: "The geographical sequence remains Suðuroy → Tórshavn → Sørvágur; confirm the Friday connection before travelling." },
 };
 
