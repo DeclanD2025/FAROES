@@ -137,6 +137,74 @@ function LatestSafeDepartures() {
   );
 }
 
+const FALLBACK_STAYS = [
+  {
+    name: "Hotel Hafnia",
+    type: "Hotel · central",
+    detail: "City-centre hotel with 79 rooms and three cabins; a sensible first call if you need a staffed fallback near the harbour.",
+    href: "https://www.hotelhafnia.com",
+  },
+  {
+    name: "Hotel Djurhuus",
+    type: "Hotel · harbour side",
+    detail: "51-room, three-star option by the waterfront, about 0.5 km from the centre. Breakfast is included.",
+    href: "https://www.hoteldjurhuus.fo",
+  },
+  {
+    name: "Hotel Tórshavn",
+    type: "Hotel · central",
+    detail: "Central 43-room option with a café and bar; useful when you need to stay walkable to food and the next-day ferry.",
+    href: "https://hoteltorshavn.fo/en/",
+  },
+  {
+    name: "62N Guesthouse",
+    type: "Hostel · city centre",
+    detail: "The lower-cost hostel option, at Dr. Jakobsens gøta 14–16. Ask specifically about a late, same-night arrival.",
+    href: "https://www.62n.fo",
+  },
+  {
+    name: "BookLocal",
+    type: "Local apartment or home",
+    detail: "Use these for self-check-in apartments or rooms. Filter for Tórshavn, two guests, and an arrival after 22:00 before paying.",
+    href: "https://booklocal.fo",
+  },
+  {
+    name: "Airbnb Tórshavn",
+    type: "Apartment or room",
+    detail: "A second self-check-in search. Confirm the host can accept a same-night late arrival before booking.",
+    href: "https://www.airbnb.co.uk/s/T%C3%B3rshavn--Faroe-Islands/homes",
+  },
+];
+
+function FlightDelayFallback() {
+  return (
+    <section className="border border-rust/25 bg-rust/[0.025] rounded-[7px] p-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="label text-rust">If RC 415 breaks the ferry connection</p>
+          <h2 className="mt-1 text-[18px] font-medium text-basalt">Tórshavn fallback stays</h2>
+        </div>
+        <a href="https://www.visittorshavn.fo/accommodation/" target="_blank" rel="noreferrer" className="text-[12px] text-fjord underline underline-offset-4">All local options ↗</a>
+      </div>
+      <p className="mt-3 text-[13px] leading-relaxed text-basalt/75">Do not wait for the ferry to leave before arranging a room. If Atlantic Airways shows a material delay, ask AirportTaxi to switch the drop-off to your stay, contact SSL about the ticket, and message the Øravík host.</p>
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {FALLBACK_STAYS.map((stay) => (
+          <a key={stay.name} href={stay.href} target="_blank" rel="noreferrer" className="block border border-basalt/15 bg-white/35 p-3 hover:border-fjord/35 transition-colors">
+            <p className="text-[13px] font-medium text-basalt">{stay.name} <span className="text-fjord">↗</span></p>
+            <p className="mt-0.5 label text-fjord/65">{stay.type}</p>
+            <p className="mt-2 text-[12px] leading-relaxed text-basalt/65">{stay.detail}</p>
+          </a>
+        ))}
+      </div>
+      <div className="mt-4 border-t border-rust/15 pt-3">
+        <p className="label text-rust">Forecast snapshot · checked Sunday 26 July</p>
+        <p className="mt-1 text-[13px] leading-relaxed text-basalt/75"><strong className="text-basalt">Low–moderate weather delay risk.</strong> Edinburgh is forecast overcast around the 17:10 departure, with a 40–50% rain chance and moderate westerly gusts. Vágar’s airport forecast for Monday is much calmer: 0.3 mm rain and 8 m/s wind. Nothing currently points to a weather-led cancellation, but Vágar conditions and airline operations can change quickly.</p>
+        <p className="mt-2 text-[12px] text-basalt/60">Recheck Atlantic Airways and the <a href="https://weather.metoffice.gov.uk/forecast/gcvw7ch6q" target="_blank" rel="noreferrer" className="text-fjord underline underline-offset-4">Edinburgh forecast</a> before leaving home; use the <a href="https://www.fae.fo/en/about-vagar-airport/information/weather-at-vaga-airport" target="_blank" rel="noreferrer" className="text-fjord underline underline-offset-4">Vágar Airport forecast</a> at the airport.</p>
+      </div>
+    </section>
+  );
+}
+
 function SafeTime({ label, time, note }: { label: string; time: string; note: string }) {
   return (
     <div className="flex items-baseline gap-3">
@@ -272,6 +340,8 @@ export function DayOneDetail() {
             {/* Latest safe departures */}
             <section className="mb-6"><LatestSafeDepartures /></section>
 
+            <section className="mb-6"><FlightDelayFallback /></section>
+
             {/* LAYER B — Operating plan */}
             <section className="mb-6">
               <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-3">Journey timeline</p>
@@ -312,6 +382,7 @@ export function DayOneDetail() {
         <section className="mb-6"><MobileTripStatus dateLine1="Monday 27 July 2026" dateLine2="Flight at 17:10 from Edinburgh Airport" weatherLat={62.0097} weatherLon={-6.7716} weatherLabel="Tórshavn" /></section>
         <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Journey</p><MobileTimeline steps={TIMELINE_STEPS} /></section>
         <section className="mb-6"><LatestSafeDepartures /></section>
+        <section className="mb-6"><FlightDelayFallback /></section>
         <section><FlightRouteGraphic /></section>
       </article>
     </>
