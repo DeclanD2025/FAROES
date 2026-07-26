@@ -12,6 +12,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import {
   parseGpxToGeoJSON,
   extractTrackCoords,
+  extractGpxTrackCoords,
   cumulativeDistances,
   routeBounds,
   splitAtCoordinate,
@@ -239,8 +240,16 @@ export default function OravikRunMap({
             throw new Error("Failed to parse GPX XML — file may be corrupt.");
           }
 
-          const fc = parseGpxToGeoJSON(xml);
-          const coords = extractTrackCoords(fc);
+          // Prefer the converter for general GPX compatibility, then read the
+          // track points directly. This route's GPX uses namespaces and must
+          // still render if a converter returns an unexpected geometry shape.
+          let coords: LngLat[] | null = null;
+          try {
+            coords = extractTrackCoords(parseGpxToGeoJSON(xml));
+          } catch {
+            // The direct GPX reader below is the deliberately independent fallback.
+          }
+          coords ??= extractGpxTrackCoords(xml);
 
           if (!coords) {
             setError("No route coordinates found in GPX file.");

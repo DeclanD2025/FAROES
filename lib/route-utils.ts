@@ -33,6 +33,34 @@ export function parseGpxToGeoJSON(xml: string): GeoJSON.FeatureCollection {
 }
 
 /**
+ * Read GPX track points directly from the XML.
+ *
+ * This deliberately does not depend on the shape returned by togeojson. GPX
+ * files commonly namespace `trkpt` and some converters return a geometry
+ * collection or an empty collection for those files even though the points are
+ * present. The map can use this as a safe fallback for a normal track.
+ */
+export function extractGpxTrackCoords(xml: string): LngLat[] | null {
+  const doc = new DOMParser().parseFromString(xml, "text/xml");
+  if (doc.querySelector("parsererror")) return null;
+
+  const trackPoints = doc.getElementsByTagNameNS("*", "trkpt");
+  const coords: LngLat[] = [];
+
+  for (const trackPoint of trackPoints) {
+    const lat = Number(trackPoint.getAttribute("lat"));
+    const lon = Number(trackPoint.getAttribute("lon"));
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+
+    const elevationNode = trackPoint.getElementsByTagNameNS("*", "ele")[0];
+    const elevation = elevationNode ? Number(elevationNode.textContent) : Number.NaN;
+    coords.push(Number.isFinite(elevation) ? [lon, lat, elevation] : [lon, lat]);
+  }
+
+  return coords.length >= 2 ? coords : null;
+}
+
+/**
  * Extract the first GPX track from a GeoJSON FeatureCollection.
  * togeojson represents GPX tracks with one or more track segments as a
  * MultiLineString; the audited Øravík GPX currently has one segment, but this

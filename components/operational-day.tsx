@@ -19,9 +19,10 @@ const MAPS: Record<number, { filter: MapFilter; title: string; detail: string }>
 
 const PRACTICAL_NOTES: Record<number, { title: string; body: string; href?: string; label?: string }[]> = {
   3: [
-    { title: "Resupply before the holiday disruption", body: "Use Tvøroyri for the practical shop: buy Thursday breakfast, water, ferry snacks and anything you need for a late return. Øravík has no proper supermarket and Krambatangi is not a resupply stop." },
-    { title: "A local, low-commitment day", body: "Use the weather window for Øravík, Tvøroyri harbour and the wooden church rather than forcing a cross-island plan. The old Suðuroy assembly landscape, Tingstovan / Uppi millum Stovur, is above Øravík; treat it as context, not an unmarked shortcut." },
-    { title: "Culture without a transport gamble", body: "Fámjin’s church holds the first Faroese flag and Hvalba has coal-mining history, but both should be separate, confirmed transport outings. On Ólavsøka, local Route 700 services and request-only rules come first.", href: "https://visitfaroeislands.com/en/see-do/inspiration-guides/popular-guides/regional-guides/suduroy", label: "Suðuroy guide ↗" },
+    { title: "What Ólavsøka is", body: "The Faroes’ national celebration runs over 28–29 July. The 29th is Saint Olaf’s day, also the annual opening of the Løgting (Parliament): a national holiday with a history reaching back to Olaf II’s death in 1030.", href: "https://www.faroeislands.fo/the-big-picture/national-symbols/national-day/", label: "National Day background ↗" },
+    { title: "What happens — and where", body: "The procession, Parliament ceremony, rowing, concerts, exhibitions, chain dancing and the late communal singing belong in Tórshavn. They are not a realistic same-day side trip from an Øravík base without a specifically confirmed ferry plan.", href: "https://visitfaroeislands.com/en/whatson/events/event/st-olafs-national-celebration?lang=en", label: "Ólavsøka overview ↗" },
+    { title: "Your Suðuroy plan", body: "Let the occasion set the mood, but keep the day local: Øravík, Tvøroyri harbour and the wooden church are enough. The old assembly landscape above Øravík, Tingstovan / Uppi millum Stovur, is useful context — not an unmarked shortcut or a reason to head out in poor visibility." },
+    { title: "Resupply and transport first", body: "Shop in Tvøroyri for Thursday breakfast, water, ferry snacks and medicines. Øravík has no proper supermarket and Krambatangi is not a resupply stop. Treat Route 700 as special-service territory: check SSL on the day, and arrange any request-only departure by its stated deadline.", href: "https://www.ssl.fo/en/timetable/bus/700-sumba-vagur-tvoeroyri/", label: "SSL Route 700 ↗" },
   ],
   5: [
     { title: "Pack as a travel day", body: "Keep every charger, medication, passport, ferry record and Guesthouse Hugo confirmation in one day bag. Do not put the Friday transfer essentials in checked or inaccessible luggage." },
@@ -112,8 +113,8 @@ export function OperationalDay({ number }: { number: number }) {
 
       {PRACTICAL_NOTES[number] && (
         <section className="mt-10 max-w-[58rem]">
-          <h2 className="label border-b border-basalt/15 pb-2">Supplies, places and local context</h2>
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+          <h2 className="label border-b border-basalt/15 pb-2">{number === 3 ? "Ólavsøka · what changes today" : "Supplies, places and local context"}</h2>
+          <div className={`mt-4 grid grid-cols-1 ${number === 3 ? "md:grid-cols-2" : "md:grid-cols-3"} gap-3`}>
             {PRACTICAL_NOTES[number].map((note) => <article key={note.title} className="border border-basalt/15 rounded-[7px] p-4"><h3 className="text-[14px] font-medium text-basalt">{note.title}</h3><p className="mt-2 text-[12px] leading-relaxed text-basalt/70">{note.body}</p>{note.href && <a href={note.href} target="_blank" rel="noreferrer" className="mt-3 inline-block text-[12px] text-fjord underline underline-offset-4">{note.label}</a>}</article>)}
           </div>
         </section>
