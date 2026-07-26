@@ -1,0 +1,69 @@
+{
+  "route_name": "Øravík village-path and old-road loop",
+  "status": "validated geometry; check weather, visibility and footing before use",
+  "distance_km": 4.131,
+  "distance_target_delta_m": 131.4,
+  "start": {
+    "lon": -6.810877108946443,
+    "lat": 61.53244980610907,
+    "label": "Bønhúsið / official village-path entrance",
+    "distance_from_vid_a_7_m": 111.5
+  },
+  "accommodation": {
+    "lon": -6.81211389,
+    "lat": 61.53326111,
+    "label": "Við á 7"
+  },
+  "crossing": {
+    "lon": -6.831779228523374,
+    "lat": 61.525677144527435,
+    "official_trail_distance_from_start_m": 1531.6,
+    "distance_to_osm_road_m": 4.8,
+    "osm_way_id": 44366818,
+    "road_name": null,
+    "road_ref": "99",
+    "highway": "unclassified"
+  },
+  "sections": {
+    "official_path_km": 1.532,
+    "tunnel_free_road_return_km": 2.6,
+    "walk_from_accommodation_to_start_km": 0.112
+  },
+  "road_sequence": [
+    "99",
+    "track",
+    "Fámjinsvegur",
+    "Bóndatún"
+  ],
+  "elevation": {
+    "source": "Open-Meteo approximate raster elevation",
+    "min_m": 6.0,
+    "max_m": 189.0,
+    "ascent_m": 222.0,
+    "descent_m": 222.0
+  },
+  "brief_compliance": {
+    "requested_distance_km": 4.0,
+    "actual_distance_km": 4.131,
+    "start_and_finish_within_1km_of_address": true,
+    "distance_from_address_to_start_m": 111.5,
+    "route_is_a_true_loop": true,
+    "route_uses_a_road_tunnel": false
+  },
+  "surface_and_safety": {
+    "classification": "mixed-surface fell/trail loop, not a normal road run",
+    "known_conditions": [
+      "grass-covered village path with wet ground possible",
+      "stony, steep and less visible ground near Fámjinsklovn/Øraskarð",
+      "live roads on the return section",
+      "Fámjinstunnilin and Hovstunnilin are excluded"
+    ],
+    "decision_rule": "Use the coastal road alternative when visibility, wind, rain or footing make the fell section unsuitable."
+  },
+  "source_urls": {
+    "official_hike": "https://visitfaroeislands.com/en/whatson/hiking/hike/oravik-famjin",
+    "official_gpx": "https://vfibackend.com/uploads/1999.gpx",
+    "osm_extract": "https://download.geofabrik.de/europe/faroe-islands-latest.osm.pbf",
+    "elevation": "https://api.open-meteo.com/v1/elevation"
+  }
+}

@@ -7,6 +7,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { getOravikRouteUrl } from "@/lib/oravik-route";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -15,15 +16,6 @@ import { useMemo } from "react";
 interface RunInfoPanelProps {
   totalKm: number | null;
   mobile?: boolean;
-}
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function getGpxDownloadUrl(): string {
-  if (typeof window === "undefined") return "/routes/oravik-fell-loop.gpx";
-  return new URL("../../routes/oravik-fell-loop.gpx", window.location.href).href;
 }
 
 // ---------------------------------------------------------------------------
@@ -87,8 +79,7 @@ const FALLBACK = {
 
 export function RunInfoPanel({ totalKm, mobile }: RunInfoPanelProps) {
   const gpxUrl = useMemo(() => {
-    if (typeof window === "undefined") return "/routes/oravik-fell-loop.gpx";
-    return new URL("../../routes/oravik-fell-loop.gpx", window.location.href).href;
+    return getOravikRouteUrl();
   }, []);
 
   const displayKm = totalKm !== null ? totalKm.toFixed(2) : "4.13";

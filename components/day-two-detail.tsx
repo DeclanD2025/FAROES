@@ -284,7 +284,7 @@ export function DayTwoDetail() {
               <h1 className="text-[clamp(2.5rem,3.5vw,3.2rem)] leading-[1.04] mt-1.5 text-basalt tracking-[-0.01em]" style={{ fontFamily: "var(--font-cinzel)" }}>Run &amp; the ridge</h1>
               <p className="text-[20px] font-medium text-basalt/80 mt-2">Øravík · Hov · Hvannhagi · Tvøroyri</p>
               <p className="text-[14px] text-basalt/60 mt-2 max-w-[38rem]">
-                A morning run along the Øravík harbour, then Bus 700 south for the Hvannhagi ridge walk.
+                A morning run on the Øravík Fell Loop, then Bus 700 south for the Hvannhagi ridge walk.
                 No car needed — every stop is on the bus route or on foot. Thursday is the match — today is the day to earn your pint.
               </p>
             </div>
@@ -300,17 +300,17 @@ export function DayTwoDetail() {
               <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík Fell Loop</p>
               {/* Map + info panel composed feature */}
               <div className="border border-basalt/15 rounded-[7px] overflow-hidden">
-                <div className="flex flex-col xl:flex-row">
-                  {/* Map — ~68% width on xl screens */}
-                  <div className="xl:w-[68%] min-w-0">
+                <div className="flex flex-col lg:flex-row">
+                  {/* Map — ~68% width on desktop */}
+                  <div className="lg:w-[68%] min-w-0">
                     <OravikRunMap
                       mapRef={runMapRef}
                       onRouteLoaded={handleRouteLoaded}
                       crosshairPoint={crosshairPoint}
                     />
                   </div>
-                  {/* Info panel — ~32% width on xl screens */}
-                  <div className="xl:w-[32%] border-t xl:border-t-0 xl:border-l border-basalt/15 p-4 bg-fog/[0.03]">
+                  {/* Info panel — ~32% width on desktop */}
+                  <div className="lg:w-[32%] border-t lg:border-t-0 lg:border-l border-basalt/15 p-4 bg-fog/[0.03]">
                     <RunInfoPanel totalKm={routeTotalKm} />
                   </div>
                 </div>
@@ -406,16 +406,20 @@ export function DayTwoDetail() {
         <section className="mb-6"><MobileTripStatus dateLine1="Tuesday 28 July 2026" dateLine2="Suðuroy exploration day" weatherLat={61.536} weatherLon={-6.81} weatherLabel="Øravík" /></section>
         <section className="mb-6">              <p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Morning run · Øravík Fell Loop</p>
           <div className="border border-basalt/15 rounded-[8px] overflow-hidden">
-            <div style={{ height: "clamp(340px, 58vh, 520px)" }}>
-              <OravikRunMap
-                mapRef={mobileRunMapRef}
-                onRouteLoaded={handleRouteLoaded}
-                crosshairPoint={crosshairPoint}
-              />
-            </div>
+            <OravikRunMap
+              mapRef={mobileRunMapRef}
+              onRouteLoaded={handleRouteLoaded}
+              crosshairPoint={crosshairPoint}
+              compact
+            />
             <div className="border-t border-basalt/10 p-3">
               <RunInfoPanel totalKm={routeTotalKm} mobile />
             </div>
+            {routeCoords && elevationSamples && (
+              <div className="border-t border-basalt/10 p-3">
+                <ElevationProfile samples={elevationSamples} coords={routeCoords} onHover={handleElevationHover} />
+              </div>
+            )}
           </div>
         </section>
         <section className="mb-6"><p className="text-[10px] uppercase tracking-[0.16em] text-fjord/60 mb-2">Day plan</p><MobileTimeline steps={DAY_TWO_TIMELINE} /></section>

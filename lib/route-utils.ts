@@ -6,6 +6,7 @@
 
 import { gpx } from "@tmcw/togeojson";
 import { length, lineString, point, distance as turfDistance } from "@turf/turf";
+import { ORAVIK_AUDIT } from "@/lib/oravik-route";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -320,31 +321,32 @@ export function splitAtCoordinate(
 // ---------------------------------------------------------------------------
 
 /** Audited start coordinate (Bønhúsið). */
-export const FELL_LOOP_START: LngLat = [-6.810877108946443, 61.53244980610907];
+export const FELL_LOOP_START: LngLat = [ORAVIK_AUDIT.start.lon, ORAVIK_AUDIT.start.lat];
 
 /** Audited trail-to-road transition coordinate. */
-export const FELL_LOOP_TRANSITION: LngLat = [-6.831779228523374, 61.525677144527435];
+export const FELL_LOOP_TRANSITION: LngLat = [ORAVIK_AUDIT.crossing.lon, ORAVIK_AUDIT.crossing.lat];
 
 /** Audited expected distance in km. */
-export const FELL_LOOP_EXPECTED_KM = 4.131;
+export const FELL_LOOP_EXPECTED_KM = ORAVIK_AUDIT.distance_km;
 
 /** Display distance in km. */
-export const FELL_LOOP_DISPLAY_KM = 4.13;
+export const FELL_LOOP_DISPLAY_KM = Number(ORAVIK_AUDIT.distance_km.toFixed(2));
 
 /** Audited transition distance from start in km. */
-export const FELL_LOOP_TRANSITION_KM = 1.532;
+export const FELL_LOOP_TRANSITION_KM = ORAVIK_AUDIT.crossing.official_trail_distance_from_start_m / 1000;
 
 /** Audited approximate ascent in metres. */
-export const FELL_LOOP_ASCENT_M = 222;
+export const FELL_LOOP_ASCENT_M = ORAVIK_AUDIT.elevation.ascent_m;
 
 /** Audited approximate highest point in metres. */
-export const FELL_LOOP_HIGHEST_M = 189;
+export const FELL_LOOP_HIGHEST_M = ORAVIK_AUDIT.elevation.max_m;
 
 export interface FellLoopValidation {
   valid: boolean;
   totalKm: number;
   errors: string[];
   coords: LngLat[] | null;
+  transitionKm: number | null;
 }
 
 /**
@@ -354,9 +356,9 @@ export interface FellLoopValidation {
 export function validateFellLoop(coords: LngLat[] | null): FellLoopValidation {
   const errors: string[] = [];
 
-  // Rule 1: GPX contains a LineString with at least 2 coordinates
-  if (!coords || coords.length < 2) {
-    return { valid: false, totalKm: 0, errors: ["No route coordinates found in GPX file."], coords: null };
+  // Rule 1: GPX contains a LineString with enough points to represent the loop.
+  if (!coords || coords.length < 20) {
+    return { valid: false, totalKm: 0, errors: ["No route LineString with at least 20 coordinates found."], coords: null, transitionKm: null };
   }
 
   // Rule 2: Turf-calculated distance between 4.05 and 4.22 km
@@ -387,6 +389,12 @@ export function validateFellLoop(coords: LngLat[] | null): FellLoopValidation {
     errors.push(`No route point within 30 m of the audited trail-to-road transition (nearest: ${transitionDist.toFixed(1)} m).`);
   }
 
+  const dists = cumulativeDistances(coords);
+  const transitionKm = dists[nearestIdx];
+  if (transitionKm < 1.45 || transitionKm > 1.62) {
+    errors.push(`Trail-to-road split is ${transitionKm.toFixed(3)} km from the start (expected 1.45–1.62 km).`);
+  }
+
   // Rule 6: No segment > 150 m discontinuity
   for (let i = 1; i < coords.length; i++) {
     const segDist = turfDistance(
@@ -400,11 +408,22 @@ export function validateFellLoop(coords: LngLat[] | null): FellLoopValidation {
     }
   }
 
+  // Rule 7: both audited anchors must lie within the route geometry bounds.
+  // This blocks the retired eastbound Tjaldavík out-and-back from passing by length.
+  const lons = coords.map((coord) => coord[0]);
+  const lats = coords.map((coord) => coord[1]);
+  const contains = ([lon, lat]: LngLat) =>
+    lon >= Math.min(...lons) && lon <= Math.max(...lons) && lat >= Math.min(...lats) && lat <= Math.max(...lats);
+  if (!contains(FELL_LOOP_START) || !contains(FELL_LOOP_TRANSITION)) {
+    errors.push("Route bounds do not contain both the audited Bønhúsið start and trail-to-road transition.");
+  }
+
   return {
     valid: errors.length === 0,
     totalKm,
     errors,
     coords,
+    transitionKm,
   };
 }
 

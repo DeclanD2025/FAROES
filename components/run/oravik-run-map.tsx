@@ -14,20 +14,17 @@ import {
   extractTrackCoords,
   cumulativeDistances,
   routeBounds,
-  splitAtDistance,
+  splitAtCoordinate,
   pointAtDistance,
+  validateFellLoop,
+  FELL_LOOP_TRANSITION,
 } from "@/lib/route-utils";
 import type { LngLat } from "@/lib/route-utils";
-import { length, lineString } from "@turf/turf";
+import { getOravikRouteUrl } from "@/lib/oravik-route";
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-
-function getGpxUrl(): string {
-  if (typeof window === "undefined") return "/routes/oravik-fell-loop.gpx";
-  return new URL("../../routes/oravik-fell-loop.gpx", window.location.href).href;
-}
 
 const LIBERTY_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 const TERRAIN_TILES =
@@ -59,9 +56,6 @@ const LAYER_MARKER_LABELS = "oravik-marker-labels";
 const LAYER_CROSSHAIR = "oravik-crosshair-layer";
 
 // Route constants
-const TRANSITION_KM = 1.532;
-const EXPECTED_KM = 4.131;
-
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -73,6 +67,7 @@ interface OravikRunMapProps {
   onRouteLoaded?: (coords: LngLat[], totalKm: number) => void;
   onMapError?: (error: string) => void;
   crosshairPoint?: { coordinates: LngLat } | null;
+  compact?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -106,6 +101,7 @@ export default function OravikRunMap({
   onRouteLoaded,
   onMapError,
   crosshairPoint,
+  compact = false,
 }: OravikRunMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("terrain");
@@ -113,6 +109,7 @@ export default function OravikRunMap({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [routeTotalKm, setRouteTotalKm] = useState<number | null>(null);
+  const [retryKey, setRetryKey] = useState(0);
   const initRef = useRef(false);
   const routeCoordsRef = useRef<LngLat[] | null>(null);
   const viewModeRef = useRef<ViewMode>("terrain");
@@ -127,13 +124,24 @@ export default function OravikRunMap({
     viewModeRef.current = viewMode;
   }, [viewMode]);
 
+  const fitRoute = useCallback((mode: ViewMode) => {
+    const map = mapInstanceRef.current;
+    const coords = routeCoordsRef.current;
+    if (!map || !coords) return;
+    const compactPadding = { top: 56, right: 42, bottom: 92, left: 42 };
+    const desktopPadding = { top: 70, right: 80, bottom: 70, left: 80 };
+    map.fitBounds(routeBounds(coords, 0.012), {
+      padding: compact ? compactPadding : desktopPadding,
+      bearing: mode === "terrain" ? 72 : 0,
+      pitch: mode === "terrain" ? 43 : 0,
+      duration: prefersReducedMotion() ? 0 : 800,
+    });
+  }, [compact]);
+
   // ---- Reset view ----
   const resetView = useCallback(() => {
-    const map = mapInstanceRef.current;
-    if (!map) return;
-    setViewMode("plan");
-    map.easeTo({ bearing: 0, pitch: 0, duration: prefersReducedMotion() ? 0 : 600 });
-  }, []);
+    fitRoute(viewModeRef.current);
+  }, [fitRoute]);
 
   // ---- Toggle terrain (does NOT recreate map) ----
   const toggleTerrain = useCallback(() => {
@@ -144,12 +152,11 @@ export default function OravikRunMap({
     setViewMode(next);
     if (next === "terrain") {
       map.setTerrain({ source: SRC_TERRAIN, exaggeration: 1.1 });
-      map.easeTo({ bearing: 72, pitch: 43, duration: prefersReducedMotion() ? 0 : 800 });
     } else {
       map.setTerrain(null);
-      map.easeTo({ bearing: 0, pitch: 0, duration: prefersReducedMotion() ? 0 : 600 });
     }
-  }, []);
+    fitRoute(next);
+  }, [fitRoute]);
 
   // ---- Crosshair updates ----
   useEffect(() => {
@@ -218,7 +225,7 @@ export default function OravikRunMap({
 
         // Fetch and parse GPX
         try {
-          const gpxUrl = getGpxUrl();
+          const gpxUrl = getOravikRouteUrl();
           const resp = await fetch(gpxUrl, { cache: "no-cache" });
           if (!resp.ok) {
             throw new Error(`GPX fetch failed: ${resp.status} ${resp.statusText}`);
@@ -235,26 +242,26 @@ export default function OravikRunMap({
           const fc = parseGpxToGeoJSON(xml);
           const coords = extractTrackCoords(fc);
 
-          if (!coords || coords.length < 2) {
+          if (!coords) {
             setError("No route coordinates found in GPX file.");
             setLoading(false);
             return;
           }
 
-          // Validate distance with Turf
-          const totalKm = length(lineString(coords), { units: "kilometers" });
-          if (totalKm < 3.5 || totalKm > 5.0) {
-            setError(`Route length is ${totalKm.toFixed(2)} km — outside expected range.`);
+          const validation = validateFellLoop(coords);
+          if (!validation.valid) {
+            setError(validation.errors[0] ?? "The downloaded route failed its audited geometry checks.");
             setLoading(false);
             return;
           }
+          const totalKm = validation.totalKm;
 
           routeCoordsRef.current = coords;
           setRouteTotalKm(totalKm);
 
-          // Split at the trail-to-road transition (~1.53 km)
-          const split = splitAtDistance(coords, TRANSITION_KM);
-          if (!split) {
+          // Split at the actual audited transition, rather than a nominal km.
+          const split = splitAtCoordinate(coords, FELL_LOOP_TRANSITION[0], FELL_LOOP_TRANSITION[1]);
+          if (!split || split.distanceKm < 1.45 || split.distanceKm > 1.62) {
             setError("Could not determine trail-to-road transition point.");
             setLoading(false);
             return;
@@ -263,24 +270,8 @@ export default function OravikRunMap({
           // Build layers
           addRouteLayers(map, coords, split.before, split.after);
 
-          // Fit to route
-          const bounds = routeBounds(coords, 0.012);
-          if (prefersReducedMotion()) {
-            map.fitBounds(bounds, {
-              padding: { top: 70, right: 80, bottom: 70, left: 80 },
-              animate: false,
-            });
-          } else {
-            map.fitBounds(bounds, {
-              padding: { top: 70, right: 80, bottom: 70, left: 80 },
-              duration: 900,
-            });
-          }
-
           onRouteLoadedRef.current?.(coords, totalKm);
-
-          // Re-apply terrain view after fitBounds
-          map.easeTo({ bearing: 72, pitch: 43, duration: prefersReducedMotion() ? 0 : 800 });
+          fitRoute(viewModeRef.current);
 
           setLoading(false);
         } catch (err) {
@@ -299,7 +290,11 @@ export default function OravikRunMap({
         }
       });
 
+      const onResize = () => map.resize();
+      window.addEventListener("resize", onResize);
+
       return () => {
+        window.removeEventListener("resize", onResize);
         map.remove();
         mapRef.current = null;
         mapInstanceRef.current = null;
@@ -313,17 +308,9 @@ export default function OravikRunMap({
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(false);
     }
+    // `retryKey` deliberately rebuilds a failed MapLibre instance after cleanup.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // ---- Resize handler ----
-  useEffect(() => {
-    const map = mapInstanceRef.current;
-    if (!map) return;
-    const onResize = () => map.resize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
+  }, [retryKey, fitRoute]);
 
   // ---- Fallback panel ----
   const routeFallback = (
@@ -349,8 +336,7 @@ export default function OravikRunMap({
       <div
         ref={containerRef}
         className="w-full"
-        style={{ height: "clamp(380px, 58vh, 680px)" }}
-        role="application"
+        style={{ height: compact ? "clamp(340px, 58vh, 520px)" : "clamp(620px, 68vh, 680px)" }}
         aria-label="Interactive fell-running route map"
       />
 
@@ -373,7 +359,8 @@ export default function OravikRunMap({
               onClick={() => {
                 setError(null);
                 setLoading(true);
-                initRef.current = false;
+                setMapReady(false);
+                setRetryKey((key) => key + 1);
               }}
               className="mt-3 border border-basalt/30 px-4 py-2 text-[13px] font-medium hover:bg-fog/20 transition-colors focus-visible:outline-2 focus-visible:outline-navy"
             >
