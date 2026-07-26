@@ -157,7 +157,7 @@ export const FERRY_BOARD = {
   ourSailing: "21:15 · Tórshavn → Krambatangi",
   arrivalNote: "Arrives Krambatangi 23:20. Dark, exposed pier. Bring a layer.",
   bookingUrl: "https://booking.ssl.fo",
-  bookingReminder: "Book this ferry. Gate closes 5 min before sailing. Queue 20 min before. Two foot passengers.",
+  bookingReminder: "Booked: two adult foot passengers. Keep the QR ticket offline; gate closes 5 min before sailing. Queue from 20:30.",
   onboardFacilities: "Café (hot food, beer, coffee) · indoor seating · outdoor deck · free Wi-Fi",
   weatherSensitivity: "Sails in most conditions. Rare cancellations for extreme swell.",
   contingency: "If 21:15 is cancelled, next is 08:45 Tue. Need Tórshavn hotel.",

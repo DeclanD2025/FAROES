@@ -72,8 +72,8 @@ const TIMELINE_STEPS: TimelineStep[] = [
     num: 6, title: "Vágar Airport · arrival",
     subtitle: "Sørvágur, Vágar · single terminal",
     middleLabel: "Arrive", middleValue: "18:35",
-    rightLabel: "Onward", rightValue: "Bus 300",
-    footer: "Walk across tarmac. Non-Schengen passport control — passport stamp on request. Arrivals duty-free open. No SIM vendor — buy eSIM before departure. Bus stop 50 m from terminal exit. Bus 300 typically meets RC 415 — but NOT guaranteed.",
+    rightLabel: "Onward", rightValue: "Booked taxi",
+    footer: "Walk across tarmac. Non-Schengen passport control — passport stamp on request. Arrivals duty-free open. No SIM vendor — buy eSIM before departure. Your AirportTaxi booking monitors RC 415 and goes directly to Farstøðin — no Bus 300 decision needed.",
   },
   {
     num: 7, title: "Confirmed AirportTaxi · Vágar Airport → Farstøðin",
@@ -84,11 +84,11 @@ const TIMELINE_STEPS: TimelineStep[] = [
     footer: "CONFIRMED BOOKING · Taxi og AirportTaxi will monitor RC 415 on Monday 27 July and drive directly to the ferry terminal. Booking note: reach Farstøðin for the 21:15 Smyril; the taxi starts its approach two hours before the flight arrival. Keep the service number and booking email saved offline. This replaces the assumed Bus 300 connection.",
   },
   {
-    num: 8, title: "Tórshavn · ferry connection",
-    subtitle: "Bus station → Farstøðin ferry terminal",
+    num: 8, title: "Farstøðin · ferry connection",
+    subtitle: "Booked AirportTaxi → Smyril foot-passenger gate",
     middleLabel: "Arrive", middleValue: "~19:45",
     rightLabel: "Ferry", rightValue: "21:15",
-    footer: "~1h 30m buffer. Walk to the harbour: ~10 min (800 m). Grab food near the harbour — Irish Pub, Etika, or Burger House. Ferry café also serves hot food, beer, and coffee onboard. FREE WI-FI at ferry terminal.",
+    footer: "AirportTaxi drops you at Farstøðin. Your two-person 21:15 Route 7 ferry booking is confirmed. Keep the QR ticket ready; the foot-passenger gate closes at 21:10. Use the remaining buffer for food, water and a warm layer — the ferry café also serves food and drinks.",
   },
   {
     num: 9, title: "M/F Smyril · Route 7 · LAST SAILING",
@@ -96,7 +96,7 @@ const TIMELINE_STEPS: TimelineStep[] = [
     middleLabel: "Departs", middleValue: "21:15",
     middleLabel2: "Arrives", middleValue2: "23:20",
     rightLabel: "Crossing", rightValue: "2h 05m",
-    footer: "LAST SAILING OF THE DAY. Pre-book at booking.ssl.fo. Foot-passenger gate closes 5 min before departure (21:10). Queue from ~20:30. Café, indoor seating, outdoor deck, free Wi-Fi onboard. Dark, exposed pier at Krambatangi — bring a layer. If flight delayed enough to miss this: overnight in Tórshavn. Emergency: Hotel Hafnia +298 313233.",
+    footer: "BOOKED · two adult foot passengers. Foot-passenger gate closes 5 min before departure (21:10); queue from ~20:30. Café, indoor seating, outdoor deck and free Wi-Fi onboard. Dark, exposed pier at Krambatangi — bring a layer. If flight delay makes the sailing unreachable: overnight in Tórshavn. Emergency: Hotel Hafnia +298 313233.",
     footerLink: { label: "Book at ssl.fo →", href: "https://booking.ssl.fo" },
   },
   {
@@ -227,7 +227,7 @@ const DAY1_SOURCES = [
     claim: "M/F Smyril Tórshavn → Krambatangi: 21:15–23:20, 2h 05m",
     verification: provisional(
       "SSL Route 7 ferry timetable",
-      "Pre-book at booking.ssl.fo. Confirm sailing near travel date.",
+      "Booking confirmed for two adult foot passengers. Save the QR ticket offline and reconfirm only if SSL issues a service notice.",
       { title: SOURCE_LIBRARY.sslBooking.title, url: SOURCE_LIBRARY.sslBooking.url, note: "Last sailing of the day" },
     ),
   },
